@@ -1,0 +1,41 @@
+.button, .small-button
+  border: solid 2px rgba(0 0 0 / .5)
+
+  transition: all .1s linear
+
+  &:hover
+    opacity: .8
+
+    cursor: pointer
+
+  &:active
+    opacity: .6
+
+.button
+  padding: 8px 25px
+
+  border-radius: 7px
+
+.small-button
+  padding: 2px 15px
+
+  border-radius: 5px
+
+
+@mixin ButtonAmbient($color)
+  background-color: var(--#{$color})
+
+  color: var(--#{$color}-color)
+
+
+.button-primary
+  @include ButtonAmbient("primary")
+
+.button-secondary
+  @include ButtonAmbient("secondary")
+
+.button-danger
+  @include ButtonAmbient("danger")
+
+.button-light
+  @include ButtonAmbient("light")

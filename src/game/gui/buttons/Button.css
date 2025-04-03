@@ -1,0 +1,43 @@
+.button, .small-button {
+  border: solid 2px rgba(0, 0, 0, 0.5);
+  transition: all 0.1s linear;
+}
+.button:hover, .small-button:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+.button:active, .small-button:active {
+  opacity: 0.6;
+}
+
+.button {
+  padding: 8px 25px;
+  border-radius: 7px;
+}
+
+.small-button {
+  padding: 2px 15px;
+  border-radius: 5px;
+}
+
+.button-primary {
+  background-color: var(--primary);
+  color: var(--primary-color);
+}
+
+.button-secondary {
+  background-color: var(--secondary);
+  color: var(--secondary-color);
+}
+
+.button-danger {
+  background-color: var(--danger);
+  color: var(--danger-color);
+}
+
+.button-light {
+  background-color: var(--light);
+  color: var(--light-color);
+}
+
+/*# sourceMappingURL=Button.css.map */
