@@ -1,0 +1,17 @@
+@keyframes SlideTop {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0%);
+  }
+}
+.animate-slide-top {
+  animation-name: SlideTop;
+  animation-delay: 0s;
+  animation-direction: normal;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+}
+
+/*# sourceMappingURL=SlideTop.css.map */
