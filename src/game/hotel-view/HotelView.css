@@ -1,0 +1,25 @@
+.hotel-view__container {
+  height: 100vh;
+  background-image: linear-gradient(to bottom, #D77600, #FFE78F);
+  color: white;
+}
+.hotel-view__container > .hotel-view__content {
+  display: flex;
+  flex-direction: column;
+  row-gap: 50px;
+  padding: 100px;
+}
+.hotel-view__container > .asset-building {
+  background-image: url("/src/assets/gamelib/hotel-view/hotelview_a_1.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  image-rendering: pixelated;
+  width: 500px;
+  aspect-ratio: 715/984;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translateY(150px);
+}
+
+/*# sourceMappingURL=HotelView.css.map */

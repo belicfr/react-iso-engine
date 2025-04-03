@@ -1,0 +1,31 @@
+$containerBackground: linear-gradient(to bottom, #D77600, #FFE78F)
+
+.hotel-view__container
+  height: 100vh
+
+  background-image: $containerBackground
+
+  color: white
+
+  > .hotel-view__content
+    display: flex
+    flex-direction: column
+    row-gap: 50px
+
+    padding: 100px
+
+  > .asset-building
+    background-image: url("/src/assets/gamelib/hotel-view/hotelview_a_1.png")
+    background-repeat: no-repeat
+    background-size: cover
+
+    image-rendering: pixelated
+
+    width: 500px
+    aspect-ratio: 715/984
+
+    position: absolute
+    bottom: 0
+    right: 0
+
+    transform: translateY(150px)
