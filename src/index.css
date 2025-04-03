@@ -31,6 +31,19 @@ h6 {
   font-size: 1rem;
 }
 
+:root {
+  --primary: #0065ff;
+  --primary-color: white;
+  --secondary: #3c3c3c;
+  --secondary-color: white;
+  --danger: #ff2626;
+  --danger-color: white;
+  --light: white;
+  --light-color: black;
+  --dark: black;
+  --dark-color: white;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
