@@ -1,54 +1,39 @@
-# React + TypeScript + Vite
+# React/PIXI.js isometric engine
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+_Simple isometric game engine, using React and PIXI.js frameworks. Educational purpose only._
 
-Currently, two official plugins are available:
+## A Client-side engine
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This project consists in creating an isometric game engine, a back-end emulator will be created 
+in the future in a different repository.
 
-## Expanding the ESLint configuration
+## Technologies
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+There are two subprojects:
+1. Develop a PIXI.js-based isometric game engine, playable without third-party software.
+2. Develop a React client implementing the game engine, with a user-friendly graphic interface.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Main features (WIP)
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Game engine itself
+- Main player GUI
+- Moderation tools (MOD tools and users & rooms management systems)
+- Furnis management system
+- Inventory and marketplace
+- Badges system
+- Player's avatar imager
+- Avatars' effects
+- APIs to retrieve users, rooms, etc. information
+- Pipelines for generating images from players' creations
+- and more…
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Assets
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+To use properly this engine, isometric assets must be used.
+The engine uses a tiles-based physics, so the assets 
+must be tiles-based using the 1:2 ratio.
+
+## Inspirations
+
+[Habbo](https://habbo.com)\
+[Bit Hotel](https://bithotel.io)
