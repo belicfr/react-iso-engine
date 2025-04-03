@@ -23,7 +23,8 @@ export const PromotionCarousel: FC<Props> = props => {
 
         <div className="carousel-navigation">
           {STUB_PROMO.map((_, index) =>
-            <div className={
+            <div key={index}
+                 className={
                    "carousel-navigation__dot-button" +
                    (currentPromoIndex === index
                      ? " active"
