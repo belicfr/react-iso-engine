@@ -1,5 +1,5 @@
 .button, .small-button {
-  border: solid 2px rgba(0, 0, 0, 0.5);
+  border: solid 2px rgba(0, 0, 0, 0.4);
   transition: all 0.1s linear;
 }
 .button:hover, .small-button:hover {
@@ -13,6 +13,7 @@
 .button {
   padding: 8px 25px;
   border-radius: 7px;
+  font-size: 1.1rem;
 }
 
 .small-button {
