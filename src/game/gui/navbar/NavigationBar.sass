@@ -14,11 +14,36 @@
     border: solid 1px rgb(0 0 0)
     border-radius: 15px
 
-    height: 60px
+    height: 80px
     width: 100%
 
     display: flex
     column-gap: 20px
 
+    padding: 10px 20px
+
     @media (min-width: 1024px)
       width: 60%
+
+    > [class^="navigation-bar__icon"]
+      flex: none
+
+      width: 60px
+      height: 60px
+
+      image-rendering: pixelated
+
+      transition: all .1s linear
+
+      &:hover
+        transform: translateY(-2px)
+
+        cursor: pointer
+
+      &:active
+        opacity: .6
+
+      &.navigation-bar__icon-home
+        background-image: url("/src/assets/gamelib/albumhud/gui_home_nb.png")
+        background-repeat: no-repeat
+        background-size: contain
