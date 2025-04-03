@@ -1,6 +1,7 @@
 import {FC} from "react";
 import "./HotelView.css";
 import {PromotionCarousel} from "./promotion-carousel/PromotionCarousel.tsx";
+import {NavigationBar} from "../gui/navbar/NavigationBar.tsx";
 
 type Props = object;
 
@@ -14,6 +15,8 @@ export const HotelView: FC<Props> = props => {
           </h1>
 
           <PromotionCarousel />
+
+          <NavigationBar />
         </div>
 
         <div className="asset-building"></div>
