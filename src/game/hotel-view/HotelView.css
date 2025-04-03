@@ -10,6 +10,11 @@
   padding: 100px;
 }
 .hotel-view__container > .asset-building {
+  animation-name: SlideTop;
+  animation-delay: 0s;
+  animation-direction: normal;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
   background-image: url("/src/assets/gamelib/hotel-view/hotelview_a_1.png");
   background-repeat: no-repeat;
   background-size: cover;
@@ -20,6 +25,14 @@
   bottom: 0;
   right: 0;
   transform: translateY(150px);
+}
+@keyframes SlideTop {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(150px);
+  }
 }
 
 /*# sourceMappingURL=HotelView.css.map */

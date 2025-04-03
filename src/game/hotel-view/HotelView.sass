@@ -1,3 +1,5 @@
+@import "../../frameworks/animations/SlideTop"
+
 $containerBackground: linear-gradient(to bottom, #D77600, #FFE78F)
 
 .hotel-view__container
@@ -15,6 +17,9 @@ $containerBackground: linear-gradient(to bottom, #D77600, #FFE78F)
     padding: 100px
 
   > .asset-building
+    $to: 150px
+    @include SlideTop(100%, $to)
+
     background-image: url("/src/assets/gamelib/hotel-view/hotelview_a_1.png")
     background-repeat: no-repeat
     background-size: cover
@@ -28,4 +33,4 @@ $containerBackground: linear-gradient(to bottom, #D77600, #FFE78F)
     bottom: 0
     right: 0
 
-    transform: translateY(150px)
+    transform: translateY($to)

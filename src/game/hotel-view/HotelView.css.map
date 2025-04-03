@@ -1,1 +1,1 @@
-{"version":3,"sourceRoot":"","sources":["HotelView.sass"],"names":[],"mappings":"AAEA;EACE;EAEA,kBALoB;EAOpB;;AAEA;EACE;EACA;EACA;EAEA;;AAEF;EACE;EACA;EACA;EAEA;EAEA;EACA;EAEA;EACA;EACA;EAEA","file":"HotelView.css"}
+{"version":3,"sourceRoot":"","sources":["HotelView.sass","../../frameworks/animations/SlideTop.sass"],"names":[],"mappings":"AAIA;EACE;EAEA,kBALoB;EAOpB;;AAEA;EACE;EACA;EACA;EAEA;;AAEF;ECTA;EACA;EACA;EACA;EACA;EDSE;EACA;EACA;EAEA;EAEA;EACA;EAEA;EACA;EACA;EAEA;;AClCF;EACE;IACE;;EAEF;IACE","file":"HotelView.css"}
