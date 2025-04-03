@@ -1,1 +1,1 @@
-{"version":3,"sourceRoot":"","sources":["TopOptions.sass"],"names":[],"mappings":"AAAA;EACE;EACA;EACA;EAEA;EAEA;EAEA;EACA;EAEA;EAEA;EAEA;EACA;;AAEA;EACE;EACA;EACA;;AAEA;EACE;EACA;;AAEJ;EACE;EAEA;;AAEF;EACE;EACA;EACA","file":"TopOptions.css"}
+{"version":3,"sourceRoot":"","sources":["windows/HelpWindow.sass","TopOptions.sass"],"names":[],"mappings":"AAAA;EACE;;AAEA;EACE;;AAEF;EACE;EACA;EACA;;;ACPJ;EACE;EACA;EACA;EAEA;EAEA;EAEA;EACA;EAEA;EAEA;EAEA;EACA;;AAEA;EACE;EACA;EACA;;AAEA;EACE;EACA;;AAEJ;EACE;EAEA;;AAEF;EACE;EACA;EACA","file":"TopOptions.css"}
