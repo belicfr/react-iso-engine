@@ -1,0 +1,45 @@
+.modal-window__container {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.window-interface {
+  border: solid 2px black;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: var(--main-background);
+  min-width: 200px;
+  min-height: 100px;
+}
+.window-interface > header.window-interface__header {
+  background-color: #0075e3;
+  position: relative;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border: solid 2px rgba(255, 255, 255, 0.3);
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+}
+.window-interface > header.window-interface__header > h6 {
+  text-align: center;
+}
+.window-interface > header.window-interface__header > .close-button__container {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  bottom: 0;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*# sourceMappingURL=Window.css.map */
