@@ -47,7 +47,7 @@ export const StaffTools: FC<Props> = props => {
             >
 
               {isUsingEffect ? "Disable" : "Enable"}
-                &nbsp;Staff Effect
+              &nbsp;Staff Effect
             </SmallButton>}
       </div>
 
