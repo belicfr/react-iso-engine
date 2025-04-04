@@ -1,0 +1,6 @@
+.rooms-navigator__content {
+  overflow-y: auto;
+  height: calc(100% - 35.5px);
+}
+
+/*# sourceMappingURL=RoomsNavigatorWindow.css.map */
