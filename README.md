@@ -37,3 +37,10 @@ must be tiles-based using the 1:2 ratio.
 
 [Habbo](https://habbo.com)\
 [Bit Hotel](https://bithotel.io)
+
+## Previews
+
+_BETA previews, these pictures do not represent the release product._
+
+![Hotel View](/public-albums/hotel_view.jpeg)
+![Rooms Navigator](/public-albums/rooms_navigator.png)
