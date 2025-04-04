@@ -8,6 +8,8 @@ export type ButtonProps = {
   onClick?: () => void,
 
   color?: string,
+
+  disabled?: boolean,
 };
 
 export const Button: FC<ButtonProps> = props => {
@@ -15,7 +17,8 @@ export const Button: FC<ButtonProps> = props => {
     <>
       <button className={`button button-${props.color ?? "primary"} ${props.className}`}
               style={props.style}
-              onClick={props.onClick}>
+              onClick={props.onClick}
+              disabled={props.disabled}>
 
         {props.children}
       </button>
