@@ -19,9 +19,14 @@ export const RoomsNavigatorWindow: FC<Props> = props => {
   ];
 
   const publicRooms: Room[] = [
-    new Room(1, "Hotel Hall", new User(1, "officialrooms"), ["fun", "lol"]),
-    new Room(2, "Le Café", new User(1, "officialrooms"), ["public"]),
-    new Room(3, "Games Lounge", new User(1, "officialrooms"), []),
+    new Room(2, "Le Café", new User(1, "officialrooms"), ["public"], 100, 100),
+    new Room(1, "Hotel Hall", new User(1, "officialrooms"), ["fun", "lol"], 75, 10),
+    new Room(3, "Games Lounge", new User(1, "officialrooms"), [], 25, 10),
+  ];
+
+  const allRooms: Room[] = [
+    ...publicRooms,
+    new Room(4, "Gamers HQ | friendly&fun", new User(2, "MrPlayer"), ["gamers"], 25, 5),
   ];
 
   const [ currentTabIndex, setCurrentTabIndex ] = useState(0);
@@ -51,7 +56,7 @@ export const RoomsNavigatorWindow: FC<Props> = props => {
 
             {currentTabIndex === 1 &&
                 <RoomsList
-                    rooms={publicRooms}
+                    rooms={allRooms}
                     visibility={RoomsListVisibility.COMPACT_LIST} />}
 
             {currentTabIndex === 2 &&
