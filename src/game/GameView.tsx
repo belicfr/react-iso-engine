@@ -11,7 +11,9 @@ export const GameView: FC<Props> = props => {
 
   const [ isWelcomeWindowOpened, setIsWelcomeWindowOpened ] = useState(true);
 
-  const onHomeClick = () => setIsHotelViewOpened(!isHotelViewOpened);
+  const onHomeClick = () => setIsHotelViewOpened(false);
+  const onHotelViewClick = () => setIsHotelViewOpened(true);
+  const onRoomsNavigatorClick = () => {};
 
   return (
     <>
@@ -32,7 +34,12 @@ export const GameView: FC<Props> = props => {
               </p>
           </ModalWindow>}
 
-      <NavigationBar onHomeClick={onHomeClick} />
+      <NavigationBar
+        isInHotelView={isHotelViewOpened}
+        onHomeClick={onHomeClick}
+        onHotelViewClick={onHotelViewClick}
+        onRoomsNavigatorClick={onRoomsNavigatorClick}
+      />
     </>
   );
 };
