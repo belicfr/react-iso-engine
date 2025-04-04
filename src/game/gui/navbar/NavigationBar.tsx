@@ -23,7 +23,7 @@ export const NavigationBar: FC<Props> = props => {
                    onClick={props.onHotelViewClick}></div>}
 
           <div className="navigation-bar__icon-rooms-navigator"
-               onClick={props.onHotelViewClick}></div>
+               onClick={props.onRoomsNavigatorClick}></div>
         </div>
       </div>
     </>
