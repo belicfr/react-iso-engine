@@ -44,3 +44,4 @@ _BETA previews, these pictures do not represent the release product._
 
 ![Hotel View](/public-albums/hotel_view.jpeg)
 <img src="/public-albums/rooms_navigator.png" style="width: 500px" />
+<img src="/public-albums/mod_tools.png" style="width: 300px" />
