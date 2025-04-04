@@ -43,4 +43,4 @@ must be tiles-based using the 1:2 ratio.
 _BETA previews, these pictures do not represent the release product._
 
 ![Hotel View](/public-albums/hotel_view.jpeg)
-![Rooms Navigator](/public-albums/rooms_navigator.png)
+<img src="/public-albums/rooms_navigator.png" style="width: 500px" />
