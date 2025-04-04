@@ -27,6 +27,8 @@
   height: 60px;
   image-rendering: pixelated;
   transition: all 0.1s linear;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 .navigation-bar__container > .navigation-bar > [class^=navigation-bar__icon]:hover {
   transform: translateY(-2px);
@@ -37,8 +39,12 @@
 }
 .navigation-bar__container > .navigation-bar > [class^=navigation-bar__icon].navigation-bar__icon-home {
   background-image: url("/src/assets/gamelib/albumhud/gui_home_nb.png");
-  background-repeat: no-repeat;
-  background-size: contain;
+}
+.navigation-bar__container > .navigation-bar > [class^=navigation-bar__icon].navigation-bar__icon-hotel-view {
+  background-image: url("/src/assets/gamelib/albumhud/gui_hv_nb.png");
+}
+.navigation-bar__container > .navigation-bar > [class^=navigation-bar__icon].navigation-bar__icon-rooms-navigator {
+  background-image: url("/src/assets/gamelib/albumhud/gui_rnav_nb.png");
 }
 
 /*# sourceMappingURL=NavigationBar.css.map */
