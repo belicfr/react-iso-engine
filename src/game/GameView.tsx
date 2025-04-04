@@ -4,6 +4,7 @@ import {NavigationBar} from "./gui/navbar/NavigationBar.tsx";
 import {TopOptions} from "./gui/top-options/TopOptions.tsx";
 import {ModalWindow} from "./gui/windows/ModalWindow.tsx";
 import {RoomsNavigatorWindow} from "./gui/windows/prefabs/rooms-navigator/RoomsNavigatorWindow.tsx";
+import {StaffTools} from "./gui/staff-tools/StaffTools.tsx";
 
 type Props = object;
 
@@ -23,6 +24,12 @@ export const GameView: FC<Props> = props => {
   return (
     <>
       <TopOptions />
+
+      <StaffTools
+        canOpenModTools={true}
+        canBeInvisible={true}
+        canUseEffect={true}
+      />
 
       {isHotelViewOpened &&
           <HotelView />}
