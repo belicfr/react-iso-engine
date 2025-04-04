@@ -9,7 +9,7 @@ type Props = WindowBaseProps & {
 export const Window: FC<Props> = props => {
   return (
     <>
-      <Rnd enableResizing={false} dragHandleClassName="window-interface__header">
+      <Rnd style={{zIndex: 99}} enableResizing={false} dragHandleClassName="window-interface__header">
         <div className="window__container">
           <WindowInterface title={props.title}
                            width={props.width}
