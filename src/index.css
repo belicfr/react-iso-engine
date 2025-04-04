@@ -38,6 +38,10 @@ h6 {
   --secondary-color: white;
   --danger: #ff2626;
   --danger-color: white;
+  --warning: #ff9326;
+  --warning-color: white;
+  --success: #117700;
+  --success-color: white;
   --light: white;
   --light-color: black;
   --dark: black;
