@@ -10,9 +10,19 @@ export const CompactRoomCard: FC<Props> = props => {
   return (
     <>
       <div className="compact-room-card">
-        <p className="room-name">
-          {props.room.name}
-        </p>
+        <div className="room-intro">
+          <div className={
+            "players-in-room"
+            + ` players-${props.room.getPopulationLevel()}`
+          }>
+            <div className="players-icon"></div>
+            {props.room.playersCount}
+          </div>
+
+          <p className="room-name">
+            {props.room.name}
+          </p>
+        </div>
 
         <div className="room-info__button">
           <div className="room-info__icon"></div>
