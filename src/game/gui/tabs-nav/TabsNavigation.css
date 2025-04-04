@@ -1,0 +1,42 @@
+.tabs-navigation {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-top: 10px;
+}
+.tabs-navigation .tabs-navigation__container {
+  display: flex;
+  column-gap: 3px;
+  padding: 0 10px;
+  flex: none;
+  height: 35.5px;
+}
+.tabs-navigation .tabs-navigation__container > .tabs-navigation__tab-button {
+  border: solid 2px black;
+  border-bottom: none;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  width: fit-content;
+  padding: 5px 20px;
+  transform: translateY(2px);
+  background-color: #e1e1e1;
+}
+.tabs-navigation .tabs-navigation__container > .tabs-navigation__tab-button:hover {
+  cursor: pointer;
+}
+.tabs-navigation .tabs-navigation__container > .tabs-navigation__tab-button.active {
+  background-color: white;
+}
+.tabs-navigation .tabs-navigation__container > .tabs-navigation__tab-button:not(.active) {
+  border-bottom: solid 2px black;
+}
+.tabs-navigation .tabs-navigation__container > .tabs-navigation__tab-button:not(.active):hover {
+  background-color: white;
+}
+.tabs-navigation main.tabs-navigation__body {
+  border-top: solid 2px black;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/*# sourceMappingURL=TabsNavigation.css.map */
