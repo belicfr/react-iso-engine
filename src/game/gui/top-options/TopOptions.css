@@ -10,36 +10,45 @@
   row-gap: 10px;
 }
 
-.top-options__container {
+.top-container {
   position: fixed;
   top: 10px;
   right: 10px;
-  color: white;
-  background-color: rgba(0, 0, 0, 0.8);
-  border: solid 1px black;
-  border-radius: 15px;
-  padding: 15px;
   width: fit-content;
-  display: flex;
-  column-gap: 20px;
-}
-.top-options__container > .top-options__currencies {
   display: flex;
   flex-direction: column;
   row-gap: 10px;
 }
-.top-options__container > .top-options__currencies > div {
+.top-container .top-options__container {
+  color: white;
+  flex: none;
+  background-color: rgba(0, 0, 0, 0.8);
+  border: solid 1px black;
+  border-radius: 15px;
+  padding: 15px;
+  display: flex;
+  column-gap: 20px;
+}
+.top-container .top-options__container > .top-options__currencies {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+.top-container .top-options__container > .top-options__currencies > div {
   display: flex;
   column-gap: 5px;
 }
-.top-options__container > .top-options__separator {
+.top-container .top-options__container > .top-options__separator {
   width: 2px;
   background-color: #5c5c5c;
 }
-.top-options__container > .top-options__actions {
+.top-container .top-options__container > .top-options__actions {
   display: flex;
   flex-direction: column;
   row-gap: 5px;
+}
+.top-container .notifications-center {
+  flex: 1;
 }
 
 /*# sourceMappingURL=TopOptions.css.map */
