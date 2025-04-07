@@ -1,0 +1,6 @@
+{
+  "tiles": {
+    "floor": "gcompstd/tiles/floor_tile/floor_tile.png",
+    "hover": "gcompstd/tiles/hover_tile/hover_tile.png"
+  }
+}
