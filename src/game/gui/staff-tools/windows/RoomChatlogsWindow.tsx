@@ -1,7 +1,10 @@
 import {FC} from "react";
 import {Window} from "../../windows/Window.tsx";
+import Room from "../../../../models/Room.ts";
 
 type Props = {
+  room: Room,
+
   onClose: () => void,
 };
 

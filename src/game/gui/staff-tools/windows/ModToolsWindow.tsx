@@ -65,11 +65,11 @@ export const ModToolsWindow: FC<Props> = props => {
         </div>
       </Window>
 
-      {isRoomToolsOpened &&
-          <RoomToolsWindow onClose={toggleRoomTools} />}
+      {isRoomToolsOpened && props.currentRoom &&
+          <RoomToolsWindow room={props.currentRoom} onClose={toggleRoomTools} />}
 
-      {isRoomChatlogsOpened &&
-          <RoomChatlogsWindow onClose={toggleRoomChatlogs} />}
+      {isRoomChatlogsOpened && props.currentRoom &&
+          <RoomChatlogsWindow room={props.currentRoom} onClose={toggleRoomChatlogs} />}
 
       {isUserInfoOpened && focusedUser &&
           <UserInfoWindow user={focusedUser} onClose={toggleUserInfo} />}
