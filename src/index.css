@@ -47,6 +47,7 @@ h6 {
   --dark: black;
   --dark-color: white;
   --main-background: #ffffff;
+  --gui-background: rgb(35, 35, 35);
 }
 
 * {
