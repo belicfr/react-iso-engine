@@ -7,8 +7,12 @@ import {RoomChatlogsWindow} from "./RoomChatlogsWindow.tsx";
 import {UserInfoWindow} from "./UserInfoWindow.tsx";
 import {TicketsBrowserWindow} from "./TicketsBrowserWindow.tsx";
 import User from "../../../../models/User.ts";
+import Room from "../../../../models/Room.ts";
 
 type Props = {
+  currentRoom: Room,
+  focusedUser: User,
+
   onClose: () => void,
 };
 
@@ -24,24 +28,18 @@ export const ModToolsWindow: FC<Props> = props => {
   const [ isUserInfoOpened, setIsUserInfoOpened ] = useState(false);
   const [ isTicketsBrowserOpened, setIsTicketsBrowserOpened ] = useState(false);
 
-  const [ focusedUser, setFocusedUser ] = useState<User|null>(null);
-
   const toggleRoomTools = () => setIsRoomToolsOpened(!isRoomToolsOpened);
   const toggleRoomChatlogs = () => setIsRoomChatlogsOpened(!isRoomChatlogsOpened);
   const toggleUserInfo = () => setIsUserInfoOpened(!isUserInfoOpened);
   const toggleTicketsBrowser = () => setIsTicketsBrowserOpened(!isTicketsBrowserOpened);
 
   const actions: Action[] = [
-    {label: "Room Tools", onClick: () => toggleRoomTools()},
-    {label: "Room Chatlogs", onClick: () => toggleRoomChatlogs()},
-    {label: `User Info:${focusedUser ? ' ' + focusedUser.name : ""}`,
-      onClick: () => toggleUserInfo(), disabled: !focusedUser},
+    {label: "Room Tools", onClick: () => toggleRoomTools(), disabled: !props.currentRoom},
+    {label: "Room Chatlogs", onClick: () => toggleRoomChatlogs(), disabled: !props.currentRoom},
+    {label: `User Info:${props.focusedUser ? ' ' + props.focusedUser.name : ""}`,
+      onClick: () => toggleUserInfo(), disabled: !props.focusedUser},
     {label: "Tickets Browser", onClick: () => toggleTicketsBrowser()},
   ];
-
-  useEffect(() => {
-    setFocusedUser(new User(12, "Mikael"));
-  }, []);
 
   return (
     <>
@@ -71,8 +69,8 @@ export const ModToolsWindow: FC<Props> = props => {
       {isRoomChatlogsOpened && props.currentRoom &&
           <RoomChatlogsWindow room={props.currentRoom} onClose={toggleRoomChatlogs} />}
 
-      {isUserInfoOpened && focusedUser &&
-          <UserInfoWindow user={focusedUser} onClose={toggleUserInfo} />}
+      {isUserInfoOpened && props.focusedUser &&
+          <UserInfoWindow user={props.focusedUser} onClose={toggleUserInfo} />}
 
       {isTicketsBrowserOpened &&
           <TicketsBrowserWindow onClose={toggleTicketsBrowser} />}
