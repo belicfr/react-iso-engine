@@ -7,7 +7,6 @@ import {RoomsNavigatorWindow} from "./gui/windows/prefabs/rooms-navigator/RoomsN
 import {StaffTools} from "./gui/staff-tools/StaffTools.tsx";
 import {RoomView} from "./room-view/RoomView.tsx";
 import GameSocket from "./room-view/engine/socket/GameSocket.ts";
-import Game, {GameOptions} from "./room-view/engine/Game.ts";
 
 type Props = object;
 
@@ -26,22 +25,9 @@ export const GameView: FC<Props> = props => {
 
   const isClientPrepared = useRef<boolean>(false);
 
-  const [ app, setApp ]
-    = useState<Game|undefined>(undefined);
-
   useEffect(() => {
     function prepareClient() {
       const socket: GameSocket = GameSocket.get();
-      const envOptions = {
-        resizeTo: window,
-        antialias: false,
-        resolution: 1,
-      };
-      const gameOptions: GameOptions = {
-        tileSize: {width: 72, height: 36},
-      };
-      setApp(new Game(envOptions, gameOptions, (c: HTMLCanvasElement) => {
-      }));
 
       console.log("Connected to Socket", socket);
     }
@@ -50,6 +36,8 @@ export const GameView: FC<Props> = props => {
       prepareClient();
       isClientPrepared.current = true;
     }
+
+
   }, []);
 
   return (
@@ -65,9 +53,8 @@ export const GameView: FC<Props> = props => {
       {isHotelViewOpened &&
           <HotelView />}
 
-      {!isHotelViewOpened && app &&
+      {!isHotelViewOpened &&
           <RoomView
-              app={app}
           />}
 
       {isWelcomeWindowOpened &&
