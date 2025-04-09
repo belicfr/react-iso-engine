@@ -55,7 +55,6 @@ export const RoomView: FC<Props> = props => {
       FIXME: [room.grid=UNDEFINED].width
           -> return to hotel view, then return to room
        */
-      console.log("room", app.app, app.app.renderer, Object.keys(app.app));
       app.app.stage.x = (app.app.renderer.width / 2) - (room.grid.width / 4);
       app.app.stage.y = (app.app.renderer.height / 2) - (room.grid.height / 2);
 
