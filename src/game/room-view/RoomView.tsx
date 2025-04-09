@@ -1,8 +1,8 @@
-import {FC, useRef} from "react";
+import {FC} from "react";
 import "./RoomView.css";
 import {Application as GameEnvironment, extend} from "@pixi/react";
 import {Container, Graphics, Sprite} from 'pixi.js';
-import {RoomFloor} from "./components/RoomFloor.tsx";
+import {GridSize, RoomFloor} from "./components/RoomFloor.tsx";
 
 extend({
   Container,
@@ -12,17 +12,19 @@ extend({
 
 type Props = object;
 
-export const RoomView: FC<Props> = props => {
-  const container = useRef<HTMLDivElement>(null);
+export const RoomView: FC<Props> = () => {
+  const gridSize: GridSize = {cols: 5, rows: 5};
 
   return (
     <GameEnvironment
       resizeTo={window}
-      antialias={false}
+      antialias={true}
       resolution={1}
     >
 
-      <RoomFloor gridSize={{cols: 5, rows: 5}} />
+      <RoomFloor
+        gridSize={gridSize}
+      />
     </GameEnvironment>
   );
 };
