@@ -1,11 +1,21 @@
-import {FC} from "react";
+import {FC, useState} from "react";
 import {Window} from "../../windows/Window.tsx";
+import {TabsNavigation} from "../../tabs-nav/TabsNavigation.tsx";
+import Tab from "../../tabs-nav/Tab.ts";
 
 type Props = {
   onClose: () => void,
 };
 
 export const TicketsBrowserWindow: FC<Props> = props => {
+  const TABS = [
+    new Tab("Opened"),
+    new Tab("Picked"),
+    new Tab("Resolved"),
+  ];
+
+  const [currentTabIndex, setCurrentTabIndex] = useState(0);
+
   return (
     <>
       <Window
@@ -15,7 +25,23 @@ export const TicketsBrowserWindow: FC<Props> = props => {
         onClose={props.onClose}
       >
 
-        tickets browser;stub
+        {TABS.length &&
+          <TabsNavigation
+              currentTabIndex={currentTabIndex}
+              tabs={TABS}
+
+              onTabChange={index => setCurrentTabIndex(index)}
+          >
+
+            {currentTabIndex === 0 &&
+              <>opened tickets browser;stub</>}
+
+            {currentTabIndex === 1 &&
+              <>picked tickets browser;stub</>}
+
+            {currentTabIndex === 2 &&
+              <>resolved tickets browser;stub</>}
+          </TabsNavigation>}
       </Window>
     </>
   );
