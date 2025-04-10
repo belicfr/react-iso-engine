@@ -45,8 +45,3 @@ export const RoomHoverTile: FC<Props> = ({position, tileSize}) => {
     />
   );
 };
-
-export type GridSize = {
-  cols: number,
-  rows: number,
-};
