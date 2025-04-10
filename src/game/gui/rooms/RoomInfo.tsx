@@ -1,5 +1,5 @@
-import {FC, useEffect, useRef, useState} from "react";
-import Room from "../../../../models/Room.ts";
+import {FC, useEffect, useRef} from "react";
+import Room from "../../../models/Room.ts";
 import "./RoomInfo.css";
 import gsap from "gsap";
 

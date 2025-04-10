@@ -1,7 +1,7 @@
 import {FC} from "react";
 import Room from "../../../../models/Room.ts";
 import {RoomView} from "../../RoomView.tsx";
-import {RoomInfo} from "./RoomInfo.tsx";
+import {RoomInfo} from "../../../gui/rooms/RoomInfo.tsx";
 
 type Props = {
   room: Room,
