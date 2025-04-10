@@ -64,6 +64,7 @@ body {
   font-family: "Nunito", sans-serif;
   height: 100vh;
   overflow: hidden;
+  background-color: black;
 }
 
 div {
