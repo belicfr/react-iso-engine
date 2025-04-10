@@ -4,12 +4,11 @@ import {Rnd} from "react-rnd";
 import {useZIndex} from "./WindowContext.tsx";
 
 type Props = WindowBaseProps & {
-
 };
 
 export const Window: FC<Props> = props => {
   const { bringToFront } = useZIndex();
-  const [ zIndex, setZIndex ] = useState(0);
+  const [ zIndex, setZIndex ] = useState<number>(0);
 
   useEffect(() => {
     setZIndex(bringToFront());
