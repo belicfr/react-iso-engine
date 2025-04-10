@@ -1,8 +1,8 @@
 import {FC, ReactNode, useEffect, useMemo, useRef, useState} from "react";
-import {Size2D} from "../engine/precepts/Size2D.ts";
+import {Size2D} from "../../engine/precepts/Size2D.ts";
 import {extend, useApplication} from "@pixi/react";
-import ScreenIso from "../engine/precepts/ScreenIso.ts";
-import {Coord2D} from "../engine/precepts/Coord2D.ts";
+import ScreenIso from "../../engine/precepts/ScreenIso.ts";
+import {Coord2D} from "../../engine/precepts/Coord2D.ts";
 import {RoomTile} from "./RoomTile.tsx";
 import {Container, Graphics, Sprite} from "pixi.js";
 import {RoomHoverTile} from "./RoomHoverTile.tsx";

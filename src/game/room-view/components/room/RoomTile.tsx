@@ -1,7 +1,7 @@
 import {FC, useEffect, useRef, useState} from "react";
 import {Assets, Polygon, Sprite, Texture} from 'pixi.js';
-import {Size2D} from "../engine/precepts/Size2D.ts";
-import {Coord2D} from "../engine/precepts/Coord2D.ts";
+import {Size2D} from "../../engine/precepts/Size2D.ts";
+import {Coord2D} from "../../engine/precepts/Coord2D.ts";
 import {useApplication} from "@pixi/react";
 
 type Props = {

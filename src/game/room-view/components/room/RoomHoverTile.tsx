@@ -1,8 +1,8 @@
 import {FC} from "react";
 import {Assets, Polygon, Texture} from 'pixi.js';
 import {useEffect, useRef, useState} from 'react';
-import {Size2D} from "../engine/precepts/Size2D.ts";
-import {Coord2D} from "../engine/precepts/Coord2D.ts";
+import {Size2D} from "../../engine/precepts/Size2D.ts";
+import {Coord2D} from "../../engine/precepts/Coord2D.ts";
 
 type Props = {
   position: Coord2D,
