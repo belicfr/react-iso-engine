@@ -2,8 +2,9 @@ import {FC} from "react";
 import "./RoomView.css";
 import {Application as GameEnvironment, extend} from "@pixi/react";
 import {Container, Graphics, Sprite} from 'pixi.js';
-import {GridSize, RoomFloor} from "./components/room/RoomFloor.tsx";
+import {RoomFloor} from "./components/room/RoomFloor.tsx";
 import {Camera} from "./components/camera/Camera.ts";
+import Room from "../../models/Room.ts";
 
 extend({
   Container,
@@ -11,9 +12,11 @@ extend({
   Sprite,
 });
 
-export const RoomView: FC = () => {
-  const gridSize: GridSize = {cols: 5, rows: 5};
+type Props = {
+  room: Room,
+};
 
+export const RoomView: FC<Props> = ({room}) => {
   return (
     <GameEnvironment
       resizeTo={window}
@@ -22,7 +25,7 @@ export const RoomView: FC = () => {
     >
 
       <RoomFloor
-        gridSize={gridSize}
+        gridSize={room.size}
       />
 
       <Camera />

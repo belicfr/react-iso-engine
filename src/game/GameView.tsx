@@ -1,4 +1,4 @@
-import {FC, useEffect, useRef, useState} from "react";
+import {FC, useEffect, useMemo, useRef, useState} from "react";
 import {HotelView} from "./hotel-view/HotelView.tsx";
 import {NavigationBar} from "./gui/navbar/NavigationBar.tsx";
 import {TopOptions} from "./gui/top-options/TopOptions.tsx";
@@ -7,10 +7,10 @@ import {RoomsNavigatorWindow} from "./gui/windows/prefabs/rooms-navigator/RoomsN
 import {StaffTools} from "./gui/staff-tools/StaffTools.tsx";
 import {RoomView} from "./room-view/RoomView.tsx";
 import GameSocket from "./room-view/engine/socket/GameSocket.ts";
+import Room from "../models/Room.ts";
+import User from "../models/User.ts";
 
-type Props = object;
-
-export const GameView: FC<Props> = props => {
+export const GameView: FC = () => {
   const [ isHotelViewOpened, setIsHotelViewOpened ] = useState(true);
 
   const [ isWelcomeWindowOpened, setIsWelcomeWindowOpened ] = useState(true);
@@ -24,6 +24,18 @@ export const GameView: FC<Props> = props => {
   const closeRoomsNavigator = () => setIsRoomsNavigatorWindowOpened(false);
 
   const isClientPrepared = useRef<boolean>(false);
+
+  //TEMP
+  const rooms = useMemo((): Room[] => [
+    new Room(1, "Lounge", new User(1, "Staff"), [], 25, 0, {
+      rows: 10, cols: 5,
+    }),
+
+    new Room(2, "Le Café", new User(1, "Staff"), [], 25, 0, {
+      rows: 25, cols: 30,
+    }),
+  ], [])
+  const [currentRoom, setCurrentRoom] = useState<Room|null>(null);
 
   useEffect(() => {
     function prepareClient() {
@@ -40,6 +52,11 @@ export const GameView: FC<Props> = props => {
 
   }, []);
 
+  function onRoomClick(room: Room) {
+    setCurrentRoom(room);
+    setIsHotelViewOpened(false);
+  }
+
   return (
     <>
       <TopOptions />
@@ -53,15 +70,18 @@ export const GameView: FC<Props> = props => {
       {isHotelViewOpened &&
           <HotelView />}
 
-      {!isHotelViewOpened &&
+      {!isHotelViewOpened && currentRoom &&
           <RoomView
+            room={currentRoom}
           />}
 
       {isWelcomeWindowOpened &&
-          <ModalWindow title="Welcome"
-                       width="auto"
-                       height="auto"
-                       onClose={() => setIsWelcomeWindowOpened(false)}>
+          <ModalWindow
+            title="Welcome"
+            width="auto"
+            height="auto"
+            onClose={() => setIsWelcomeWindowOpened(false)}
+          >
 
               <p style={{margin: "20px"}}>
                   Welcome to this Demo.
@@ -71,7 +91,10 @@ export const GameView: FC<Props> = props => {
 
       {isRoomsNavigatorWindowOpened &&
         <RoomsNavigatorWindow
-            onClose={closeRoomsNavigator}
+          rooms={rooms}
+
+          onRoomClick={(room: Room) => onRoomClick(room)}
+          onClose={closeRoomsNavigator}
         />}
 
       <NavigationBar

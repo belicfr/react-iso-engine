@@ -1,11 +1,11 @@
-import {FC, ReactNode, useEffect, useMemo, useRef, useState} from "react";
+import {FC, useEffect, useMemo, useRef, useState} from "react";
 import {Size2D} from "../../engine/precepts/Size2D.ts";
 import {extend, useApplication} from "@pixi/react";
-import ScreenIso from "../../engine/precepts/ScreenIso.ts";
 import {Coord2D} from "../../engine/precepts/Coord2D.ts";
 import {RoomTile} from "./RoomTile.tsx";
 import {Container, Graphics, Sprite} from "pixi.js";
 import {RoomHoverTile} from "./RoomHoverTile.tsx";
+import {GridSize} from "../../../../models/Room.ts";
 
 extend({
   Container,
@@ -17,7 +17,7 @@ type Props = {
   gridSize: GridSize,
 };
 
-export const RoomFloor: FC<Props> = ({gridSize}) => {
+export const  RoomFloor: FC<Props> = ({gridSize}) => {
   const a = useApplication();
   const {app} = a;
   
@@ -30,30 +30,11 @@ export const RoomFloor: FC<Props> = ({gridSize}) => {
   const oldScaleFactor = useRef<number>(1);
 
   const isEnvZoomEventDefined = useRef<boolean>(false);
-  const isCameraDragEventDefined = useRef<boolean>(false);
-
-  const isDragging = useRef<boolean>(false);
 
   const [hoverTilePosition, setHoverTilePosition] = useState<Coord2D>({x: 0, y: 0});
 
   const tiles = useMemo(() => {
     const tiles = [];
-
-    function updateHoverTile(gridPos: Coord2D) {
-      if (!hoverTile.current) {
-        return;
-      }
-
-      gridPos.x = Math.max(0, Math.min(gridSize.cols - 1, gridPos.x));
-      gridPos.y = Math.max(0, Math.min(gridSize.rows - 1, gridPos.y));
-
-      const {isoX, isoY} = ScreenIso.isoToScreen(
-        {x: gridPos.x, y: gridPos.y}, TILE_SIZE);
-
-      hoverTile.current.x = isoX;
-      hoverTile.current.y = isoY;
-      hoverTile.current.zIndex = gridPos.y + gridPos.x;
-    }
 
     for (let y = 0; y < gridSize.rows; y++) {
       for (let x = 0; x < gridSize.cols; x++) {
@@ -69,7 +50,6 @@ export const RoomFloor: FC<Props> = ({gridSize}) => {
 
 
             onHoverTile={(pos: Coord2D) => {
-              console.log(pos);
               setHoverTilePosition(pos);
             }}
           />
@@ -79,8 +59,6 @@ export const RoomFloor: FC<Props> = ({gridSize}) => {
 
     return tiles;
   }, [gridSize.rows, gridSize.cols, TILE_SIZE]);
-
-  const hoverTile = useRef<HoverTileSituation>(null);
 
   useEffect(() => {
     if (!app || !app.renderer || !app.canvas) return;
@@ -159,18 +137,4 @@ export const RoomFloor: FC<Props> = ({gridSize}) => {
       />
     </pixiContainer>
   );
-};
-
-export type GridSize = {
-  cols: number,
-  rows: number,
-};
-
-type HoverTileSituation = Coord2D & {
-  zIndex: number,
-};
-
-export type TileSituation = {
-  gridX: number, gridY: number,
-  sprite: ReactNode,
 };

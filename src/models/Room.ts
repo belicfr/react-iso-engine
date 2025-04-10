@@ -9,13 +9,17 @@ export default class Room {
 
   playersCount: number;
 
+  // TODO: replace by floor blueprint system
+  size: GridSize;
+
   constructor(
     id: number,
     name: string,
     owner: User,
     tags: RoomTags,
     playersLimit: number,
-    playersCount: number = 0) {
+    playersCount: number = 0,
+    size: GridSize) {
 
     this.id = id;
     this.name = name;
@@ -24,6 +28,8 @@ export default class Room {
     this.playersLimit = playersLimit;
 
     this.playersCount = playersCount;
+
+    this.size = size;
   }
 
   getPopulationLevel(): RoomPopulation {
@@ -55,3 +61,8 @@ export enum RoomPopulation {
   MEDIUM = "medium",
   HIGH = "high",
 }
+
+export type GridSize = {
+  cols: number,
+  rows: number,
+};
