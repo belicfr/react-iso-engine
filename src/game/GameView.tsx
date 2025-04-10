@@ -5,10 +5,10 @@ import {TopOptions} from "./gui/top-options/TopOptions.tsx";
 import {ModalWindow} from "./gui/windows/ModalWindow.tsx";
 import {RoomsNavigatorWindow} from "./gui/windows/prefabs/rooms-navigator/RoomsNavigatorWindow.tsx";
 import {StaffTools} from "./gui/staff-tools/StaffTools.tsx";
-import {RoomView} from "./room-view/RoomView.tsx";
 import GameSocket from "./room-view/engine/socket/GameSocket.ts";
 import Room from "../models/Room.ts";
 import User from "../models/User.ts";
+import {RoomViewContainer} from "./room-view/components/room/RoomViewContainer.tsx";
 
 export const GameView: FC = () => {
   const [ isHotelViewOpened, setIsHotelViewOpened ] = useState(true);
@@ -71,7 +71,7 @@ export const GameView: FC = () => {
           <HotelView />}
 
       {!isHotelViewOpened && currentRoom &&
-          <RoomView
+          <RoomViewContainer
             room={currentRoom}
           />}
 
