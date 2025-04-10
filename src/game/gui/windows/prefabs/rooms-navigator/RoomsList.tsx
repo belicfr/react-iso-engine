@@ -12,16 +12,32 @@ export enum RoomsListVisibility {
 type Props = {
   rooms: Room[],
   visibility: RoomsListVisibility,
+
+  onRoomClick: (room: Room) => void,
 };
 
-export const RoomsList: FC<Props> = props => {
-  const renderRoomCard = (room: Room) => {
-    switch (props.visibility) {
+export const RoomsList: FC<Props> = ({rooms, visibility, onRoomClick}) => {
+  const renderRoomCard = (room: Room, index: number) => {
+    switch (visibility) {
       case RoomsListVisibility.COMPACT_LIST:
-        return <CompactRoomCard room={room} />;
+        return (
+          <CompactRoomCard
+            key={index}
+            room={room}
+
+            onClick={onRoomClick}
+          />
+        );
 
       case RoomsListVisibility.LIST:
-        return <RoomCard room={room} />;
+        return (
+          <RoomCard
+            key={index}
+            room={room}
+
+            onClick={onRoomClick}
+          />
+        );
 
       default:
         return <>ERROR</>;
@@ -31,8 +47,15 @@ export const RoomsList: FC<Props> = props => {
   return (
     <>
       <div className="rooms-list">
-        {props.rooms.map(room => renderRoomCard(room))}
+        {rooms.map((room, index) =>
+          renderRoomCard(room, index))}
       </div>
     </>
   );
+};
+
+export type RoomCardProps = {
+  room: Room,
+
+  onClick: (room: Room) => void,
 };

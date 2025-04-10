@@ -1,26 +1,27 @@
 import {FC} from "react";
-import Room from "../../../../../models/Room.ts";
 import "./RoomCard.css";
+import {RoomCardProps} from "./RoomsList.tsx";
 
-type Props = {
-  room: Room,
-};
-
-export const CompactRoomCard: FC<Props> = props => {
+export const CompactRoomCard: FC<RoomCardProps> = ({room, onClick}) => {
   return (
     <>
-      <div className="compact-room-card">
+      <div
+        className="compact-room-card"
+
+        onClick={() => onClick(room)}
+      >
+
         <div className="room-intro">
           <div className={
             "players-in-room"
-            + ` players-${props.room.getPopulationLevel()}`
+            + ` players-${room.getPopulationLevel()}`
           }>
             <div className="players-icon"></div>
-            {props.room.playersCount}
+            {room.playersCount}
           </div>
 
           <p className="room-name">
-            {props.room.name}
+            {room.name}
           </p>
         </div>
 

@@ -4,29 +4,20 @@ import "./RoomsNavigatorWindow.css";
 import {TabsNavigation} from "../../../tabs-nav/TabsNavigation.tsx";
 import Tab from "../../../tabs-nav/Tab.ts";
 import Room from "../../../../../models/Room.ts";
-import User from "../../../../../models/User.ts";
 import {RoomsList, RoomsListVisibility} from "./RoomsList.tsx";
 
 type Props = {
+  rooms: Room[],
+
+  onRoomClick: (room: Room) => void,
   onClose: () => void,
 };
 
-export const RoomsNavigatorWindow: FC<Props> = props => {
+export const RoomsNavigatorWindow: FC<Props> = ({rooms, onRoomClick, onClose}) => {
   const tabs: Tab[] = [
     new Tab("Public"),
     new Tab("All Rooms"),
     new Tab("My World"),
-  ];
-
-  const publicRooms: Room[] = [
-    new Room(2, "Le Café", new User(1, "officialrooms"), ["public"], 100, 100),
-    new Room(1, "Hotel Hall", new User(1, "officialrooms"), ["fun", "lol"], 75, 10),
-    new Room(3, "Games Lounge", new User(1, "officialrooms"), [], 25, 10),
-  ];
-
-  const allRooms: Room[] = [
-    ...publicRooms,
-    new Room(4, "Gamers HQ | friendly&fun", new User(2, "MrPlayer"), ["gamers"], 25, 5),
   ];
 
   const [ currentTabIndex, setCurrentTabIndex ] = useState(0);
@@ -39,7 +30,7 @@ export const RoomsNavigatorWindow: FC<Props> = props => {
         title="Rooms Navigator"
         width="500px"
         height="600px"
-        onClose={props.onClose}
+        onClose={onClose}
       >
 
         <div className="rooms-navigator__content">
@@ -51,13 +42,19 @@ export const RoomsNavigatorWindow: FC<Props> = props => {
 
             {currentTabIndex === 0 &&
                 <RoomsList
-                    rooms={publicRooms}
-                    visibility={RoomsListVisibility.LIST} />}
+                  rooms={rooms}
+                  visibility={RoomsListVisibility.LIST}
+
+                  onRoomClick={onRoomClick}
+                />}
 
             {currentTabIndex === 1 &&
                 <RoomsList
-                    rooms={allRooms}
-                    visibility={RoomsListVisibility.COMPACT_LIST} />}
+                  rooms={rooms}
+                  visibility={RoomsListVisibility.COMPACT_LIST}
+
+                  onRoomClick={onRoomClick}
+                />}
 
             {currentTabIndex === 2 &&
                 <p>my rooms;stub</p>}

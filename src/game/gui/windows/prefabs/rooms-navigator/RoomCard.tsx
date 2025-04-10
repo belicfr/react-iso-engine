@@ -1,17 +1,18 @@
 import {FC} from "react";
-import Room from "../../../../../models/Room.ts";
 import "./RoomCard.css";
+import {RoomCardProps} from "./RoomsList.tsx";
 
-type Props = {
-  room: Room,
-};
-
-export const RoomCard: FC<Props> = props => {
+export const RoomCard: FC<RoomCardProps> = ({room, onClick}) => {
   return (
     <>
-      <div className="room-card">
+      <div
+        className="room-card"
+
+        onClick={() => onClick(room)}
+      >
+
         <p className="room-name">
-          {props.room.name}
+          {room.name}
         </p>
       </div>
     </>
