@@ -2,19 +2,15 @@ import {FC, useEffect, useRef, useState} from "react";
 import {Assets, Polygon, Sprite, Texture} from 'pixi.js';
 import {Size2D} from "../../engine/precepts/Size2D.ts";
 import {Coord2D} from "../../engine/precepts/Coord2D.ts";
-import {useApplication} from "@pixi/react";
 
 type Props = {
   position: Coord2D,
-  gridPos: Coord2D,
   tileSize: Size2D,
 
   onHoverTile: (pos: Coord2D) => void,
 };
 
-export const RoomTile: FC<Props> = ({position, gridPos, tileSize, onHoverTile}) => {
-  const {app} = useApplication();
-
+export const RoomTile: FC<Props> = ({position, tileSize, onHoverTile}) => {
   const [texture, setTexture] = useState(Texture.EMPTY);
 
   const isTileScaleModeDefined = useRef<boolean>(false);

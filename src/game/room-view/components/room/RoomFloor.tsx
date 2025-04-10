@@ -45,9 +45,7 @@ export const  RoomFloor: FC<Props> = ({gridSize}) => {
           <RoomTile
             key={`${x},${y}`}
             position={{x: isoX, y: isoY}}
-            gridPos={{x, y}}
             tileSize={TILE_SIZE}
-
 
             onHoverTile={(pos: Coord2D) => {
               setHoverTilePosition(pos);

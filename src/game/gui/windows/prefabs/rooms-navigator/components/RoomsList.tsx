@@ -1,5 +1,5 @@
 import {FC} from "react";
-import Room from "../../../../../models/Room.ts";
+import Room from "../../../../../../models/Room.ts";
 import {CompactRoomCard} from "./CompactRoomCard.tsx";
 import {RoomCard} from "./RoomCard.tsx";
 import "./RoomsList.css";

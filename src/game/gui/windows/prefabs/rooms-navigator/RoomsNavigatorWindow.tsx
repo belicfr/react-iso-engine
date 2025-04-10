@@ -4,7 +4,7 @@ import "./RoomsNavigatorWindow.css";
 import {TabsNavigation} from "../../../tabs-nav/TabsNavigation.tsx";
 import Tab from "../../../tabs-nav/Tab.ts";
 import Room from "../../../../../models/Room.ts";
-import {RoomsList, RoomsListVisibility} from "./RoomsList.tsx";
+import {RoomsList, RoomsListVisibility} from "./components/RoomsList.tsx";
 
 type Props = {
   rooms: Room[],
