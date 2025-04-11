@@ -10,6 +10,10 @@ type Props = {
 };
 
 export const RoomInfoWindow: FC<Props> = ({room, onClose}) => {
+  function getFilteredTags() {
+    return room.tags.filter(tag => tag && tag.length);
+  }
+
   return (
     <>
       <Window
@@ -37,7 +41,7 @@ export const RoomInfoWindow: FC<Props> = ({room, onClose}) => {
           </div>
 
           <div className="room-info__tags">
-            {room.tags.map(tag =>
+            {getFilteredTags().map(tag =>
               <span className="tag">{tag}</span>)}
           </div>
 
