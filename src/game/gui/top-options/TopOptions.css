@@ -48,6 +48,11 @@
   flex-direction: column;
   row-gap: 5px;
 }
+.top-container .room-widgets {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
 .top-container .notifications-center {
   flex: 1;
 }

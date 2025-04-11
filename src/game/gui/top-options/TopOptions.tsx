@@ -7,9 +7,19 @@ import {Button} from "../buttons/Button.tsx";
 import {NotificationsCenter} from "../notifications-center/NotificationsCenter.tsx";
 import Notification from "../../../models/Notification.ts";
 
-type Props = object;
+type Props = {
+  canAccessRoomPreferences: boolean,
 
-export const TopOptions: FC<Props> = props => {
+  onRoomPreferencesClick: () => void,
+};
+
+export const TopOptions: FC<Props> = (
+  {
+    canAccessRoomPreferences,
+
+    onRoomPreferencesClick
+  }
+) => {
   const [isHelpWindowOpened, setIsHelpWindowOpened] = useState(false);
 
   const [ notifications, setNotifications ] = useState<Notification[]>([]);
@@ -44,6 +54,18 @@ export const TopOptions: FC<Props> = props => {
               Options
             </SmallButton>
           </div>
+        </div>
+
+        <div className="room-widgets">
+          {canAccessRoomPreferences &&
+              <Button
+                color="secondary"
+
+                onClick={onRoomPreferencesClick}
+              >
+
+                  Room Preferences
+              </Button>}
         </div>
 
         <div className="notifications-center">
