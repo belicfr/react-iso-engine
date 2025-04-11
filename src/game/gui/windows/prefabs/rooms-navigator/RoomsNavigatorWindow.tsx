@@ -5,6 +5,8 @@ import {TabsNavigation} from "../../../tabs-nav/TabsNavigation.tsx";
 import Tab from "../../../tabs-nav/Tab.ts";
 import Room from "../../../../../models/Room.ts";
 import {RoomsList, RoomsListVisibility} from "./components/RoomsList.tsx";
+import {Button} from "../../../buttons/Button.tsx";
+import {CreateRoomWindow} from "../create-room/CreateRoomWindow.tsx";
 
 type Props = {
   rooms: Room[],
@@ -20,6 +22,8 @@ export const RoomsNavigatorWindow: FC<Props> = ({rooms, onRoomClick, onClose}) =
     new Tab("My World"),
   ];
 
+  const [ isCreateRoomWindowOpened, setIsCreateRoomWindowOpened ] = useState<boolean>(false);
+
   const [ currentTabIndex, setCurrentTabIndex ] = useState(0);
 
   const onTabChange = (index: number) => setCurrentTabIndex(index);
@@ -27,6 +31,8 @@ export const RoomsNavigatorWindow: FC<Props> = ({rooms, onRoomClick, onClose}) =
   return (
     <>
       <Window
+        customHeaderClassName="room-navigator-window"
+        dragHandleClassName="room-navigator-window"
         title="Rooms Navigator"
         width="500px"
         height="600px"
@@ -59,8 +65,24 @@ export const RoomsNavigatorWindow: FC<Props> = ({rooms, onRoomClick, onClose}) =
             {currentTabIndex === 2 &&
                 <p>my rooms;stub</p>}
           </TabsNavigation>
+
+          <div className="rooms-navigator__bottom">
+            <Button
+              color="light"
+
+              onClick={() => setIsCreateRoomWindowOpened(true)}
+            >
+
+              Create Room
+            </Button>
+          </div>
         </div>
       </Window>
+
+      {isCreateRoomWindowOpened &&
+          <CreateRoomWindow
+            onClose={() => setIsCreateRoomWindowOpened(false)}
+          />}
     </>
   );
 };
