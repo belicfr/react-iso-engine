@@ -1,0 +1,41 @@
+label {
+  display: flex;
+  flex-direction: column;
+}
+label > span.label {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+label > .control {
+  padding: 5px;
+  border: 1px solid grey;
+  border-radius: 3px;
+  font-family: "Nunito", sans-serif;
+}
+label > .control::placeholder {
+  font-style: italic;
+  font-weight: 300;
+}
+label > textarea.resize-none {
+  resize: none;
+}
+label > textarea.resize-both {
+  resize: both;
+}
+label > textarea.resize-horizontal {
+  resize: horizontal;
+}
+label > textarea.resize-vertical {
+  resize: vertical;
+}
+label > textarea.resize-inherit {
+  resize: inherit;
+}
+label > textarea.resize-initial {
+  resize: initial;
+}
+label > textarea.resize-unset {
+  resize: unset;
+}
+
+/*# sourceMappingURL=Control.css.map */

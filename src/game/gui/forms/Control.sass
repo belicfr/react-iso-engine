@@ -1,0 +1,41 @@
+label
+  display: flex
+  flex-direction: column
+
+  > span.label
+    font-size: .9rem
+    font-weight: 500
+
+  > .control
+    padding: 5px
+
+    border: 1px solid grey
+    border-radius: 3px
+
+    font-family: "Nunito", sans-serif
+
+    &::placeholder
+      font-style: italic
+      font-weight: 300
+
+  > textarea
+    &.resize-none
+      resize: none
+
+    &.resize-both
+      resize: both
+
+    &.resize-horizontal
+      resize: horizontal
+
+    &.resize-vertical
+      resize: vertical
+
+    &.resize-inherit
+      resize: inherit
+
+    &.resize-initial
+      resize: initial
+
+    &.resize-unset
+      resize: unset
