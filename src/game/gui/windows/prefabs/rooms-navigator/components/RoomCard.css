@@ -3,6 +3,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 }
 .room-card:hover, .compact-room-card:hover {
   background-color: #f6f6f6;
