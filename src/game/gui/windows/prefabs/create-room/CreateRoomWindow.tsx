@@ -1,24 +1,35 @@
-import {ChangeEvent, FC, useState} from "react";
+import {ChangeEvent, FC, useMemo, useState} from "react";
 import {Window} from "../../Window.tsx";
 import "./CreateRoomWindow.css";
-import {Button} from "../../../buttons/Button.tsx";
-import {Input} from "../../../forms/Input.tsx";
-import {TextArea} from "../../../forms/TextArea.tsx";
+import {RoomInformationStep} from "./steps/RoomInformationStep.tsx";
+import {RoomModelSelectionStep} from "./steps/RoomModelSelectionStep.tsx";
+import RoomTemplate from "../../../../../models/RoomTemplate.ts";
+import Room, {RoomRepository} from "../../../../../models/Room.ts";
+import User from "../../../../../models/User.ts";
 
 type Props = {
   onClose: () => void,
 };
 
 export const CreateRoomWindow: FC<Props> = ({onClose}) => {
+  const roomModels = useMemo<RoomTemplate[]>(() => [
+    new RoomTemplate(1, "", "Base", 25),
+    new RoomTemplate(2, "", "XL", 50),
+  ], []);
+
+  const [model, setModel] = useState<RoomTemplate|null>(null);
+
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [firstTag, setFirstTag] = useState<string>("");
   const [secondTag, setSecondTag] = useState<string>("");
 
-  const tagInputProps = {
-    minLength: 3,
-    maxLength: 10,
-  };
+  const [currentStep, setCurrentStep] = useState<Step>(Step.ROOM_MODEL_SELECTION);
+
+  function createRoom() {
+    const rooms = RoomRepository.i().rooms;
+    rooms.push(new Room(Math.abs(Math.random() * 100), name, description, new User(2, "Player"), [firstTag, secondTag], 10, 0, {cols: 1, rows: 1}));
+  }
 
   return (
     <>
@@ -30,78 +41,43 @@ export const CreateRoomWindow: FC<Props> = ({onClose}) => {
       >
 
         <div className="create-room__content">
-          <main className="create-room__form">
-            <h5 className="form__title">
-              Create your own Room!
-            </h5>
+          {currentStep === Step.ROOM_MODEL_SELECTION &&
+              <RoomModelSelectionStep
+                models={roomModels}
+                selectedModel={model}
 
-            <form className="form__container">
-            {/*
-            TODO:
-              - name
-              - description
-              - 0..2 tags
-            */}
-              <Input
-                label="Name:"
-                placeholder="Pretty Place!"
+                onModelSelection={setModel}
+                onNextClick={() =>
+                  setCurrentStep(Step.ROOM_INFORMATION)}
+              />}
 
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setName(e.target.value)}
-              />
+          {currentStep === Step.ROOM_INFORMATION && model &&
+              <RoomInformationStep
+                model={model}
 
-              <TextArea
-                label="Description:"
-                resize="none"
+                name={name}
+                description={description}
+                firstTag={firstTag}
+                secondTag={secondTag}
 
-                rows={4}
+                setName={setName}
+                setDescription={setDescription}
+                setFirstTag={setFirstTag}
+                setSecondTag={setSecondTag}
 
-                onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-                  setDescription(e.target.value)}
-              />
+                canShowSecondTagInput={!!firstTag.length}
 
-              <div className="form__tags-inputs">
-                <p className="inputs__label">
-                  Tags:
-                </p>
-
-                <div className="inputs__container">
-                  <Input
-                    {...tagInputProps}
-
-                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                      setFirstTag(e.target.value)}
-                  />
-
-                  {!!firstTag.length &&
-                      <Input
-                        {...tagInputProps}
-
-                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                          setSecondTag(e.target.value)}
-                      />}
-                </div>
-              </div>
-            </form>
-          </main>
-
-          <aside className="create-room__preview">
-            <div className="create-room__info">
-              <div className="room-model__picture"></div>
-
-              <p className="room-model__tiles">
-                0 tiles
-              </p>
-            </div>
-
-            <div className="create-room__actions">
-              <Button color="success" onClick={() => {}}>
-                Create
-              </Button>
-            </div>
-          </aside>
+                onChangeModelClick={() =>
+                  setCurrentStep(Step.ROOM_MODEL_SELECTION)}
+                onCreate={createRoom}
+              />}
         </div>
       </Window>
     </>
   );
 };
+
+enum Step {
+  ROOM_MODEL_SELECTION,
+  ROOM_INFORMATION,
+}

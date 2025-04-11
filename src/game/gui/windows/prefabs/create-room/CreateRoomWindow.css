@@ -4,54 +4,5 @@
   column-gap: 20px;
   height: calc(100% - 45px);
 }
-.create-room__content > main.create-room__form {
-  flex: 1;
-}
-.create-room__content > main.create-room__form > h5.form__title {
-  text-align: center;
-  margin-bottom: 10px;
-}
-.create-room__content > main.create-room__form > form.form__container {
-  display: flex;
-  flex-direction: column;
-  row-gap: 10px;
-}
-.create-room__content > main.create-room__form > form.form__container > .form__tags-inputs > .inputs__label {
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-.create-room__content > main.create-room__form > form.form__container > .form__tags-inputs > .inputs__container {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 10px;
-}
-.create-room__content > aside.create-room__preview {
-  flex: none;
-  display: flex;
-  flex-direction: column;
-}
-.create-room__content > aside.create-room__preview > .create-room__info {
-  display: flex;
-  flex-direction: column;
-  row-gap: 10px;
-  flex: 1;
-}
-.create-room__content > aside.create-room__preview > .create-room__info > .room-model__picture {
-  width: 125px;
-  height: 125px;
-  border: 2px solid black;
-}
-.create-room__content > aside.create-room__preview > .create-room__info > p.room-model__tiles {
-  font-weight: 700;
-  text-align: center;
-  font-size: 0.9rem;
-}
-.create-room__content > aside.create-room__preview > .create-room__actions {
-  flex: none;
-}
-.create-room__content > aside.create-room__preview > .create-room__actions > button {
-  display: block;
-  width: 100%;
-}
 
 /*# sourceMappingURL=CreateRoomWindow.css.map */

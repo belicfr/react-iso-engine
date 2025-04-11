@@ -1,0 +1,70 @@
+.room-model-selection__container
+  display: flex
+  flex-direction: column
+
+  > h5.selector__title
+    text-align: center
+
+    margin-bottom: 10px
+
+    flex: none
+
+  > .models__grid
+    display: flex
+    gap: 10px
+
+    overflow-x: auto
+
+    flex: 1
+
+    > .model__card
+      border: solid 1px #CCCCCC
+
+      padding: 10px
+
+      text-align: center
+
+      transition: all .1s
+
+      width: fit-content
+      height: fit-content
+
+      &:hover
+        cursor: pointer
+
+      &:active
+        opacity: .7
+
+        scale: .95
+
+
+      &.model-active
+        border-color: var(--primary)
+
+        background-color: var(--tag-background)
+
+        color: var(--primary)
+
+      > .model__preview
+        width: 150px
+        height: 100px
+
+      > .model__information
+        display: flex
+        flex-direction: column
+        row-gap: 5px
+
+        > p
+          &.model__name
+            font-weight: 700
+
+          &.model__tiles-count
+            font-style: italic
+            font-size: .9rem
+
+  > .models__actions
+    flex: none
+
+    display: flex
+    align-items: center
+    justify-content: flex-end
