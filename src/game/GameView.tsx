@@ -1,4 +1,4 @@
-import {FC, useEffect, useMemo, useRef, useState} from "react";
+import {FC, useEffect, useRef, useState} from "react";
 import {HotelView} from "./hotel-view/HotelView.tsx";
 import {NavigationBar} from "./gui/navbar/NavigationBar.tsx";
 import {TopOptions} from "./gui/top-options/TopOptions.tsx";
@@ -6,15 +6,16 @@ import {ModalWindow} from "./gui/windows/ModalWindow.tsx";
 import {RoomsNavigatorWindow} from "./gui/windows/prefabs/rooms-navigator/RoomsNavigatorWindow.tsx";
 import {StaffTools} from "./gui/staff-tools/StaffTools.tsx";
 import GameSocket from "./room-view/engine/socket/GameSocket.ts";
-import Room from "../models/Room.ts";
-import User from "../models/User.ts";
+import Room, {RoomRepository} from "../models/Room.ts";
 import {RoomViewContainer} from "./room-view/components/room/RoomViewContainer.tsx";
+import User from "../models/User.ts";
 
 export const GameView: FC = () => {
   const [ isHotelViewOpened, setIsHotelViewOpened ] = useState(true);
 
   const [ isWelcomeWindowOpened, setIsWelcomeWindowOpened ] = useState(true);
   const [ isRoomsNavigatorWindowOpened, setIsRoomsNavigatorWindowOpened ] = useState(false);
+  const [ isRoomPreferencesWindowOpened, setIsRoomPreferencesWindowOpened ] = useState<boolean>(false);
 
   const onHomeClick = () => setIsHotelViewOpened(false);
   const onHotelViewClick = () => setIsHotelViewOpened(true);
@@ -26,17 +27,7 @@ export const GameView: FC = () => {
   const isClientPrepared = useRef<boolean>(false);
 
   //TEMP
-  const rooms = useMemo((): Room[] => [
-    new Room(1, "Lounge", "The Hotel's Lounge! Welcome to Hotel!", new User(1, "Staff"), [], 25, 0, {
-      rows: 10, cols: 5,
-    }),
-
-    new Room(2, "Le Café", "Let's drink a coffee into the best Café of the hotel!", new User(1, "Staff"), [
-      "fun"
-    ], 25, 0, {
-      rows: 32, cols: 32,
-    }),
-  ], [])
+  const rooms = RoomRepository.i().rooms;
   const [currentRoom, setCurrentRoom] = useState<Room|null>(null);
 
   useEffect(() => {
@@ -48,10 +39,11 @@ export const GameView: FC = () => {
 
     if (!isClientPrepared.current) {
       prepareClient();
+
+      rooms.push(new Room(1, "Test", "", new User(1, "Staff"), [], 10, 25, {cols: 1, rows: 1}));
+
       isClientPrepared.current = true;
     }
-
-
   }, []);
 
   function onRoomClick(room: Room) {
@@ -61,7 +53,12 @@ export const GameView: FC = () => {
 
   return (
     <>
-      <TopOptions />
+      <TopOptions
+        canAccessRoomPreferences={true}
+
+        onRoomPreferencesClick={() =>
+          setIsRoomPreferencesWindowOpened(!isRoomPreferencesWindowOpened)}
+      />
 
       <StaffTools
         canOpenModTools={true}
@@ -75,6 +72,10 @@ export const GameView: FC = () => {
       {!isHotelViewOpened && currentRoom &&
           <RoomViewContainer
             room={currentRoom}
+
+            isRoomPreferencesWindowOpened={isRoomPreferencesWindowOpened}
+
+            onRoomPreferencesClose={() => setIsRoomPreferencesWindowOpened(false)}
           />}
 
       {isWelcomeWindowOpened &&
