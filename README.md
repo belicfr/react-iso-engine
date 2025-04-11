@@ -43,6 +43,6 @@ must be tiles-based using the 1:2 ratio.
 _BETA previews, these pictures do not represent the release product._
 
 ![Hotel View](/public-albums/hotel_view.jpeg)
-![Room View 1](/public-albums/room-view1.png)
+![Room View 1](/public-albums/room_view1.png)
 <img src="/public-albums/rooms_navigator.png" style="width: 500px" />
 <img src="/public-albums/mod_tools.png" style="width: 300px" />
