@@ -1,5 +1,23 @@
 import User from "./User.ts";
 
+export class RoomRepository {
+  static instance: RoomRepository;
+
+  rooms: Room[];
+
+  constructor() {
+    this.rooms = [];
+  }
+
+  static i() {
+    if (!RoomRepository.instance) {
+      RoomRepository.instance = new RoomRepository();
+    }
+
+    return RoomRepository.instance;
+  };
+}
+
 export default class Room {
   id: number;
   name: string;
