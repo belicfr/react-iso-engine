@@ -3,6 +3,7 @@ import User from "./User.ts";
 export default class Room {
   id: number;
   name: string;
+  description: string;
   owner: User;
   tags: RoomTags;
   playersLimit: number;
@@ -15,6 +16,7 @@ export default class Room {
   constructor(
     id: number,
     name: string,
+    description: string,
     owner: User,
     tags: RoomTags,
     playersLimit: number,
@@ -23,6 +25,8 @@ export default class Room {
 
     this.id = id;
     this.name = name;
+    this.description = description;
+
     this.owner = owner;
     this.tags = tags;
     this.playersLimit = playersLimit;

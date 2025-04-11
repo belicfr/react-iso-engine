@@ -27,12 +27,14 @@ export const GameView: FC = () => {
 
   //TEMP
   const rooms = useMemo((): Room[] => [
-    new Room(1, "Lounge", new User(1, "Staff"), [], 25, 0, {
+    new Room(1, "Lounge", "The Hotel's Lounge! Welcome to Hotel!", new User(1, "Staff"), [], 25, 0, {
       rows: 10, cols: 5,
     }),
 
-    new Room(2, "Le Café", new User(1, "Staff"), [], 25, 0, {
-      rows: 25, cols: 30,
+    new Room(2, "Le Café", "Let's drink a coffee into the best Café of the hotel!", new User(1, "Staff"), [
+      "fun"
+    ], 25, 0, {
+      rows: 32, cols: 32,
     }),
   ], [])
   const [currentRoom, setCurrentRoom] = useState<Room|null>(null);
