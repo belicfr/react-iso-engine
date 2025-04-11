@@ -39,6 +39,10 @@ export const RoomInfo: FC<Props> = ({room}) => {
         ease: "Power2.easeInOut",
       })
       .play();
+
+    return () => {
+      tl.kill();
+    };
   }, [room]);
 
   return (
