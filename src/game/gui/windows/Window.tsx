@@ -4,6 +4,7 @@ import {Rnd} from "react-rnd";
 import {useZIndex} from "./WindowContext.tsx";
 
 type Props = WindowBaseProps & {
+  dragHandleClassName?: string,
 };
 
 export const Window: FC<Props> = props => {
@@ -23,15 +24,18 @@ export const Window: FC<Props> = props => {
       <Rnd
         style={{zIndex}}
         enableResizing={false}
-        dragHandleClassName="window-interface__header"
+        dragHandleClassName={props.dragHandleClassName ?? "window-interface__header"}
         onMouseDown={handleFocus}
       >
 
         <div className="window__container">
-          <WindowInterface title={props.title}
-                           width={props.width}
-                           height={props.height}
-                           onClose={props.onClose}>
+          <WindowInterface
+            customHeaderClassName={props.customHeaderClassName}
+            title={props.title}
+            width={props.width}
+            height={props.height}
+            onClose={props.onClose}
+          >
 
             {props.children}
           </WindowInterface>
