@@ -40,7 +40,7 @@ h6 {
   --danger-color: white;
   --warning: #ff9326;
   --warning-color: white;
-  --success: #117700;
+  --success: #4ac13b;
   --success-color: white;
   --light: white;
   --light-color: black;
@@ -48,6 +48,7 @@ h6 {
   --dark-color: white;
   --main-background: #ffffff;
   --gui-background: rgb(35, 35, 35);
+  --tag-background: #aed0ff;
 }
 
 * {
