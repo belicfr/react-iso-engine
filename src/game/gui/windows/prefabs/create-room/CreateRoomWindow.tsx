@@ -1,4 +1,4 @@
-import {ChangeEvent, FC, useMemo, useState} from "react";
+import {FC, useState} from "react";
 import {Window} from "../../Window.tsx";
 import "./CreateRoomWindow.css";
 import {RoomInformationStep} from "./steps/RoomInformationStep.tsx";
@@ -12,10 +12,10 @@ type Props = {
 };
 
 export const CreateRoomWindow: FC<Props> = ({onClose}) => {
-  const roomModels = useMemo<RoomTemplate[]>(() => [
-    new RoomTemplate(1, "", "Base", 25),
-    new RoomTemplate(2, "", "XL", 50),
-  ], []);
+  // const roomModels = useMemo<RoomTemplate[]>(() => [
+  //   new RoomTemplate(1, "", "Base", 25),
+  //   new RoomTemplate(2, "", "XL", 50),
+  // ], []);
 
   const [model, setModel] = useState<RoomTemplate|null>(null);
 
@@ -28,7 +28,8 @@ export const CreateRoomWindow: FC<Props> = ({onClose}) => {
 
   function createRoom() {
     const rooms = RoomRepository.i().rooms;
-    rooms.push(new Room(Math.abs(Math.random() * 100), name, description, new User(2, "Player"), [firstTag, secondTag], 10, 0, {cols: 1, rows: 1}));
+    rooms.push(new Room(Math.abs(Math.random() * 100), name, description, new User(2, "Player"), [firstTag, secondTag], 10, 0,
+      model!));
   }
 
   return (
@@ -43,7 +44,7 @@ export const CreateRoomWindow: FC<Props> = ({onClose}) => {
         <div className="create-room__content">
           {currentStep === Step.ROOM_MODEL_SELECTION &&
               <RoomModelSelectionStep
-                models={roomModels}
+                // models={roomModels}
                 selectedModel={model}
 
                 onModelSelection={setModel}
