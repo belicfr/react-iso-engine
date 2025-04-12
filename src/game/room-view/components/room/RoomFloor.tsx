@@ -1,11 +1,10 @@
-import {FC, useEffect, useMemo, useRef, useState} from "react";
+import {FC, JSX, useEffect, useMemo, useRef, useState} from "react";
 import {Size2D} from "../../engine/precepts/Size2D.ts";
 import {extend, useApplication} from "@pixi/react";
 import {Coord2D} from "../../engine/precepts/Coord2D.ts";
 import {RoomTile} from "./RoomTile.tsx";
 import {Container, Graphics, Sprite} from "pixi.js";
 import {RoomHoverTile} from "./RoomHoverTile.tsx";
-import {GridSize} from "../../../../models/Room.ts";
 
 extend({
   Container,
@@ -14,10 +13,10 @@ extend({
 });
 
 type Props = {
-  gridSize: GridSize,
+  tilesPositions: Coord2D[],
 };
 
-export const  RoomFloor: FC<Props> = ({gridSize}) => {
+export const  RoomFloor: FC<Props> = ({tilesPositions}) => {
   const a = useApplication();
   const {app} = a;
   
@@ -34,29 +33,27 @@ export const  RoomFloor: FC<Props> = ({gridSize}) => {
   const [hoverTilePosition, setHoverTilePosition] = useState<Coord2D>({x: 0, y: 0});
 
   const tiles = useMemo(() => {
-    const tiles = [];
+    const tiles: JSX.Element[] = [];
 
-    for (let y = 0; y < gridSize.rows; y++) {
-      for (let x = 0; x < gridSize.cols; x++) {
-        const isoX = (x - y) * (TILE_SIZE.width / 2);
-        const isoY = (x + y) * (TILE_SIZE.height / 2);
+    tilesPositions.forEach(tilePos => {
+      const isoX = (tilePos.x - tilePos.y) * (TILE_SIZE.width / 2);
+      const isoY = (tilePos.x + tilePos.y) * (TILE_SIZE.height / 2);
 
-        tiles.push((
-          <RoomTile
-            key={`${x},${y}`}
-            position={{x: isoX, y: isoY}}
-            tileSize={TILE_SIZE}
+      tiles.push((
+        <RoomTile
+          key={`${tilePos.x},${tilePos.y}`}
+          position={{x: isoX, y: isoY}}
+          tileSize={TILE_SIZE}
 
-            onHoverTile={(pos: Coord2D) => {
-              setHoverTilePosition(pos);
-            }}
-          />
-        ));
-      }
-    }
+          onHoverTile={(pos: Coord2D) => {
+            setHoverTilePosition(pos);
+          }}
+        />
+      ));
+    });
 
     return tiles;
-  }, [gridSize.rows, gridSize.cols, TILE_SIZE]);
+  }, [tilesPositions, TILE_SIZE]);
 
   useEffect(() => {
     if (!app || !app.renderer || !app.canvas) return;
@@ -121,7 +118,7 @@ export const  RoomFloor: FC<Props> = ({gridSize}) => {
 
   return (
     <pixiContainer
-      anchor={0.5}
+      anchor={0}
       eventMode={'static'}
       x={window.innerWidth / 2}
       y={window.innerHeight / 2}

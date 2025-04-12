@@ -1,4 +1,5 @@
 import User from "./User.ts";
+import RoomTemplate from "./RoomTemplate.ts";
 
 export class RoomRepository {
   static instance: RoomRepository;
@@ -28,8 +29,7 @@ export default class Room {
 
   playersCount: number;
 
-  // TODO: replace by floor blueprint system
-  size: GridSize;
+  template: RoomTemplate;
 
   constructor(
     id: number,
@@ -39,7 +39,7 @@ export default class Room {
     tags: RoomTags,
     playersLimit: number,
     playersCount: number = 0,
-    size: GridSize) {
+    template: RoomTemplate) {
 
     this.id = id;
     this.name = name;
@@ -51,7 +51,7 @@ export default class Room {
 
     this.playersCount = playersCount;
 
-    this.size = size;
+    this.template = template;
   }
 
   getPopulationLevel(): RoomPopulation {

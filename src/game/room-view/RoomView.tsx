@@ -25,7 +25,7 @@ export const RoomView: FC<Props> = ({room}) => {
     >
 
       <RoomFloor
-        gridSize={room.size}
+        tilesPositions={room.template.generate()}
       />
 
       <Camera />
