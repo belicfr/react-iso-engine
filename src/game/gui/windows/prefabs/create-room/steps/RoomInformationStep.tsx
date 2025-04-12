@@ -117,8 +117,8 @@ export const RoomInformationStep: FC<Props> = (
           <div className="room-model__picture"></div>
 
           <p className="room-model__tiles">
-            {model.tilesCount}
-            &nbsp;tile{model.tilesCount > 1 ? 's' : ""}
+            {model.tilesCount()}
+            &nbsp;tile{model.tilesCount() > 1 ? 's' : ""}
           </p>
         </div>
 

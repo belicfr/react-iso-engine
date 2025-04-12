@@ -46,8 +46,8 @@ export const RoomModelSelectionStep: FC<Props> = (
                 </p>
 
                 <p className="model__tiles-count">
-                  {model.tilesCount}
-                  &nbsp;tile{model.tilesCount > 1 ? 's' : ""}
+                  {model.tilesCount()}
+                  &nbsp;tile{model.tilesCount() > 1 ? 's' : ""}
                 </p>
               </div>
             </div>)}
