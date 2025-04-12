@@ -17,7 +17,7 @@ export const Input: FC<Props> = (
     min, max, minLength,
     maxLength, value,
 
-    onChange
+    onChange, onBlur,
   }
 ) => {
   return (
@@ -38,6 +38,7 @@ export const Input: FC<Props> = (
           value={value}
 
           onChange={onChange}
+          onBlur={onBlur}
         />
       </label>
     </>

@@ -2,5 +2,6 @@ export type ControlProps = {
   label?: string,
   value?: string,
 
-  onChange: (e) => void,
+  onChange?: (e) => void,
+  onBlur?: (e) => void,
 };
