@@ -1,4 +1,4 @@
-import {FC, useEffect, useState} from "react";
+import {FC, useState} from "react";
 import {Window} from "../../windows/Window.tsx";
 import {Button} from "../../buttons/Button.tsx";
 import "./ModToolsWindow.css";
@@ -10,8 +10,8 @@ import User from "../../../../models/User.ts";
 import Room from "../../../../models/Room.ts";
 
 type Props = {
-  currentRoom: Room,
-  focusedUser: User,
+  currentRoom: Room|null,
+  focusedUser: User|null,
 
   onClose: () => void,
 };
@@ -23,21 +23,27 @@ type Action = {
 }
 
 export const ModToolsWindow: FC<Props> = props => {
-  const [ isRoomToolsOpened, setIsRoomToolsOpened ] = useState(false);
-  const [ isRoomChatlogsOpened, setIsRoomChatlogsOpened ] = useState(false);
-  const [ isUserInfoOpened, setIsUserInfoOpened ] = useState(false);
-  const [ isTicketsBrowserOpened, setIsTicketsBrowserOpened ] = useState(false);
+  const [ isRoomToolsOpened, setIsRoomToolsOpened ] = useState<boolean>(false);
+  const [ isRoomChatlogsOpened, setIsRoomChatlogsOpened ] = useState<boolean>(false);
+  const [ usersInfo, setUsersInfo ] = useState<User[]>([]);
+  const [ isTicketsBrowserOpened, setIsTicketsBrowserOpened ] = useState<boolean>(false);
 
-  const toggleRoomTools = () => setIsRoomToolsOpened(!isRoomToolsOpened);
-  const toggleRoomChatlogs = () => setIsRoomChatlogsOpened(!isRoomChatlogsOpened);
-  const toggleUserInfo = () => setIsUserInfoOpened(!isUserInfoOpened);
-  const toggleTicketsBrowser = () => setIsTicketsBrowserOpened(!isTicketsBrowserOpened);
+  const toggleRoomTools = () =>
+    setIsRoomToolsOpened(!isRoomToolsOpened);
+  const toggleRoomChatlogs = () =>
+    setIsRoomChatlogsOpened(!isRoomChatlogsOpened);
+  const openUserInfo = () =>
+    setUsersInfo(prevState => [...prevState, props.focusedUser!]);
+  const closeUserInfo = (user: User) =>
+    setUsersInfo(usersInfo.filter(u => u !== user));
+  const toggleTicketsBrowser = () =>
+    setIsTicketsBrowserOpened(!isTicketsBrowserOpened);
 
   const actions: Action[] = [
     {label: "Room Tools", onClick: () => toggleRoomTools(), disabled: !props.currentRoom},
     {label: "Room Chatlogs", onClick: () => toggleRoomChatlogs(), disabled: !props.currentRoom},
     {label: `User Info:${props.focusedUser ? ' ' + props.focusedUser.name : ""}`,
-      onClick: () => toggleUserInfo(), disabled: !props.focusedUser},
+      onClick: () => openUserInfo(), disabled: !props.focusedUser},
     {label: "Tickets Browser", onClick: () => toggleTicketsBrowser()},
   ];
 
@@ -64,16 +70,30 @@ export const ModToolsWindow: FC<Props> = props => {
       </Window>
 
       {isRoomToolsOpened && props.currentRoom &&
-          <RoomToolsWindow room={props.currentRoom} onClose={toggleRoomTools} />}
+          <RoomToolsWindow
+            room={props.currentRoom}
+
+            onClose={toggleRoomTools}
+          />}
 
       {isRoomChatlogsOpened && props.currentRoom &&
-          <RoomChatlogsWindow room={props.currentRoom} onClose={toggleRoomChatlogs} />}
+          <RoomChatlogsWindow
+            room={props.currentRoom}
 
-      {isUserInfoOpened && props.focusedUser &&
-          <UserInfoWindow user={props.focusedUser} onClose={toggleUserInfo} />}
+            onClose={toggleRoomChatlogs}
+          />}
+
+      {usersInfo.map(focusedUser =>
+          /*  TODO: verify if impl is good!  */
+          <UserInfoWindow
+            user={focusedUser}
+            onClose={() => closeUserInfo(focusedUser)}
+          />)}
 
       {isTicketsBrowserOpened &&
-          <TicketsBrowserWindow onClose={toggleTicketsBrowser} />}
+          <TicketsBrowserWindow
+            onClose={toggleTicketsBrowser}
+          />}
     </>
   );
 };

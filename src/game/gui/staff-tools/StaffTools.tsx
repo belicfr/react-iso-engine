@@ -2,11 +2,16 @@ import {FC, useState} from "react";
 import {SmallButton} from "../buttons/SmallButton.tsx";
 import "./StaffTools.css";
 import {ModToolsWindow} from "./windows/ModToolsWindow.tsx";
+import Room from "../../../models/Room.ts";
+import User from "../../../models/User.ts";
 
 type Props = {
   canOpenModTools: boolean,
   canBeInvisible: boolean,
   canUseEffect: boolean,
+
+  room: Room|null,
+  user: User|null,
 };
 
 export const StaffTools: FC<Props> = props => {
@@ -52,7 +57,12 @@ export const StaffTools: FC<Props> = props => {
       </div>
 
       {isModToolsOpened &&
-          <ModToolsWindow onClose={toggleModTools} />}
+          <ModToolsWindow
+            currentRoom={props.room}
+            focusedUser={props.user}
+
+            onClose={toggleModTools}
+          />}
     </>
   );
 };

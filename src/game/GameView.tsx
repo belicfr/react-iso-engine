@@ -60,11 +60,15 @@ export const GameView: FC = () => {
           setIsRoomPreferencesWindowOpened(!isRoomPreferencesWindowOpened)}
       />
 
-      <StaffTools
-        canOpenModTools={true}
-        canBeInvisible={true}
-        canUseEffect={true}
-      />
+      {user.permissions.isStaff &&
+          <StaffTools
+              room={currentRoom}
+              user={null}
+
+              canOpenModTools={user.permissions.canUseModTools}
+              canBeInvisible={user.permissions.canBeInvisible}
+              canUseEffect={user.permissions.canUseStaffEffect}
+          />}
 
       {isHotelViewOpened &&
           <HotelView />}
@@ -102,6 +106,7 @@ export const GameView: FC = () => {
 
       <NavigationBar
         isInHotelView={isHotelViewOpened}
+
         onHomeClick={onHomeClick}
         onHotelViewClick={onHotelViewClick}
         onRoomsNavigatorClick={onRoomsNavigatorClick}
