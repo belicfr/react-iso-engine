@@ -81,6 +81,7 @@ export const RoomsNavigatorWindow: FC<Props> = ({rooms, onRoomClick, onClose}) =
 
       {isCreateRoomWindowOpened &&
           <CreateRoomWindow
+            onRoomCreate={room => onRoomClick(room)}
             onClose={() => setIsCreateRoomWindowOpened(false)}
           />}
     </>
