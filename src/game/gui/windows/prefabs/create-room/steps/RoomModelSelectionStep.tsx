@@ -1,10 +1,10 @@
 import {FC} from "react";
 import "./RoomModelSelectionStep.css";
-import RoomTemplate from "../../../../../../models/RoomTemplate.ts";
+import RoomTemplate, {RoomTemplateRepository} from "../../../../../../models/RoomTemplate.ts";
 import {Button} from "../../../../buttons/Button.tsx";
 
 type Props = {
-  models: RoomTemplate[],
+  // models: RoomTemplate[],
   selectedModel: RoomTemplate|null,
 
   onModelSelection: (model: RoomTemplate) => void,
@@ -13,10 +13,13 @@ type Props = {
 
 export const RoomModelSelectionStep: FC<Props> = (
   {
-    models, selectedModel, onModelSelection,
+    selectedModel, onModelSelection,
     onNextClick,
   }
 ) => {
+
+  const models: RoomTemplate[] = RoomTemplateRepository.i().templates;
+
   return (
     <>
       <div className="room-model-selection__container">
