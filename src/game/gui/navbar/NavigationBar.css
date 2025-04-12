@@ -7,18 +7,44 @@
   z-index: 5;
 }
 .navigation-bar__container > .navigation-bar {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: var(--gui-background);
   border: solid 1px rgb(0, 0, 0);
   border-radius: 15px;
-  height: 60px;
+  height: 80px;
   width: 100%;
   display: flex;
   column-gap: 20px;
+  padding: 10px 20px;
 }
 @media (min-width: 1024px) {
   .navigation-bar__container > .navigation-bar {
     width: 60%;
   }
+}
+.navigation-bar__container > .navigation-bar > [class^=navigation-bar__icon] {
+  flex: none;
+  width: 60px;
+  height: 60px;
+  image-rendering: pixelated;
+  transition: all 0.1s linear;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.navigation-bar__container > .navigation-bar > [class^=navigation-bar__icon]:hover {
+  transform: translateY(-2px);
+  cursor: pointer;
+}
+.navigation-bar__container > .navigation-bar > [class^=navigation-bar__icon]:active {
+  opacity: 0.6;
+}
+.navigation-bar__container > .navigation-bar > [class^=navigation-bar__icon].navigation-bar__icon-home {
+  background-image: url("/src/assets/gamelib/albumhud/gui_home_nb.png");
+}
+.navigation-bar__container > .navigation-bar > [class^=navigation-bar__icon].navigation-bar__icon-hotel-view {
+  background-image: url("/src/assets/gamelib/albumhud/gui_hv_nb.png");
+}
+.navigation-bar__container > .navigation-bar > [class^=navigation-bar__icon].navigation-bar__icon-rooms-navigator {
+  background-image: url("/src/assets/gamelib/albumhud/gui_rnav_nb.png");
 }
 
 /*# sourceMappingURL=NavigationBar.css.map */

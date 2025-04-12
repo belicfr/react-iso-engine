@@ -1,0 +1,12 @@
+.mod-tools__actions {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+  padding: 5px;
+}
+.mod-tools__actions > .button {
+  display: block;
+  width: 100%;
+}
+
+/*# sourceMappingURL=ModToolsWindow.css.map */

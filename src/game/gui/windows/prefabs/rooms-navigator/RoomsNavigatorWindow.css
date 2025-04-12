@@ -1,0 +1,19 @@
+.rooms-navigator__content {
+  overflow-y: auto;
+  height: calc(100% - 40px);
+  display: flex;
+  flex-direction: column;
+}
+.rooms-navigator__content > .tabs-navigation {
+  flex: 1;
+}
+.rooms-navigator__content > .rooms-navigator__bottom {
+  flex: none;
+  padding: 20px;
+}
+.rooms-navigator__content > .rooms-navigator__bottom > button {
+  display: block;
+  width: 100%;
+}
+
+/*# sourceMappingURL=RoomsNavigatorWindow.css.map */

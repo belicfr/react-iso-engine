@@ -1,0 +1,52 @@
+.tabs-navigation
+  display: flex
+  flex-direction: column
+
+  height: 100%
+
+  padding-top: 10px
+
+  .tabs-navigation__container
+    display: flex
+    column-gap: 3px
+
+    padding: 0 10px
+
+    flex: none
+
+    height: 35.5px
+
+    > .tabs-navigation__tab-button
+      $radius: 10px
+
+      border: solid 2px black
+      border-bottom: none
+      border-top-left-radius: $radius
+      border-top-right-radius: $radius
+
+      width: fit-content
+
+      padding: 5px 20px
+
+      transform: translateY(2px)
+
+      background-color: #e1e1e1
+
+      &:hover
+        cursor: pointer
+
+      &.active
+        background-color: white
+
+      &:not(.active)
+        border-bottom: solid 2px black
+
+        &:hover
+          background-color: white
+
+  main.tabs-navigation__body
+    border-top: solid 2px black
+
+    flex: 1
+
+    overflow-y: auto

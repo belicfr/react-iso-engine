@@ -1,0 +1,78 @@
+.room-card, .compact-room-card {
+  padding: 7px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+.room-card:hover, .compact-room-card:hover {
+  background-color: #f6f6f6;
+  cursor: pointer;
+}
+.room-card:not(:first-child), .compact-room-card:not(:first-child) {
+  border-top: solid 1px #dddddd;
+}
+.room-card > .room-intro, .compact-room-card > .room-intro {
+  display: flex;
+  column-gap: 10px;
+  align-items: center;
+  width: fit-content;
+  flex: 1;
+  overflow: hidden;
+}
+.room-card > .room-intro > .players-in-room, .compact-room-card > .room-intro > .players-in-room {
+  width: 45px;
+  height: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  column-gap: 1px;
+  padding: 0 2px;
+}
+.room-card > .room-intro > .players-in-room.players-none, .compact-room-card > .room-intro > .players-in-room.players-none {
+  background-color: #818181;
+  color: white;
+}
+.room-card > .room-intro > .players-in-room.players-low, .compact-room-card > .room-intro > .players-in-room.players-low {
+  background-color: var(--success);
+  color: white;
+}
+.room-card > .room-intro > .players-in-room.players-medium, .compact-room-card > .room-intro > .players-in-room.players-medium {
+  background-color: var(--warning);
+  color: white;
+}
+.room-card > .room-intro > .players-in-room.players-high, .compact-room-card > .room-intro > .players-in-room.players-high {
+  background-color: var(--danger);
+  color: white;
+}
+.room-card > .room-intro > .players-in-room > .players-icon, .compact-room-card > .room-intro > .players-in-room > .players-icon {
+  background-image: url("/src/assets/gamelib/albumhud/gui_player.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 15px;
+  height: 15px;
+  flex: none;
+}
+.room-card > .room-info__button, .compact-room-card > .room-info__button {
+  background-color: var(--primary);
+  border-radius: 5px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: none;
+}
+.room-card > .room-info__button > .room-info__icon, .compact-room-card > .room-info__button > .room-info__icon {
+  background-image: url("/src/assets/gamelib/albumhud/gui_info.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  width: 90%;
+  height: 90%;
+}
+
+/*# sourceMappingURL=RoomCard.css.map */

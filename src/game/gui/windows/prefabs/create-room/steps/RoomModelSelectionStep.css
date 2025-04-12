@@ -1,0 +1,59 @@
+.room-model-selection__container {
+  display: flex;
+  flex-direction: column;
+}
+.room-model-selection__container > h5.selector__title {
+  text-align: center;
+  margin-bottom: 10px;
+  flex: none;
+}
+.room-model-selection__container > .models__grid {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  flex: 1;
+}
+.room-model-selection__container > .models__grid > .model__card {
+  border: solid 1px #CCCCCC;
+  padding: 10px;
+  text-align: center;
+  transition: all 0.1s;
+  width: fit-content;
+  height: fit-content;
+}
+.room-model-selection__container > .models__grid > .model__card:hover {
+  cursor: pointer;
+}
+.room-model-selection__container > .models__grid > .model__card:active {
+  opacity: 0.7;
+  scale: 0.95;
+}
+.room-model-selection__container > .models__grid > .model__card.model-active {
+  border-color: var(--primary);
+  background-color: var(--tag-background);
+  color: var(--primary);
+}
+.room-model-selection__container > .models__grid > .model__card > .model__preview {
+  width: 150px;
+  height: 100px;
+}
+.room-model-selection__container > .models__grid > .model__card > .model__information {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+}
+.room-model-selection__container > .models__grid > .model__card > .model__information > p.model__name {
+  font-weight: 700;
+}
+.room-model-selection__container > .models__grid > .model__card > .model__information > p.model__tiles-count {
+  font-style: italic;
+  font-size: 0.9rem;
+}
+.room-model-selection__container > .models__actions {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/*# sourceMappingURL=RoomModelSelectionStep.css.map */

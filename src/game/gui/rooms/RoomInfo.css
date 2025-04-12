@@ -1,0 +1,18 @@
+.room-info {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  padding: 50px;
+  color: white;
+  width: fit-content;
+  text-align: end;
+}
+.room-info > h4.room-info__name {
+  margin-bottom: 10px;
+}
+.room-info > p.room-info__owner-name {
+  color: grey;
+  font-weight: 500;
+}
+
+/*# sourceMappingURL=RoomInfo.css.map */

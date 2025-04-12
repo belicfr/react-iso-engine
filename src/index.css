@@ -38,26 +38,34 @@ h6 {
   --secondary-color: white;
   --danger: #ff2626;
   --danger-color: white;
+  --warning: #ff9326;
+  --warning-color: white;
+  --success: #4ac13b;
+  --success-color: white;
   --light: white;
   --light-color: black;
   --dark: black;
   --dark-color: white;
+  --main-background: #ffffff;
+  --gui-background: rgb(35, 35, 35);
+  --tag-background: #aed0ff;
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 body {
   font-family: "Nunito", sans-serif;
   height: 100vh;
   overflow: hidden;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  background-color: black;
 }
 
 div {

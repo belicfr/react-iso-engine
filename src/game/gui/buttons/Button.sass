@@ -1,20 +1,26 @@
 .button, .small-button
-  border: solid 2px rgba(0 0 0 / .5)
+  border: solid 2px rgba(0 0 0 / .4)
 
   transition: all .1s linear
 
-  &:hover
-    opacity: .8
+  &:disabled
+    opacity: .5
 
-    cursor: pointer
+  &:not(:disabled)
+    &:hover
+      opacity: .8
 
-  &:active
-    opacity: .6
+      cursor: pointer
+
+    &:active
+      opacity: .6
 
 .button
-  padding: 8px 25px
+  padding: 7px 25px
 
   border-radius: 7px
+
+  font-size: .9rem
 
 .small-button
   padding: 2px 15px
@@ -37,5 +43,14 @@
 .button-danger
   @include ButtonAmbient("danger")
 
+.button-warning
+  @include ButtonAmbient("warning")
+
+.button-success
+  @include ButtonAmbient("success")
+
 .button-light
   @include ButtonAmbient("light")
+
+.button-dark
+  @include ButtonAmbient("dark")

@@ -1,0 +1,51 @@
+.room-info__container {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+.room-info__container > .room-info__intro {
+  display: flex;
+  column-gap: 10px;
+}
+.room-info__container > .room-info__intro > .room-info__picture {
+  flex: none;
+  width: 80px;
+  aspect-ratio: 1;
+  background: #CCCCCC;
+  border: 2px solid black;
+}
+.room-info__container > .room-info__intro > .room-info__information {
+  flex: 1;
+}
+.room-info__container > .room-info__intro > .room-info__information > h6.room-info__name {
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+.room-info__container > .room-info__intro > .room-info__information > p.room-info__owner-name {
+  font-size: 0.9rem;
+  font-style: italic;
+}
+.room-info__container > .room-info__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.room-info__container > .room-info__tags > span.tag {
+  padding: 1px 5px;
+  background-color: var(--tag-background);
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 3px;
+}
+.room-info__container > .room-info__tags > span.tag::before {
+  content: "#";
+  font-size: 0.6rem;
+  margin-right: 1px;
+}
+.room-info__container > .room-info__tags > span.tag:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=RoomInfoWindow.css.map */
