@@ -62,7 +62,7 @@ export default class RoomTemplate {
     return tilesPositions;
   };
 
-  tilesCount(): RegExpStringIterator<RegExpExecArray> {
+  tilesCount(): number {
     const tilesDigits
       = this.template.search(/[1-9]+/g);
 
