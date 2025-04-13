@@ -1,0 +1,14 @@
+.tab-column__row {
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  column-gap: 5px;
+  padding: 5px 10px;
+}
+.tab-column__row:hover {
+  cursor: pointer;
+  background-color: #E6E6E6;
+}
+
+/*# sourceMappingURL=TabColumnRow.css.map */
