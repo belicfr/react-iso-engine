@@ -10,6 +10,12 @@ export class RoomRepository {
     this.rooms = [];
   }
 
+  findById(id: number): Room|null {
+    return this.rooms.find(room => room.id === id)
+      ?? null;
+  }
+
+
   static i() {
     if (!RoomRepository.instance) {
       RoomRepository.instance = new RoomRepository();
@@ -30,6 +36,9 @@ export default class Room {
   playersCount: number;
 
   template: RoomTemplate;
+
+  bannedUsers: User[];
+  havingRightsUsers: User[];
 
   constructor(
     id: number,
@@ -52,6 +61,9 @@ export default class Room {
     this.playersCount = playersCount;
 
     this.template = template;
+
+    this.bannedUsers = [];
+    this.havingRightsUsers = [];
   }
 
   getPopulationLevel(): RoomPopulation {
