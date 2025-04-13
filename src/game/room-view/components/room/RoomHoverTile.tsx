@@ -7,9 +7,12 @@ import {Coord2D} from "../../engine/precepts/Coord2D.ts";
 type Props = {
   position: Coord2D,
   tileSize: Size2D,
+  z: number,
+
+  onClick: (pos: Coord2D) => void,
 };
 
-export const RoomHoverTile: FC<Props> = ({position, tileSize}) => {
+export const RoomHoverTile: FC<Props> = ({position, tileSize, z, onClick}) => {
   const [texture, setTexture] = useState(Texture.EMPTY);
 
   const isTileScaleModeDefined = useRef<boolean>(false);
@@ -40,8 +43,11 @@ export const RoomHoverTile: FC<Props> = ({position, tileSize}) => {
       eventMode={'static'}
       x={position.x}
       y={position.y}
+      zIndex={z}
       alpha={1}
       interactive={true}
+
+      onClick={e => onClick({x: e.target.x, y: e.target.y})}
     />
   );
 };
