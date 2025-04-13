@@ -1,0 +1,27 @@
+$albumhudPath: "/src/assets/gamelib/albumhud/"
+
+.user-row
+  font-size: .8rem
+  font-weight: 600
+
+  display: flex
+  align-items: center
+  column-gap: 5px
+
+  &:hover
+    cursor: pointer
+
+    background-color: #E6E6E6
+
+    > .user-icon
+      background-image: url($albumhudPath + "user_icon_hover.png")
+
+  > .user-icon
+    width: 10px
+    aspect-ratio: 59/72
+
+    background-image: url($albumhudPath + "user_icon.png")
+    background-size: contain
+    background-repeat: no-repeat
+
+    flex: none
