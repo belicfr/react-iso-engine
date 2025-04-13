@@ -1,3 +1,5 @@
+import Room from "./Room.ts";
+
 export class SessionRepository {
   static instance: SessionRepository;
 
@@ -66,6 +68,8 @@ export default class User {
   id: number;
   name: string;
 
+  home: Room|null;
+
   friends: User[];
 
   // Permissions (refactor w/ backend impl)
@@ -74,6 +78,8 @@ export default class User {
   constructor(id: number, name: string, permissions: UserPermissions) {
     this.id = id;
     this.name = name;
+
+    this.home = null;
 
     this.friends = [];
 
