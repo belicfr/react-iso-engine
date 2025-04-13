@@ -63,7 +63,6 @@ export const  RoomFloor: FC<Props> = ({tilesPositions}) => {
     console.log("check global");
 
     const zoomEvent = (e: WheelEvent) => {
-      console.log("wheel check");
       const zoomSpeed = 0.1;
       const scrollThreshold = 5;
 
