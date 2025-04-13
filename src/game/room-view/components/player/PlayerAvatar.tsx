@@ -31,6 +31,7 @@ export const PlayerAvatar: FC<Props> = ({x, y, z}) => {
   useEffect(() => {
     if (texture === Texture.EMPTY) {
       Assets
+        // TODO: .containsPoint to allow click through avatar if target pixel is transparent
         .load("/src/assets/gamelib/avatars/avatarstub.png")
         .then(result => {
           setTexture(result);

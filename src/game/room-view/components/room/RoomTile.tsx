@@ -31,7 +31,6 @@ export const RoomTile: FC<Props> = ({position, tileSize, onHoverTile}) => {
   }, [texture]);
 
   return (
-    // TODO: wrap sprite into container for keeping hover tile if furni hover tile
     <pixiContainer
       x={position.x}
       y={position.y}
