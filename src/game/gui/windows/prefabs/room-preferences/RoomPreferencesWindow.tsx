@@ -5,6 +5,8 @@ import {TabsNavigation} from "../../../tabs-nav/TabsNavigation.tsx";
 import Tab from "../../../tabs-nav/Tab.ts";
 import {GeneralTab} from "./tabs/GeneralTab.tsx";
 import "./RoomPreferencesWindow.css";
+import {RightsTab} from "./tabs/RightsTab.tsx";
+import {ModSettingsTab} from "./tabs/ModSettingsTab.tsx";
 
 type Props = {
   room: Room,
@@ -39,9 +41,19 @@ export const RoomPreferencesWindow: FC<Props> = ({room, onClose}) => {
         >
 
           <div className="room-preferences__container">
-            {currentTabIndex === 0 &&
+            {currentTabIndex === Tabs.GENERAL &&
                 <GeneralTab
-                    room={room}
+                  room={room}
+                />}
+
+            {currentTabIndex === Tabs.RIGHTS &&
+                <RightsTab
+                  room={room}
+                />}
+
+            {currentTabIndex === Tabs.MOD_SETTINGS &&
+                <ModSettingsTab
+                  room={room}
                 />}
           </div>
         </TabsNavigation>
@@ -49,3 +61,9 @@ export const RoomPreferencesWindow: FC<Props> = ({room, onClose}) => {
     </>
   );
 };
+
+enum Tabs {
+  GENERAL,
+  RIGHTS,
+  MOD_SETTINGS
+}
