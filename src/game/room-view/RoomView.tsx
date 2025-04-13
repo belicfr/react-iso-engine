@@ -1,4 +1,4 @@
-import {FC} from "react";
+import {FC, useState} from "react";
 import "./RoomView.css";
 import {Application as GameEnvironment, extend} from "@pixi/react";
 import {Container, Graphics, Sprite} from 'pixi.js';
@@ -17,6 +17,8 @@ type Props = {
 };
 
 export const RoomView: FC<Props> = ({room}) => {
+  const [ isCameraMoving, setIsCameraMoving ] = useState<boolean>(false);
+
   return (
     <GameEnvironment
       resizeTo={window}
@@ -26,9 +28,13 @@ export const RoomView: FC<Props> = ({room}) => {
 
       <RoomFloor
         tilesPositions={room.template.generate()}
+        isCameraMoving={isCameraMoving}
       />
 
-      <Camera />
+      <Camera
+        onCameraStartMove={() => setIsCameraMoving(true)}
+        onCameraStopMove={() => setIsCameraMoving(false)}
+      />
     </GameEnvironment>
   );
 };

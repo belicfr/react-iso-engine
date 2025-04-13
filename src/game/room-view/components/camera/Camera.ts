@@ -3,7 +3,12 @@ import {useApplication} from "@pixi/react";
 import {Coord2D} from "../../engine/precepts/Coord2D.ts";
 import {FederatedPointerEvent} from "pixi.js";
 
-export const Camera: FC = () => {
+type Props = {
+  onCameraStartMove: () => void,
+  onCameraStopMove: () => void,
+};
+
+export const Camera: FC<Props> = ({onCameraStartMove, onCameraStopMove}) => {
   const {app} = useApplication();
 
   const isDragging = useRef<boolean>(false);
@@ -32,10 +37,13 @@ export const Camera: FC = () => {
 
       stage.x = stageStart.current.x + delta.x;
       stage.y = stageStart.current.y + delta.y;
+
+      onCameraStartMove();
     };
 
     const onPointerUp = () => {
       isDragging.current = false;
+      onCameraStopMove();
     };
 
     stage.eventMode = "static";
