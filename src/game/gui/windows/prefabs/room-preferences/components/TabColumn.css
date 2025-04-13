@@ -1,0 +1,17 @@
+.room-preferences__tab-column {
+  border: solid 1px #CCCCCC;
+  background-color: #f3f3f3;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.room-preferences__tab-column > h6.col-title, .room-preferences__tab-column > .user-row {
+  padding: 5px 10px;
+}
+.room-preferences__tab-column > h6.col-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-bottom: solid 1px #CCCCCC;
+}
+
+/*# sourceMappingURL=TabColumn.css.map */
