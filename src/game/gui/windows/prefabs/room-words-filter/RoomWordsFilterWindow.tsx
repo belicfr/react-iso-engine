@@ -30,6 +30,8 @@ export const RoomWordsFilterWindow: FC<Props> = ({room, onClose}) => {
 
     room.bannedWords.push(word);
     setBannedWords(prevState => [...prevState, word]);
+
+    banWordInput.current.value = "";
   };
 
   const unbanWord = (word: string) => {
