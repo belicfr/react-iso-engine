@@ -1,15 +1,33 @@
-import {FC} from "react";
+import {FC, useState} from "react";
 import Room from "../../../../../../models/Room.ts";
-import {SessionRepository} from "../../../../../../models/User.ts";
+import User from "../../../../../../models/User.ts";
 import {UserRow} from "../components/UserRow.tsx";
 import {TabColumn} from "../components/TabColumn.tsx";
 import {Button} from "../../../../buttons/Button.tsx";
 
 type Props = {
   room: Room,
+
+  onWordsFilterToggle: () => void,
 };
 
-export const ModSettingsTab: FC<Props> = ({room}) => {
+export const ModSettingsTab: FC<Props> = ({room, onWordsFilterToggle}) => {
+  const [ bannedUsers, setBannedUsers ] = useState<User[]>(room.bannedUsers.slice());
+
+  const unbanUser = (user: User) => {
+    const bannedUserIndex: number = room.bannedUsers.findIndex(u => u.id === user.id);
+
+    if (bannedUserIndex === -1) return;
+
+    room.bannedUsers.splice(bannedUserIndex, 1);
+    setBannedUsers(room.bannedUsers);
+  };
+
+  const unbanAll = () => {
+    room.bannedUsers = [];
+    setBannedUsers([]);
+  };
+
   return (
     <>
       <section className="room-preferences__mod-settings">
@@ -18,11 +36,12 @@ export const ModSettingsTab: FC<Props> = ({room}) => {
             title="Banned:"
           >
 
-            {room.bannedUsers.map(bannedUser =>
+            {bannedUsers.map(bannedUser =>
                 <UserRow
+                  key={bannedUser.id}
                   user={bannedUser}
 
-                  onClick={() => {}}
+                  onClick={unbanUser}
                 />)}
           </TabColumn>
         </div>
@@ -33,11 +52,21 @@ export const ModSettingsTab: FC<Props> = ({room}) => {
 
         <div className="room-preferences__right-side">
           <section className="room-preferences__mod-actions">
-            <Button color="light">
+            <Button
+              color="light"
+
+              onClick={onWordsFilterToggle}
+            >
+
               Words Filter
             </Button>
 
-            <Button color="danger">
+            <Button
+              color="danger"
+
+              onClick={unbanAll}
+            >
+
               Unban All
             </Button>
           </section>
