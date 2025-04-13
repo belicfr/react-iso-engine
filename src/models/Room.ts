@@ -40,6 +40,8 @@ export default class Room {
   bannedUsers: User[];
   havingRightsUsers: User[];
 
+  bannedWords: string[];
+
   constructor(
     id: number,
     name: string,
@@ -64,6 +66,8 @@ export default class Room {
 
     this.bannedUsers = [];
     this.havingRightsUsers = [];
+
+    this.bannedWords = [];
   }
 
   getPopulationLevel(): RoomPopulation {
