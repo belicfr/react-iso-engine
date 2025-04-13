@@ -31,13 +31,13 @@ export default class RoomTemplate {
     this.tilesCount();
   }
 
-  generate(): Coord2D[] {
+  generate(): TileSituation[] {
     const rows: string[] = this
       .template
       .split('\n')
       .map(row => row.trim());
 
-    const tilesPositions: Coord2D[] = [];
+    const tilesPositions: TileSituation[] = [];
 
     let row: string;
     let tilesDigits: string[];
@@ -54,6 +54,7 @@ export default class RoomTemplate {
           tilesPositions.push({
             x: rowIndex,
             y: tileDigitIndex,
+            isEntrance: tileDigit === TileDigit.ENTRANCE,
           });
         }
       }
@@ -72,6 +73,11 @@ export default class RoomTemplate {
   };
 };
 
+export type TileSituation = Coord2D & {
+  isEntrance: boolean,
+};
+
 enum TileDigit {
   VOID = "0",
+  ENTRANCE = "E",
 }
