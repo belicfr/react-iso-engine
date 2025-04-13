@@ -18,7 +18,12 @@ export const GameView: FC = () => {
   const [ isRoomsNavigatorWindowOpened, setIsRoomsNavigatorWindowOpened ] = useState(false);
   const [ isRoomPreferencesWindowOpened, setIsRoomPreferencesWindowOpened ] = useState<boolean>(false);
 
-  const onHomeClick = () => setIsHotelViewOpened(false);
+  const onHomeClick = () => {
+    if (!user.home) return;
+
+    setCurrentRoom(user.home);
+    setIsHotelViewOpened(false);
+  };
   const onHotelViewClick = () => {
     setCurrentRoom(null);
     setIsHotelViewOpened(true);
@@ -149,7 +154,8 @@ export const GameView: FC = () => {
 
       rooms.push(demoRoom);
 
-      SessionRepository.i().user.friends.push(UserRepository.i().findById(1));
+      SessionRepository.i().user.friends.push(UserRepository.i().findById(1)!);
+      SessionRepository.i().user.home = demoRoom;
 
       isClientPrepared.current = true;
     }
