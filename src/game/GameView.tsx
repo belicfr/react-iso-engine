@@ -8,7 +8,7 @@ import {StaffTools} from "./gui/staff-tools/StaffTools.tsx";
 import GameSocket from "./room-view/engine/socket/GameSocket.ts";
 import Room, {RoomRepository} from "../models/Room.ts";
 import {RoomViewContainer} from "./room-view/components/room/RoomViewContainer.tsx";
-import User, {SessionRepository} from "../models/User.ts";
+import User, {SessionRepository, UserRepository} from "../models/User.ts";
 import RoomTemplate, {RoomTemplateRepository} from "../models/RoomTemplate.ts";
 
 export const GameView: FC = () => {
@@ -141,13 +141,15 @@ export const GameView: FC = () => {
         `.trim(), "Theater"));
 
       roomTemplates.push(templateDev);
-      rooms.push(new Room(1, "Test", "", new User(1, "Staff", {
-          isStaff: false,
-          canBeInvisible:false,
-          canUseModTools: false,
-          canUseStaffEffect: false
-        }), [], 10, 25,
-        templateDev));
+
+      const demoRoom = new Room(1, "Test", "", UserRepository.i().findById(1)!, [], 10, 25,
+        templateDev);
+      demoRoom.bannedUsers.push(UserRepository.i().findById(2)!);
+      demoRoom.havingRightsUsers.push(UserRepository.i().findById(2)!);
+
+      rooms.push(demoRoom);
+
+      SessionRepository.i().user.friends.push(UserRepository.i().findById(1));
 
       isClientPrepared.current = true;
     }
