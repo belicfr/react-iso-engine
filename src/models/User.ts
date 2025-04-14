@@ -1,4 +1,6 @@
 import Room from "./Room.ts";
+import {Coord2D} from "../game/room-view/engine/precepts/Coord2D.ts";
+import AvatarEffect, {EAvatarEffect} from "../game/room-view/entities/AvatarEffect.ts";
 
 export class SessionRepository {
   static instance: SessionRepository;
@@ -67,23 +69,34 @@ export class UserRepository {
 export default class User {
   id: number;
   name: string;
-
   home: Room|null;
-
   friends: User[];
+  currentPosition: Coord2D;
+  currentRoom: Room|null;
+  avatarEffect: AvatarEffect;
 
   // Permissions (refactor w/ backend impl)
   permissions: UserPermissions;
 
+  invisible: boolean;
+
   constructor(id: number, name: string, permissions: UserPermissions) {
     this.id = id;
     this.name = name;
-
     this.home = null;
-
     this.friends = [];
+    this.currentPosition = {x: 0, y: 0};
+    this.currentRoom = null;
+    this.avatarEffect = AvatarEffect.findByCode(EAvatarEffect.NONE);
 
     this.permissions = permissions;
+
+    this.invisible = false;
+  }
+
+  isInvisible(): boolean {
+    return this.permissions.canBeInvisible
+      && this.invisible;
   }
 };
 
