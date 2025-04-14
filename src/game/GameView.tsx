@@ -13,6 +13,7 @@ import RoomTemplate, {RoomTemplateRepository} from "../models/RoomTemplate.ts";
 
 export const GameView: FC = () => {
   const [ isHotelViewOpened, setIsHotelViewOpened ] = useState(true);
+  const [ isCanvasAllowed, setIsCanvasAllowed ] = useState<boolean>(true);
 
   const [ isWelcomeWindowOpened, setIsWelcomeWindowOpened ] = useState(true);
   const [ isRoomsNavigatorWindowOpened, setIsRoomsNavigatorWindowOpened ] = useState(false);
@@ -23,10 +24,17 @@ export const GameView: FC = () => {
 
     setCurrentRoom(user.home);
     setIsHotelViewOpened(false);
+
+    reloadCanvas();
+
+    user.currentRoom = user.home;
   };
   const onHotelViewClick = () => {
     setCurrentRoom(null);
     setIsHotelViewOpened(true);
+
+    user.currentPosition = {x: 0, y: 0};
+    user.currentRoom = null;
   };
   const onRoomsNavigatorClick = () =>
     setIsRoomsNavigatorWindowOpened(!isRoomsNavigatorWindowOpened);
@@ -165,6 +173,16 @@ export const GameView: FC = () => {
     setCurrentRoom(room);
     setIsHotelViewOpened(false);
     setIsRoomsNavigatorWindowOpened(false);
+
+    reloadCanvas();
+
+    user.currentRoom = room;
+  }
+
+  function reloadCanvas() {
+    setIsCanvasAllowed(false);
+
+    setTimeout(() => setIsCanvasAllowed(true), 100);
   }
 
   return (
@@ -189,7 +207,7 @@ export const GameView: FC = () => {
       {isHotelViewOpened &&
           <HotelView />}
 
-      {!isHotelViewOpened && currentRoom &&
+      {!isHotelViewOpened && currentRoom && isCanvasAllowed &&
           <RoomViewContainer
             room={currentRoom}
 
@@ -226,6 +244,7 @@ export const GameView: FC = () => {
         onHomeClick={onHomeClick}
         onHotelViewClick={onHotelViewClick}
         onRoomsNavigatorClick={onRoomsNavigatorClick}
+        onInventoryClick={() => {}}
       />
     </>
   );
