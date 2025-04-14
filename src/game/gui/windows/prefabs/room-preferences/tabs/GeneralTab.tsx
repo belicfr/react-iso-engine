@@ -1,5 +1,5 @@
-import {ChangeEvent, FC, useState} from "react";
-import Room from "../../../../../../models/Room.ts";
+import {FC, useState} from "react";
+import Room, {RoomRepository} from "../../../../../../models/Room.ts";
 import {Input} from "../../../../forms/Input.tsx";
 import {TextArea} from "../../../../forms/TextArea.tsx";
 
@@ -18,6 +18,33 @@ export const GeneralTab: FC<Props> = ({room}) => {
     maxLength: 10,
   };
 
+  const getRoomIndex = (room: Room): number =>
+    RoomRepository.i().rooms.findIndex(r => r === room);
+
+  const saveName = (name: string) => {
+    const roomIndex: number = getRoomIndex(room);
+
+    RoomRepository.i().rooms[roomIndex].name = name;
+  };
+
+  const saveDescription = (description: string) => {
+    const roomIndex: number = getRoomIndex(room);
+
+    RoomRepository.i().rooms[roomIndex].description = description;
+  };
+
+  const saveFirstTag = (tag: string) => {
+    const roomIndex: number = getRoomIndex(room);
+
+    RoomRepository.i().rooms[roomIndex].tags[0] = tag;
+  };
+
+  const saveSecondTag = (tag: string) => {
+    const roomIndex: number = getRoomIndex(room);
+
+    RoomRepository.i().rooms[roomIndex].tags[1] = tag;
+  };
+
   return (
     <>
       <section className="room-preferences__general">
@@ -28,7 +55,8 @@ export const GeneralTab: FC<Props> = ({room}) => {
             maxLength={25}
             value={name}
 
-            onChange={setName}
+            onChange={e => setName(e.target.value)}
+            onBlur={e => saveName(e.target.value)}
           />
 
           <TextArea
@@ -38,7 +66,8 @@ export const GeneralTab: FC<Props> = ({room}) => {
             rows={4}
             value={description}
 
-            onChange={setDescription}
+            onChange={e => setDescription(e.target.value)}
+            onBlur={e => saveDescription(e.target.value)}
           />
 
           <div className="room-preferences__tags-container">
@@ -52,8 +81,8 @@ export const GeneralTab: FC<Props> = ({room}) => {
 
                 value={firstTag}
 
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setFirstTag(e.target.value)}
+                onChange={e => setFirstTag(e.target.value)}
+                onBlur={e => saveFirstTag(e.target.value)}
               />
 
               {!!firstTag.length &&
@@ -62,8 +91,8 @@ export const GeneralTab: FC<Props> = ({room}) => {
 
                     value={secondTag}
 
-                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                      setSecondTag(e.target.value)}
+                    onChange={e => setSecondTag(e.target.value)}
+                    onBlur={e => saveSecondTag(e.target.value)}
                   />}
             </div>
           </div>

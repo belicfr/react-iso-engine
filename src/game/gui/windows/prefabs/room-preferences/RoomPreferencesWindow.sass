@@ -1,6 +1,8 @@
 .room-preferences__container
   padding: 10px
 
+  height: calc(100% - 45px)
+
   > section
     &.room-preferences__general
       > form
@@ -17,3 +19,28 @@
             display: grid
             grid-template-columns: repeat(2, minmax(0, 1fr))
             column-gap: 10px
+
+    &.room-preferences__rights, &.room-preferences__mod-settings
+      display: flex
+      column-gap: 10px
+
+      height: 100%
+
+      > .room-preferences__left-side, > .room-preferences__right-side
+        flex: 1
+
+        > section
+          height: 100%
+
+      > .rights__actions, > .mod-settings__actions
+        flex: none
+
+        border: solid 1px #CCCCCC
+
+        width: fit-content
+
+      > .room-preferences__right-side
+        > section.room-preferences__mod-actions
+          display: flex
+          flex-direction: column
+          row-gap: 5px

@@ -5,6 +5,9 @@ import {TabsNavigation} from "../../../tabs-nav/TabsNavigation.tsx";
 import Tab from "../../../tabs-nav/Tab.ts";
 import {GeneralTab} from "./tabs/GeneralTab.tsx";
 import "./RoomPreferencesWindow.css";
+import {RightsTab} from "./tabs/RightsTab.tsx";
+import {ModSettingsTab} from "./tabs/ModSettingsTab.tsx";
+import {RoomWordsFilterWindow} from "../room-words-filter/RoomWordsFilterWindow.tsx";
 
 type Props = {
   room: Room,
@@ -18,6 +21,9 @@ export const RoomPreferencesWindow: FC<Props> = ({room, onClose}) => {
     new Tab("Rights"),
     new Tab("Mod Action"),
   ], []);
+
+  const [ isWordsFilterWindowOpened, setIsWordsFilterWindowOpened ]
+    = useState<boolean>(false);
 
   const [ currentTabIndex, setCurrentTabIndex ] = useState<number>(0);
 
@@ -39,13 +45,38 @@ export const RoomPreferencesWindow: FC<Props> = ({room, onClose}) => {
         >
 
           <div className="room-preferences__container">
-            {currentTabIndex === 0 &&
+            {currentTabIndex === Tabs.GENERAL &&
                 <GeneralTab
-                    room={room}
+                  room={room}
+                />}
+
+            {currentTabIndex === Tabs.RIGHTS &&
+                <RightsTab
+                  room={room}
+                />}
+
+            {currentTabIndex === Tabs.MOD_SETTINGS &&
+                <ModSettingsTab
+                  room={room}
+
+                  onWordsFilterToggle={() => setIsWordsFilterWindowOpened(!isWordsFilterWindowOpened)}
                 />}
           </div>
         </TabsNavigation>
       </Window>
+
+      {isWordsFilterWindowOpened &&
+          <RoomWordsFilterWindow
+            room={room}
+
+            onClose={() => setIsWordsFilterWindowOpened(false)}
+          />}
     </>
   );
 };
+
+enum Tabs {
+  GENERAL,
+  RIGHTS,
+  MOD_SETTINGS
+}

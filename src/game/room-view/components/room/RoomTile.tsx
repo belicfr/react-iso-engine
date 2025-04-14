@@ -31,25 +31,30 @@ export const RoomTile: FC<Props> = ({position, tileSize, onHoverTile}) => {
   }, [texture]);
 
   return (
-    // TODO: wrap sprite into container for keeping hover tile if furni hover tile
-    <pixiSprite
-      ref={tile}
-      texture={texture}
-      hitArea={new Polygon([
-        0, tileSize.height / 2,
-        tileSize.width / 2, 0,
-        tileSize.width, tileSize.height / 2,
-        tileSize.width / 2, tileSize.height
-      ])}
-      anchor={0}
-      eventMode={'static'}
+    <pixiContainer
       x={position.x}
       y={position.y}
-      alpha={1}
-      interactive={true}
+      anchor={0}
+      eventMode={'static'}
+      sortableChildren={true}
 
-      onMouseEnter={(e) =>
+      onMouseEnter={e =>
         onHoverTile({x: e.target.x, y: e.target.y})}
-    />
+    >
+
+      <pixiSprite
+        ref={tile}
+        texture={texture}
+        hitArea={new Polygon([
+          0, tileSize.height / 2,
+          tileSize.width / 2, 0,
+          tileSize.width, tileSize.height / 2,
+          tileSize.width / 2, tileSize.height
+        ])}
+        alpha={1}
+        interactive={true}
+        zIndex={0}
+      />
+    </pixiContainer>
   );
 };

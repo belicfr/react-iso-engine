@@ -5,6 +5,9 @@ import {Coord2D} from "../../engine/precepts/Coord2D.ts";
 import {RoomTile} from "./RoomTile.tsx";
 import {Container, Graphics, Sprite} from "pixi.js";
 import {RoomHoverTile} from "./RoomHoverTile.tsx";
+import {PlayerAvatar} from "../player/PlayerAvatar.tsx";
+import {TileSituation} from "../../../../models/RoomTemplate.ts";
+import User, {SessionRepository} from "../../../../models/User.ts";
 
 extend({
   Container,
@@ -13,12 +16,15 @@ extend({
 });
 
 type Props = {
-  tilesPositions: Coord2D[],
+  tilesPositions: TileSituation[],
+  isCameraMoving: boolean,
 };
 
-export const  RoomFloor: FC<Props> = ({tilesPositions}) => {
+export const  RoomFloor: FC<Props> = ({tilesPositions, isCameraMoving}) => {
   const a = useApplication();
   const {app} = a;
+
+  const user = SessionRepository.i().user;
   
   const TILE_SIZE = useMemo<Size2D>(() => ({
     width: 72,
@@ -29,8 +35,19 @@ export const  RoomFloor: FC<Props> = ({tilesPositions}) => {
   const oldScaleFactor = useRef<number>(1);
 
   const isEnvZoomEventDefined = useRef<boolean>(false);
+  const isEntranceInitialized = useRef<boolean>(false);
 
-  const [hoverTilePosition, setHoverTilePosition] = useState<Coord2D>({x: 0, y: 0});
+  const [ playersInRoom, setPlayersInRoom ] = useState<User[]>([user]);
+
+  const [ hoverTilePosition, setHoverTilePosition ] = useState<Coord2D>({x: 0, y: 0});
+
+  const setPlayerPosition = (pos: Coord2D) => {
+    user.currentPosition = pos;
+    setPlayersInRoom(prevState => [
+      ...prevState.filter(u => u.id !== user.id),
+      user,
+    ]);
+  };
 
   const tiles = useMemo(() => {
     const tiles: JSX.Element[] = [];
@@ -38,6 +55,11 @@ export const  RoomFloor: FC<Props> = ({tilesPositions}) => {
     tilesPositions.forEach(tilePos => {
       const isoX = (tilePos.x - tilePos.y) * (TILE_SIZE.width / 2);
       const isoY = (tilePos.x + tilePos.y) * (TILE_SIZE.height / 2);
+
+      if (!isEntranceInitialized.current && tilePos.isEntrance) {
+        setPlayerPosition({x: isoX, y: isoY});
+        isEntranceInitialized.current = true;
+      }
 
       tiles.push((
         <RoomTile
@@ -60,10 +82,7 @@ export const  RoomFloor: FC<Props> = ({tilesPositions}) => {
 
     const canvas: HTMLCanvasElement = app.canvas;
 
-    console.log("check global");
-
     const zoomEvent = (e: WheelEvent) => {
-      console.log("wheel check");
       const zoomSpeed = 0.1;
       const scrollThreshold = 5;
 
@@ -90,25 +109,10 @@ export const  RoomFloor: FC<Props> = ({tilesPositions}) => {
       e.preventDefault();
     };
 
-    console.log(
-      "check cam zoom event state",
-      isEnvZoomEventDefined.current);
-
     if (!isEnvZoomEventDefined.current) {
-      console.log("define on camera zoom event");
       canvas.addEventListener("wheel", zoomEvent);
       isEnvZoomEventDefined.current = true;
     }
-
-    // if (!isCameraDragEventDefined.current) {
-    //   const stage = app.stage;
-    //
-    //   stage.on("pointermove", e => {
-    //     if (isDragging) {
-    //       // onDrag()
-    //     }
-    //   });
-    // }
 
     return () => {
       canvas.removeEventListener("wheel", zoomEvent);
@@ -122,14 +126,31 @@ export const  RoomFloor: FC<Props> = ({tilesPositions}) => {
       eventMode={'static'}
       x={window.innerWidth / 2}
       y={window.innerHeight / 2}
+      sortableChildren={true}
     >
 
       {tiles}
 
       <RoomHoverTile
         position={hoverTilePosition}
-        tileSize={TILE_SIZE}
+        tileSize={{width: 72, height: 36}}
+        z={1}
+
+        onClick={pos => {
+          if (!isCameraMoving) {
+            setPlayerPosition(pos);
+          }
+        }}
       />
+
+      {playersInRoom.map((player: User) =>
+        <PlayerAvatar
+          key={player.id}
+          x={player.currentPosition.x}
+          y={player.currentPosition.y}
+          z={2}
+          user={player}
+        />)}
     </pixiContainer>
   );
 };

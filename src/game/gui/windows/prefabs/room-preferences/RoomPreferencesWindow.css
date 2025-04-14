@@ -1,5 +1,6 @@
 .room-preferences__container {
   padding: 10px;
+  height: calc(100% - 45px);
 }
 .room-preferences__container > section.room-preferences__general > form {
   display: flex;
@@ -14,6 +15,27 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   column-gap: 10px;
+}
+.room-preferences__container > section.room-preferences__rights, .room-preferences__container > section.room-preferences__mod-settings {
+  display: flex;
+  column-gap: 10px;
+  height: 100%;
+}
+.room-preferences__container > section.room-preferences__rights > .room-preferences__left-side, .room-preferences__container > section.room-preferences__rights > .room-preferences__right-side, .room-preferences__container > section.room-preferences__mod-settings > .room-preferences__left-side, .room-preferences__container > section.room-preferences__mod-settings > .room-preferences__right-side {
+  flex: 1;
+}
+.room-preferences__container > section.room-preferences__rights > .room-preferences__left-side > section, .room-preferences__container > section.room-preferences__rights > .room-preferences__right-side > section, .room-preferences__container > section.room-preferences__mod-settings > .room-preferences__left-side > section, .room-preferences__container > section.room-preferences__mod-settings > .room-preferences__right-side > section {
+  height: 100%;
+}
+.room-preferences__container > section.room-preferences__rights > .rights__actions, .room-preferences__container > section.room-preferences__rights > .mod-settings__actions, .room-preferences__container > section.room-preferences__mod-settings > .rights__actions, .room-preferences__container > section.room-preferences__mod-settings > .mod-settings__actions {
+  flex: none;
+  border: solid 1px #CCCCCC;
+  width: fit-content;
+}
+.room-preferences__container > section.room-preferences__rights > .room-preferences__right-side > section.room-preferences__mod-actions, .room-preferences__container > section.room-preferences__mod-settings > .room-preferences__right-side > section.room-preferences__mod-actions {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
 }
 
 /*# sourceMappingURL=RoomPreferencesWindow.css.map */

@@ -31,7 +31,7 @@ export const TextArea: FC<Props> = (
     value, resize,
     rows, cols,
 
-    onChange,
+    onChange, onBlur,
   }
 ) => {
   return (
@@ -54,6 +54,7 @@ export const TextArea: FC<Props> = (
           value={value}
 
           onChange={onChange}
+          onBlur={onBlur}
         />
       </label>
     </>

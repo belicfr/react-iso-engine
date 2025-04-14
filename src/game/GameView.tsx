@@ -8,20 +8,33 @@ import {StaffTools} from "./gui/staff-tools/StaffTools.tsx";
 import GameSocket from "./room-view/engine/socket/GameSocket.ts";
 import Room, {RoomRepository} from "../models/Room.ts";
 import {RoomViewContainer} from "./room-view/components/room/RoomViewContainer.tsx";
-import User, {SessionRepository} from "../models/User.ts";
+import User, {SessionRepository, UserRepository} from "../models/User.ts";
 import RoomTemplate, {RoomTemplateRepository} from "../models/RoomTemplate.ts";
 
 export const GameView: FC = () => {
   const [ isHotelViewOpened, setIsHotelViewOpened ] = useState(true);
+  const [ isCanvasAllowed, setIsCanvasAllowed ] = useState<boolean>(true);
 
   const [ isWelcomeWindowOpened, setIsWelcomeWindowOpened ] = useState(true);
   const [ isRoomsNavigatorWindowOpened, setIsRoomsNavigatorWindowOpened ] = useState(false);
   const [ isRoomPreferencesWindowOpened, setIsRoomPreferencesWindowOpened ] = useState<boolean>(false);
 
-  const onHomeClick = () => setIsHotelViewOpened(false);
+  const onHomeClick = () => {
+    if (!user.home) return;
+
+    setCurrentRoom(user.home);
+    setIsHotelViewOpened(false);
+
+    reloadCanvas();
+
+    user.currentRoom = user.home;
+  };
   const onHotelViewClick = () => {
     setCurrentRoom(null);
     setIsHotelViewOpened(true);
+
+    user.currentPosition = {x: 0, y: 0};
+    user.currentRoom = null;
   };
   const onRoomsNavigatorClick = () =>
     setIsRoomsNavigatorWindowOpened(!isRoomsNavigatorWindowOpened);
@@ -81,7 +94,7 @@ export const GameView: FC = () => {
 000000011111111111111111100000000000
 000000011111111111111111100000000000
 000000000000000111000000000000000000
-000000000000000111000000000000000000
+0000000000000001E1000000000000000000
 000000000000000000000000000000000000
 000000000000000000000000000000000000
 000000000000000000000000000000000000
@@ -111,7 +124,7 @@ export const GameView: FC = () => {
 0000000000000000000000000000000000000
 0000000000011000000000000000000000000
 0000000000111100000000000000000000000
-0000000001111110000000001111111111000
+000000000E111110000000001111111111000
 0000000011111111000000011111111111000
 0000000111111111100000111111111111000
 0000000111111111111001111111111111000
@@ -141,13 +154,16 @@ export const GameView: FC = () => {
         `.trim(), "Theater"));
 
       roomTemplates.push(templateDev);
-      rooms.push(new Room(1, "Test", "", new User(1, "Staff", {
-          isStaff: false,
-          canBeInvisible:false,
-          canUseModTools: false,
-          canUseStaffEffect: false
-        }), [], 10, 25,
-        templateDev));
+
+      const demoRoom = new Room(1, "Test", "", UserRepository.i().findById(1)!, [], 10, 25,
+        templateDev);
+      demoRoom.bannedUsers.push(UserRepository.i().findById(2)!);
+      demoRoom.havingRightsUsers.push(UserRepository.i().findById(2)!);
+
+      rooms.push(demoRoom);
+
+      SessionRepository.i().user.friends.push(UserRepository.i().findById(1)!);
+      SessionRepository.i().user.home = demoRoom;
 
       isClientPrepared.current = true;
     }
@@ -157,6 +173,16 @@ export const GameView: FC = () => {
     setCurrentRoom(room);
     setIsHotelViewOpened(false);
     setIsRoomsNavigatorWindowOpened(false);
+
+    reloadCanvas();
+
+    user.currentRoom = room;
+  }
+
+  function reloadCanvas() {
+    setIsCanvasAllowed(false);
+
+    setTimeout(() => setIsCanvasAllowed(true), 100);
   }
 
   return (
@@ -181,7 +207,7 @@ export const GameView: FC = () => {
       {isHotelViewOpened &&
           <HotelView />}
 
-      {!isHotelViewOpened && currentRoom &&
+      {!isHotelViewOpened && currentRoom && isCanvasAllowed &&
           <RoomViewContainer
             room={currentRoom}
 
@@ -218,6 +244,7 @@ export const GameView: FC = () => {
         onHomeClick={onHomeClick}
         onHotelViewClick={onHotelViewClick}
         onRoomsNavigatorClick={onRoomsNavigatorClick}
+        onInventoryClick={() => {}}
       />
     </>
   );

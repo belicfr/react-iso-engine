@@ -3,7 +3,8 @@ import {SmallButton} from "../buttons/SmallButton.tsx";
 import "./StaffTools.css";
 import {ModToolsWindow} from "./windows/ModToolsWindow.tsx";
 import Room from "../../../models/Room.ts";
-import User from "../../../models/User.ts";
+import User, {SessionRepository} from "../../../models/User.ts";
+import AvatarEffect, {EAvatarEffect} from "../../room-view/entities/AvatarEffect.ts";
 
 type Props = {
   canOpenModTools: boolean,
@@ -15,13 +16,24 @@ type Props = {
 };
 
 export const StaffTools: FC<Props> = props => {
+  const user = SessionRepository.i().user;
+
   const [ isModToolsOpened, setIsModToolsOpened ] = useState(false);
   const [ isInvisible, setIsInvisible ] = useState(false);
   const [ isUsingEffect, setIsUsingEffect ] = useState(false);
 
   const toggleModTools = () => setIsModToolsOpened(!isModToolsOpened);
-  const toggleInvisible = () => setIsInvisible(!isInvisible);
-  const toggleEffect = () => setIsUsingEffect(!isUsingEffect);
+  const toggleInvisible = () => {
+    user.invisible = !isInvisible;
+    setIsInvisible(!isInvisible);
+  };
+  const toggleEffect = () => {
+    user.avatarEffect = AvatarEffect.findByCode(isUsingEffect
+      ? EAvatarEffect.NONE
+      : EAvatarEffect.STAFF);
+
+    setIsUsingEffect(!isUsingEffect)
+  };
 
   return (
     <>

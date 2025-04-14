@@ -7,6 +7,7 @@ type Props = {
   onHomeClick: () => void,
   onHotelViewClick: () => void,
   onRoomsNavigatorClick: () => void,
+  onInventoryClick: () => void,
 };
 
 export const NavigationBar: FC<Props> = props => {
@@ -24,6 +25,9 @@ export const NavigationBar: FC<Props> = props => {
 
           <div className="navigation-bar__icon-rooms-navigator"
                onClick={props.onRoomsNavigatorClick}></div>
+
+          <div className="navigation-bar__icon-inventory"
+               onClick={props.onInventoryClick}></div>
         </div>
       </div>
     </>

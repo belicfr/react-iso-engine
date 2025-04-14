@@ -5,18 +5,14 @@ import {RoomInformationStep} from "./steps/RoomInformationStep.tsx";
 import {RoomModelSelectionStep} from "./steps/RoomModelSelectionStep.tsx";
 import RoomTemplate from "../../../../../models/RoomTemplate.ts";
 import Room, {RoomRepository} from "../../../../../models/Room.ts";
-import User from "../../../../../models/User.ts";
+import {SessionRepository} from "../../../../../models/User.ts";
 
 type Props = {
+  onRoomCreate: (room: Room) => void,
   onClose: () => void,
 };
 
-export const CreateRoomWindow: FC<Props> = ({onClose}) => {
-  // const roomModels = useMemo<RoomTemplate[]>(() => [
-  //   new RoomTemplate(1, "", "Base", 25),
-  //   new RoomTemplate(2, "", "XL", 50),
-  // ], []);
-
+export const CreateRoomWindow: FC<Props> = ({onRoomCreate, onClose}) => {
   const [model, setModel] = useState<RoomTemplate|null>(null);
 
   const [name, setName] = useState<string>("");
@@ -28,8 +24,20 @@ export const CreateRoomWindow: FC<Props> = ({onClose}) => {
 
   function createRoom() {
     const rooms = RoomRepository.i().rooms;
-    rooms.push(new Room(Math.abs(Math.random() * 100), name, description, new User(2, "Player"), [firstTag, secondTag], 10, 0,
-      model!));
+    const createdRoom: Room = new Room(
+      Math.abs(Math.random() * 100),
+      name,
+      description,
+      SessionRepository.i().user,
+      [firstTag, secondTag],
+      10,
+      0,
+      model!);
+
+    rooms.push(createdRoom);
+
+    onRoomCreate(createdRoom);
+    onClose();
   }
 
   return (
