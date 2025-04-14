@@ -7,6 +7,7 @@ import {Container, Graphics, Sprite} from "pixi.js";
 import {RoomHoverTile} from "./RoomHoverTile.tsx";
 import {PlayerAvatar} from "../player/PlayerAvatar.tsx";
 import {TileSituation} from "../../../../models/RoomTemplate.ts";
+import User, {SessionRepository} from "../../../../models/User.ts";
 
 extend({
   Container,
@@ -22,6 +23,8 @@ type Props = {
 export const  RoomFloor: FC<Props> = ({tilesPositions, isCameraMoving}) => {
   const a = useApplication();
   const {app} = a;
+
+  const user = SessionRepository.i().user;
   
   const TILE_SIZE = useMemo<Size2D>(() => ({
     width: 72,
@@ -34,8 +37,17 @@ export const  RoomFloor: FC<Props> = ({tilesPositions, isCameraMoving}) => {
   const isEnvZoomEventDefined = useRef<boolean>(false);
   const isEntranceInitialized = useRef<boolean>(false);
 
+  const [ playersInRoom, setPlayersInRoom ] = useState<User[]>([user]);
+
   const [ hoverTilePosition, setHoverTilePosition ] = useState<Coord2D>({x: 0, y: 0});
-  const [ playerPosition, setPlayerPosition ] = useState<Coord2D>({x: 0, y: 0});
+
+  const setPlayerPosition = (pos: Coord2D) => {
+    user.currentPosition = pos;
+    setPlayersInRoom(prevState => [
+      ...prevState.filter(u => u.id !== user.id),
+      user,
+    ]);
+  };
 
   const tiles = useMemo(() => {
     const tiles: JSX.Element[] = [];
@@ -57,10 +69,6 @@ export const  RoomFloor: FC<Props> = ({tilesPositions, isCameraMoving}) => {
 
           onHoverTile={(pos: Coord2D) => {
             setHoverTilePosition(pos);
-          }}
-          onClickTile={(pos: Coord2D) => {
-            console.log("test");
-            setPlayerPosition(pos);
           }}
         />
       ));
@@ -135,11 +143,14 @@ export const  RoomFloor: FC<Props> = ({tilesPositions, isCameraMoving}) => {
         }}
       />
 
-      <PlayerAvatar
-        x={playerPosition.x}
-        y={playerPosition.y}
-        z={2}
-      />
+      {playersInRoom.map((player: User) =>
+        <PlayerAvatar
+          key={player.id}
+          x={player.currentPosition.x}
+          y={player.currentPosition.y}
+          z={2}
+          user={player}
+        />)}
     </pixiContainer>
   );
 };
