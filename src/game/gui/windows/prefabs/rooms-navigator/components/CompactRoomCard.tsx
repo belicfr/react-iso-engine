@@ -27,8 +27,9 @@ export const CompactRoomCard: FC<RoomCardProps> = ({room, onClick}) => {
             "players-in-room"
             + ` players-${room.getPopulationLevel()}`
           }>
+
             <div className="players-icon"></div>
-            {room.playersCount}
+            {room.playersInRoomCount}
           </div>
 
           <p className="room-name">
