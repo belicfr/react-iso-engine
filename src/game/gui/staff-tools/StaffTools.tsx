@@ -3,8 +3,8 @@ import {SmallButton} from "../buttons/SmallButton.tsx";
 import "./StaffTools.css";
 import {ModToolsWindow} from "./windows/ModToolsWindow.tsx";
 import Room from "../../../models/Room.ts";
-import User, {SessionRepository} from "../../../models/User.ts";
-import AvatarEffect, {EAvatarEffect} from "../../room-view/entities/AvatarEffect.ts";
+import User from "../../../models/User.ts";
+import {AlertAction} from "../../../models/Alert.ts";
 
 type Props = {
   canOpenModTools: boolean,
@@ -13,27 +13,20 @@ type Props = {
 
   room: Room|null,
   user: User|null,
+
+  isInvisible: boolean,
+  isUsingStaffEffect: boolean,
+
+  onInvisibleToggle: () => void,
+  onEffectToggle: () => void,
+
+  onOwnRoom: AlertAction,
 };
 
 export const StaffTools: FC<Props> = props => {
-  const user = SessionRepository.i().user;
-
   const [ isModToolsOpened, setIsModToolsOpened ] = useState(false);
-  const [ isInvisible, setIsInvisible ] = useState(false);
-  const [ isUsingEffect, setIsUsingEffect ] = useState(false);
 
   const toggleModTools = () => setIsModToolsOpened(!isModToolsOpened);
-  const toggleInvisible = () => {
-    user.invisible = !isInvisible;
-    setIsInvisible(!isInvisible);
-  };
-  const toggleEffect = () => {
-    user.avatarEffect = AvatarEffect.findByCode(isUsingEffect
-      ? EAvatarEffect.NONE
-      : EAvatarEffect.STAFF);
-
-    setIsUsingEffect(!isUsingEffect)
-  };
 
   return (
     <>
@@ -49,21 +42,21 @@ export const StaffTools: FC<Props> = props => {
 
         {props.canBeInvisible &&
             <SmallButton
-                color={isInvisible ? "danger" : "success"}
-                onClick={toggleInvisible}
+                color={props.isInvisible ? "danger" : "success"}
+                onClick={props.onInvisibleToggle}
             >
 
-                {isInvisible ? "Disable" : "Enable"}
+                {props.isInvisible ? "Disable" : "Enable"}
                 &nbsp;Invisible
             </SmallButton>}
 
         {props.canUseEffect &&
             <SmallButton
-                color={isUsingEffect ? "danger" : "success"}
-                onClick={toggleEffect}
+                color={props.isUsingStaffEffect ? "danger" : "success"}
+                onClick={props.onEffectToggle}
             >
 
-              {isUsingEffect ? "Disable" : "Enable"}
+              {props.isUsingStaffEffect ? "Disable" : "Enable"}
               &nbsp;Staff Effect
             </SmallButton>}
       </div>
@@ -73,6 +66,7 @@ export const StaffTools: FC<Props> = props => {
             currentRoom={props.room}
             focusedUser={props.user}
 
+            onOwnRoom={props.onOwnRoom}
             onClose={toggleModTools}
           />}
     </>

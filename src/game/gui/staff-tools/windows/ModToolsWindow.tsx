@@ -2,17 +2,19 @@ import {FC, useState} from "react";
 import {Window} from "../../windows/Window.tsx";
 import {Button} from "../../buttons/Button.tsx";
 import "./ModToolsWindow.css";
-import {RoomToolsWindow} from "./RoomToolsWindow.tsx";
-import {RoomChatlogsWindow} from "./RoomChatlogsWindow.tsx";
-import {UserInfoWindow} from "./UserInfoWindow.tsx";
-import {TicketsBrowserWindow} from "./TicketsBrowserWindow.tsx";
+import {RoomToolsWindow} from "./room-tools/RoomToolsWindow.tsx";
+import {RoomChatlogsWindow} from "./room-chatlogs/RoomChatlogsWindow.tsx";
+import {UserInfoWindow} from "./user-info/UserInfoWindow.tsx";
+import {TicketsBrowserWindow} from "./tickets-browser/TicketsBrowserWindow.tsx";
 import User from "../../../../models/User.ts";
 import Room from "../../../../models/Room.ts";
+import {AlertAction} from "../../../../models/Alert.ts";
 
 type Props = {
   currentRoom: Room|null,
   focusedUser: User|null,
 
+  onOwnRoom: AlertAction,
   onClose: () => void,
 };
 
@@ -73,6 +75,7 @@ export const ModToolsWindow: FC<Props> = props => {
           <RoomToolsWindow
             room={props.currentRoom}
 
+            onOwnRoom={props.onOwnRoom}
             onClose={toggleRoomTools}
           />}
 
@@ -84,8 +87,8 @@ export const ModToolsWindow: FC<Props> = props => {
           />}
 
       {usersInfo.map(focusedUser =>
-          /*  TODO: verify if impl is good!  */
           <UserInfoWindow
+            key={focusedUser.id}
             user={focusedUser}
             onClose={() => closeUserInfo(focusedUser)}
           />)}
