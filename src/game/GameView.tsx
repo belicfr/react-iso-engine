@@ -9,7 +9,9 @@ import GameSocket from "./room-view/engine/socket/GameSocket.ts";
 import Room, {RoomRepository} from "../models/Room.ts";
 import {RoomViewContainer} from "./room-view/components/room/RoomViewContainer.tsx";
 import User, {SessionRepository, UserRepository} from "../models/User.ts";
-import RoomTemplate, {RoomTemplateRepository} from "../models/RoomTemplate.ts";
+import AvatarEffect, {EAvatarEffect} from "./room-view/entities/AvatarEffect.ts";
+import Alert from "../models/Alert.ts";
+import {StaffAlert} from "./gui/windows/prefabs/modals/staff-alert/StaffAlert.tsx";
 
 export const GameView: FC = () => {
   const [ isHotelViewOpened, setIsHotelViewOpened ] = useState(true);
@@ -20,17 +22,13 @@ export const GameView: FC = () => {
   const [ isRoomPreferencesWindowOpened, setIsRoomPreferencesWindowOpened ] = useState<boolean>(false);
 
   const onHomeClick = () => {
-    if (!user.home) return;
-
-    setCurrentRoom(user.home);
-    setIsHotelViewOpened(false);
-
-    reloadCanvas();
-
-    user.currentRoom = user.home;
+    if (user.home) {
+      onRoomClick(user.home);
+    }
   };
   const onHotelViewClick = () => {
     setCurrentRoom(null);
+    setPlayersInCurrentRoom([]);
     setIsHotelViewOpened(true);
 
     user.currentPosition = {x: 0, y: 0};
@@ -43,13 +41,18 @@ export const GameView: FC = () => {
 
   const isClientPrepared = useRef<boolean>(false);
 
-  //TEMP
   const rooms: Room[] = RoomRepository.i().rooms;
   const [currentRoom, setCurrentRoom] = useState<Room|null>(null);
+  const [playersInCurrentRoom, setPlayersInCurrentRoom] = useState<User[]>([]);
 
-  const roomTemplates: RoomTemplate[] = RoomTemplateRepository.i().templates;
+  const [focusedPlayer, setFocusedPlayer] = useState<User|null>(null);
 
   const user: User = SessionRepository.i().user;
+  const [ alerts, setAlerts ] = useState<Alert[]>([]);
+
+  const [ isPlayerInvisible, setIsPlayerInvisible ] = useState<boolean>(user.invisible);
+  const [ isUsingStaffEffect, setIsUsingStaffEffect ]
+    = useState<boolean>(user.avatarEffect.code === EAvatarEffect.STAFF);
 
   useEffect(() => {
     function prepareClient() {
@@ -60,110 +63,13 @@ export const GameView: FC = () => {
 
     if (!isClientPrepared.current) {
       prepareClient();
-      const templateDev = new RoomTemplate(1, `
-000000000000000000000000000000000000
-000000000000000000000000000000000000
-011111111000000000000000000000000000
-011111111000000000000000000000000000
-011111111000000000000000000000000000
-011111111000000000000000000000000000
-011111111000000000000000000000000000
-011111111000000000000000000000000000
-011111111000000111111111100000000000
-011111111000000111111111100000000000
-011111111000000111111111100000000000
-011111111000000111111111100000000000
-011111111000000111111111100000000000
-011111111000000111111111100000000000
-000000000000000111111111100000000000
-000000000000000111111111100000000000
-000000000000000111111111100000000000
-000000000000000111111111100000000000
-000001000000000111111111100000000000
-000000000000000111111111100000000000
-000000011111111111111111100000000000
-000000011111111111111111100000000000
-000000011111111111111111100000000000
-000000011111111111111111100000000000
-000000011111111111111111100000000000
-000000011111111111111111100000000000
-000000011111111111111111100000000000
-000000011111111111111111100000000000
-000000011111111111111111100000000000
-000000011111111111111111100000000000
-000000011111111111111111100000000000
-000000011111111111111111100000000000
-000000000000000111000000000000000000
-0000000000000001E1000000000000000000
-000000000000000000000000000000000000
-000000000000000000000000000000000000
-000000000000000000000000000000000000
-000000000001000000000000000000000000
-000000000000000000000000000000000000
-000000000000000000000000000000000000
-000000000000000000000000000000000000
-000000000000000000000000000000000000
-000000000000000000000000000000000000
-000000000000000000000000000000000000
-000000000000000000000000000000000000
-000000000000000000000000000000000000
-000000000000000000000000000000000000
-000000000000000000000000000000000000
-000000000000000000000000000000000000
-000000000000000000000000000000000000
-000000000000000000000000000000000000
-000000000000000000000000000000000000
-        `.trim(), "DEV");
 
-      roomTemplates.push(new RoomTemplate(1, `
-0000000000000000000000000000000000000
-0000000000000000000000000000000000000
-0000000000000000000000000000000000000
-0000000000000000000000000000000000000
-0000000000000000000000000000000000000
-0000000000000000000000000000000000000
-0000000000011000000000000000000000000
-0000000000111100000000000000000000000
-000000000E111110000000001111111111000
-0000000011111111000000011111111111000
-0000000111111111100000111111111111000
-0000000111111111111001111111111111000
-0000000011111111111111111111111111000
-0000000001111111111111111111111111000
-0000000000111111111111111111111111000
-0000000000011111111111111111111111000
-0000000000001111111111111111111111000
-0000000000001111111111111111111111000
-0000000000001111111111111111111111000
-0000000000001111111111111111111111000
-0000000000001111111111111111111111000
-0000000000011111111111111111111110000
-0000000000111111111111111111111100000
-0000000001111111111111111111111000000
-0000000001111111111111111111110000000
-0000000001111111111111111111100000000
-0000000001111111111111111111000000000
-0000000001111111111111111110000000000
-0000000001111111111111111100000000000
-0000100001111111111111111000000000000
-0000000001111111111111110000000000000
-0000000001111111111111100000000000000
-0000000001111111111111000000000000000
-0000000000000000000000000000000000000
-0000000000000000000000000000000000000
-        `.trim(), "Theater"));
-
-      roomTemplates.push(templateDev);
-
-      const demoRoom = new Room(1, "Test", "", UserRepository.i().findById(1)!, [], 10, 25,
-        templateDev);
+      const demoRoom = RoomRepository.i().findById(1)!;
       demoRoom.bannedUsers.push(UserRepository.i().findById(2)!);
       demoRoom.havingRightsUsers.push(UserRepository.i().findById(2)!);
 
-      rooms.push(demoRoom);
-
-      SessionRepository.i().user.friends.push(UserRepository.i().findById(1)!);
-      SessionRepository.i().user.home = demoRoom;
+      user.friends.push(UserRepository.i().findById(1)!);
+      user.home = demoRoom;
 
       isClientPrepared.current = true;
     }
@@ -176,13 +82,98 @@ export const GameView: FC = () => {
 
     reloadCanvas();
 
-    user.currentRoom = room;
+    user.roomsHistory.push(room);
+
+    console.log("check room", room);
+
+    if (!user.invisible) {
+      if (user.currentRoom) {
+        user.currentRoom.leave(user);
+      }
+
+      room.enter(user);
+      user.currentRoom = room;
+    }
+
+    setPlayersInCurrentRoom(room.playersInRoom);
   }
 
   function reloadCanvas() {
     setIsCanvasAllowed(false);
 
     setTimeout(() => setIsCanvasAllowed(true), 100);
+  }
+
+  function onInvisibleToggle() {
+    user.invisible = !user.invisible;
+
+    setIsPlayerInvisible(prevState => {
+      const newState: boolean = !prevState;
+
+      if (currentRoom) {
+        if (!newState) {
+          currentRoom.enter(user);
+
+          setPlayersInCurrentRoom(prevState => [
+            ...prevState.filter(u => u.id !== user.id),
+            user,
+          ]);
+
+          user.currentRoom = currentRoom;
+        } else {
+          currentRoom.leave(user);
+
+          setPlayersInCurrentRoom(prevState =>
+            prevState.filter(u => u.id !== user.id));
+
+          user.currentRoom = null;
+        }
+      }
+
+      return newState;
+    });
+
+  }
+
+  function onStaffEffectToggle() {
+    setPlayersInCurrentRoom(prevState => {
+      const player: User|undefined = prevState.find(u => u.id === user.id);
+
+      if (!player) return prevState;
+
+      const state: boolean
+        = player.avatarEffect.code === EAvatarEffect.STAFF;
+
+      player.avatarEffect = state
+        ? AvatarEffect.findByCode(EAvatarEffect.NONE)
+        : AvatarEffect.findByCode(EAvatarEffect.STAFF);
+
+      setIsUsingStaffEffect(!state);
+
+      if (!currentRoom) return prevState;
+
+      const updatedPlayersList: User[] = [
+        ...prevState.filter(u => u.id !== player.id),
+        player,
+      ];
+
+      currentRoom.playersInRoom = updatedPlayersList;
+
+      return updatedPlayersList;
+    });
+  }
+
+  function alert(alert: Alert) {
+    setAlerts(prevState => [
+      ...prevState,
+      alert,
+    ]);
+  }
+
+  function closeAlert(alert: Alert) {
+    setAlerts(prevState => [
+      ...prevState.filter(a => a.id !== alert.id),
+    ]);
   }
 
   return (
@@ -196,12 +187,20 @@ export const GameView: FC = () => {
 
       {user.permissions.isStaff &&
           <StaffTools
-              room={currentRoom}
-              user={null}
-
               canOpenModTools={user.permissions.canUseModTools}
               canBeInvisible={user.permissions.canBeInvisible}
               canUseEffect={user.permissions.canUseStaffEffect}
+
+              room={currentRoom}
+              user={focusedPlayer}
+
+              isInvisible={isPlayerInvisible}
+              isUsingStaffEffect={isUsingStaffEffect}
+
+              onInvisibleToggle={onInvisibleToggle}
+              onEffectToggle={onStaffEffectToggle}
+
+              onOwnRoom={alert}
           />}
 
       {isHotelViewOpened &&
@@ -210,10 +209,12 @@ export const GameView: FC = () => {
       {!isHotelViewOpened && currentRoom && isCanvasAllowed &&
           <RoomViewContainer
             room={currentRoom}
+            players={playersInCurrentRoom}
 
             isRoomPreferencesWindowOpened={isRoomPreferencesWindowOpened}
 
             onRoomPreferencesClose={() => setIsRoomPreferencesWindowOpened(false)}
+            onPlayerFocus={user => setFocusedPlayer(user)}
           />}
 
       {isWelcomeWindowOpened &&
@@ -221,6 +222,7 @@ export const GameView: FC = () => {
             title="Welcome"
             width="auto"
             height="auto"
+
             onClose={() => setIsWelcomeWindowOpened(false)}
           >
 
@@ -229,6 +231,13 @@ export const GameView: FC = () => {
                   This engine is under development.
               </p>
           </ModalWindow>}
+
+      {alerts.map(alert =>
+        <StaffAlert
+          alert={alert}
+
+          onClose={closeAlert}
+        />)}
 
       {isRoomsNavigatorWindowOpened &&
         <RoomsNavigatorWindow
