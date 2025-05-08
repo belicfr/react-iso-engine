@@ -1,6 +1,6 @@
 import {FC} from "react";
-import {Window} from "../../windows/Window.tsx";
-import User from "../../../../models/User.ts";
+import {Window} from "../../../windows/Window.tsx";
+import User from "../../../../../models/User.ts";
 
 type Props = {
   user: User,

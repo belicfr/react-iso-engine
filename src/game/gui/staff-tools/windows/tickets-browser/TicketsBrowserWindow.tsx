@@ -1,7 +1,7 @@
 import {FC, useState} from "react";
-import {Window} from "../../windows/Window.tsx";
-import {TabsNavigation} from "../../tabs-nav/TabsNavigation.tsx";
-import Tab from "../../tabs-nav/Tab.ts";
+import {Window} from "../../../windows/Window.tsx";
+import {TabsNavigation} from "../../../tabs-nav/TabsNavigation.tsx";
+import Tab from "../../../tabs-nav/Tab.ts";
 
 type Props = {
   onClose: () => void,
