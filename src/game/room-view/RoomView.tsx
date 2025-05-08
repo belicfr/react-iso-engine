@@ -5,6 +5,7 @@ import {Container, Graphics, Sprite} from 'pixi.js';
 import {RoomFloor} from "./components/room/RoomFloor.tsx";
 import {Camera} from "./components/camera/Camera.ts";
 import Room from "../../models/Room.ts";
+import User, {UserAction} from "../../models/User.ts";
 
 extend({
   Container,
@@ -14,9 +15,12 @@ extend({
 
 type Props = {
   room: Room,
+  players: User[],
+
+  onPlayerFocus: UserAction,
 };
 
-export const RoomView: FC<Props> = ({room}) => {
+export const RoomView: FC<Props> = ({room, players, onPlayerFocus}) => {
   const [ isCameraMoving, setIsCameraMoving ] = useState<boolean>(false);
 
   return (
@@ -27,8 +31,11 @@ export const RoomView: FC<Props> = ({room}) => {
     >
 
       <RoomFloor
+        players={players}
         tilesPositions={room.template.generate()}
         isCameraMoving={isCameraMoving}
+
+        onPlayerFocus={onPlayerFocus}
       />
 
       <Camera

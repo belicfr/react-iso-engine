@@ -7,7 +7,7 @@ import {Container, Graphics, Sprite} from "pixi.js";
 import {RoomHoverTile} from "./RoomHoverTile.tsx";
 import {PlayerAvatar} from "../player/PlayerAvatar.tsx";
 import {TileSituation} from "../../../../models/RoomTemplate.ts";
-import User, {SessionRepository} from "../../../../models/User.ts";
+import User, {SessionRepository, UserAction} from "../../../../models/User.ts";
 
 extend({
   Container,
@@ -16,11 +16,14 @@ extend({
 });
 
 type Props = {
+  players: User[],
   tilesPositions: TileSituation[],
   isCameraMoving: boolean,
+
+  onPlayerFocus: UserAction,
 };
 
-export const  RoomFloor: FC<Props> = ({tilesPositions, isCameraMoving}) => {
+export const RoomFloor: FC<Props> = ({players, tilesPositions, isCameraMoving, onPlayerFocus}) => {
   const a = useApplication();
   const {app} = a;
 
@@ -37,13 +40,15 @@ export const  RoomFloor: FC<Props> = ({tilesPositions, isCameraMoving}) => {
   const isEnvZoomEventDefined = useRef<boolean>(false);
   const isEntranceInitialized = useRef<boolean>(false);
 
-  const [ playersInRoom, setPlayersInRoom ] = useState<User[]>([user]);
+  const [livePlayersList, setLivePlayersList] = useState<User[]>([]);
 
   const [ hoverTilePosition, setHoverTilePosition ] = useState<Coord2D>({x: 0, y: 0});
 
   const setPlayerPosition = (pos: Coord2D) => {
+    if (user.invisible) return;
+
     user.currentPosition = pos;
-    setPlayersInRoom(prevState => [
+    setLivePlayersList(prevState => [
       ...prevState.filter(u => u.id !== user.id),
       user,
     ]);
@@ -76,6 +81,22 @@ export const  RoomFloor: FC<Props> = ({tilesPositions, isCameraMoving}) => {
 
     return tiles;
   }, [tilesPositions, TILE_SIZE]);
+
+  const playersContainer = useMemo(() =>
+    livePlayersList.map(player =>
+      <PlayerAvatar
+        key={Math.random().toPrecision(1)}
+        x={player.currentPosition.x}
+        y={player.currentPosition.y}
+        z={2}
+        user={player}
+
+        onFocus={onPlayerFocus}
+      />), [livePlayersList]);
+
+  useEffect(() => {
+    setLivePlayersList(players);
+  }, [players]);
 
   useEffect(() => {
     if (!app || !app.renderer || !app.canvas) return;
@@ -143,14 +164,7 @@ export const  RoomFloor: FC<Props> = ({tilesPositions, isCameraMoving}) => {
         }}
       />
 
-      {playersInRoom.map((player: User) =>
-        <PlayerAvatar
-          key={player.id}
-          x={player.currentPosition.x}
-          y={player.currentPosition.y}
-          z={2}
-          user={player}
-        />)}
+      {playersContainer}
     </pixiContainer>
   );
 };
