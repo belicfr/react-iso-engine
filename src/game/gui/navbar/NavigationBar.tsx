@@ -1,13 +1,14 @@
 import {FC} from "react";
 import "./NavigationBar.css";
+import {Action} from "../../../frameworks/utilities/Actions.ts";
 
 type Props = {
   isInHotelView: boolean,
 
-  onHomeClick: () => void,
-  onHotelViewClick: () => void,
-  onRoomsNavigatorClick: () => void,
-  onInventoryClick: () => void,
+  onHomeClick: Action,
+  onHotelViewClick: Action,
+  onRoomsNavigatorClick: Action,
+  onInventoryClick: Action,
 };
 
 export const NavigationBar: FC<Props> = props => {

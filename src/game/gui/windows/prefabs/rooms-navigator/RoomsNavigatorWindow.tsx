@@ -7,12 +7,13 @@ import Room from "../../../../../models/Room.ts";
 import {RoomsList, RoomsListVisibility} from "./components/RoomsList.tsx";
 import {Button} from "../../../buttons/Button.tsx";
 import {CreateRoomWindow} from "../create-room/CreateRoomWindow.tsx";
+import {Action} from "../../../../../frameworks/utilities/Actions.ts";
 
 type Props = {
   rooms: Room[],
 
   onRoomClick: (room: Room) => void,
-  onClose: () => void,
+  onClose: Action,
 };
 
 export const RoomsNavigatorWindow: FC<Props> = ({rooms, onRoomClick, onClose}) => {

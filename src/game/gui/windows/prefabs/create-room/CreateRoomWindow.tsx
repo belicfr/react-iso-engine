@@ -6,10 +6,11 @@ import {RoomModelSelectionStep} from "./steps/RoomModelSelectionStep.tsx";
 import RoomTemplate from "../../../../../models/RoomTemplate.ts";
 import Room, {RoomAccessMode, RoomRepository} from "../../../../../models/Room.ts";
 import {SessionRepository} from "../../../../../models/User.ts";
+import {Action} from "../../../../../frameworks/utilities/Actions.ts";
 
 type Props = {
   onRoomCreate: (room: Room) => void,
-  onClose: () => void,
+  onClose: Action,
 };
 
 export const CreateRoomWindow: FC<Props> = ({onRoomCreate, onClose}) => {

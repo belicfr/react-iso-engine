@@ -2,10 +2,11 @@ import {FC, useEffect, useRef} from "react";
 import {useApplication} from "@pixi/react";
 import {Coord2D} from "../../engine/precepts/Coord2D.ts";
 import {FederatedPointerEvent} from "pixi.js";
+import {Action} from "../../../../frameworks/utilities/Actions.ts";
 
 type Props = {
-  onCameraStartMove: () => void,
-  onCameraStopMove: () => void,
+  onCameraStartMove: Action,
+  onCameraStopMove: Action,
 };
 
 export const Camera: FC<Props> = ({onCameraStartMove, onCameraStopMove}) => {

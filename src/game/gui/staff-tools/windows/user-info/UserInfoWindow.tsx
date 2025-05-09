@@ -1,11 +1,12 @@
 import {FC} from "react";
 import {Window} from "../../../windows/Window.tsx";
 import User from "../../../../../models/User.ts";
+import {Action} from "../../../../../frameworks/utilities/Actions.ts";
 
 type Props = {
   user: User,
 
-  onClose: () => void,
+  onClose: Action,
 };
 
 export const UserInfoWindow: FC<Props> = props => {

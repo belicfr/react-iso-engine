@@ -5,7 +5,8 @@ import {Container, Graphics, Sprite} from 'pixi.js';
 import {RoomFloor} from "./components/room/RoomFloor.tsx";
 import {Camera} from "./components/camera/Camera.ts";
 import Room from "../../models/Room.ts";
-import User, {UserAction} from "../../models/User.ts";
+import User from "../../models/User.ts";
+import {UserAction} from "../../frameworks/utilities/Actions.ts";
 
 extend({
   Container,

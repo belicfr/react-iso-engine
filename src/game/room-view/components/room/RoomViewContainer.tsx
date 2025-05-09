@@ -3,7 +3,8 @@ import Room from "../../../../models/Room.ts";
 import {RoomView} from "../../RoomView.tsx";
 import {RoomInfo} from "../../../gui/rooms/RoomInfo.tsx";
 import {RoomPreferencesWindow} from "../../../gui/windows/prefabs/room-preferences/RoomPreferencesWindow.tsx";
-import User, {UserAction} from "../../../../models/User.ts";
+import User from "../../../../models/User.ts";
+import {Action, UserAction} from "../../../../frameworks/utilities/Actions.ts";
 
 type Props = {
   room: Room,
@@ -11,7 +12,7 @@ type Props = {
 
   isRoomPreferencesWindowOpened: boolean,
 
-  onRoomPreferencesClose: () => void,
+  onRoomPreferencesClose: Action,
   onPlayerFocus: UserAction,
 };
 

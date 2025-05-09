@@ -5,16 +5,19 @@ import {TabColumn} from "../../../windows/prefabs/room-preferences/components/Ta
 import "./RoomToolsWindow.css";
 import {SmallButton} from "../../../buttons/SmallButton.tsx";
 import {SessionRepository} from "../../../../../models/User.ts";
-import Alert, {AlertAction} from "../../../../../models/Alert.ts";
+import Alert from "../../../../../models/Alert.ts";
+import {Action, AlertAction} from "../../../../../frameworks/utilities/Actions.ts";
 
 type Props = {
   room: Room,
 
   onOwnRoom: AlertAction,
-  onClose: () => void,
+  onClose: Action,
 };
 
 export const RoomToolsWindow: FC<Props> = ({room, onOwnRoom, onClose}) => {
+
+
   function ownRoom() {
     room.owner = SessionRepository.i().user;
 
@@ -114,6 +117,8 @@ export const RoomToolsWindow: FC<Props> = ({room, onOwnRoom, onClose}) => {
           </div>
         </div>
       </Window>
+
+
     </>
   );
 };

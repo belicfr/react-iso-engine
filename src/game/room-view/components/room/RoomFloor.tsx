@@ -7,7 +7,8 @@ import {Container, Graphics, Sprite} from "pixi.js";
 import {RoomHoverTile} from "./RoomHoverTile.tsx";
 import {PlayerAvatar} from "../player/PlayerAvatar.tsx";
 import {TileSituation} from "../../../../models/RoomTemplate.ts";
-import User, {SessionRepository, UserAction} from "../../../../models/User.ts";
+import User, {SessionRepository} from "../../../../models/User.ts";
+import {UserAction} from "../../../../frameworks/utilities/Actions.ts";
 
 extend({
   Container,

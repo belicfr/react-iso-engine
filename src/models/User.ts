@@ -121,5 +121,3 @@ export type UserPermissions = {
   canBeInvisible: boolean,
   canUseStaffEffect: boolean,
 };
-
-export type UserAction = (user: User) => void;

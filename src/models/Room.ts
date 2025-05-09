@@ -155,5 +155,3 @@ export type GridSize = {
   cols: number,
   rows: number,
 };
-
-export type RoomAction = (room: Room) => void;

@@ -8,11 +8,12 @@ import "./RoomPreferencesWindow.css";
 import {RightsTab} from "./tabs/RightsTab.tsx";
 import {ModSettingsTab} from "./tabs/ModSettingsTab.tsx";
 import {RoomWordsFilterWindow} from "../room-words-filter/RoomWordsFilterWindow.tsx";
+import {Action} from "../../../../../frameworks/utilities/Actions.ts";
 
 type Props = {
   room: Room,
 
-  onClose: () => void,
+  onClose: Action,
 };
 
 export const RoomPreferencesWindow: FC<Props> = ({room, onClose}) => {

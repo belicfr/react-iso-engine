@@ -1,8 +1,9 @@
 import {FC} from "react";
 import "./CloseButton.css";
+import {Action} from "../../../../frameworks/utilities/Actions.ts";
 
 type Props = {
-  onClick: () => void,
+  onClick: Action,
 };
 
 export const CloseButton: FC<Props> = props => {

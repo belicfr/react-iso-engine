@@ -4,7 +4,7 @@ import "./StaffTools.css";
 import {ModToolsWindow} from "./windows/ModToolsWindow.tsx";
 import Room from "../../../models/Room.ts";
 import User from "../../../models/User.ts";
-import {AlertAction} from "../../../models/Alert.ts";
+import {Action, AlertAction} from "../../../frameworks/utilities/Actions.ts";
 
 type Props = {
   canOpenModTools: boolean,
@@ -17,8 +17,8 @@ type Props = {
   isInvisible: boolean,
   isUsingStaffEffect: boolean,
 
-  onInvisibleToggle: () => void,
-  onEffectToggle: () => void,
+  onInvisibleToggle: Action,
+  onEffectToggle: Action,
 
   onOwnRoom: AlertAction,
 };

@@ -1,6 +1,7 @@
 import {FC, ReactNode} from "react";
 import {CloseButton} from "./components/CloseButton.tsx";
 import "./Window.css";
+import {Action} from "../../../frameworks/utilities/Actions.ts";
 
 export type WindowBaseProps = {
   children: ReactNode,
@@ -10,7 +11,7 @@ export type WindowBaseProps = {
   height: string,
   customHeaderClassName?: string,
 
-  onClose: () => void,
+  onClose: Action,
 };
 
 export const WindowInterface: FC<WindowBaseProps> = props => {

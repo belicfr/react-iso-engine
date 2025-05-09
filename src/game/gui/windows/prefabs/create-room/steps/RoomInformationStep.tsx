@@ -4,6 +4,7 @@ import {TextArea} from "../../../../forms/TextArea.tsx";
 import {Button} from "../../../../buttons/Button.tsx";
 import "./RoomInformationStep.css";
 import RoomTemplate from "../../../../../../models/RoomTemplate.ts";
+import {Action} from "../../../../../../frameworks/utilities/Actions.ts";
 
 type Props = {
   model: RoomTemplate,
@@ -19,8 +20,8 @@ type Props = {
 
   canShowSecondTagInput: boolean,
 
-  onChangeModelClick: () => void,
-  onCreate: () => void,
+  onChangeModelClick: Action,
+  onCreate: Action,
 };
 
 export const RoomInformationStep: FC<Props> = (

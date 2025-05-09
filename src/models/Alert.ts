@@ -10,5 +10,3 @@ export default class Alert {
     this.content = content;
   }
 };
-
-export type AlertAction = (alert: Alert) => void;

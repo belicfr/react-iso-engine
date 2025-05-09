@@ -8,19 +8,19 @@ import {UserInfoWindow} from "./user-info/UserInfoWindow.tsx";
 import {TicketsBrowserWindow} from "./tickets-browser/TicketsBrowserWindow.tsx";
 import User from "../../../../models/User.ts";
 import Room from "../../../../models/Room.ts";
-import {AlertAction} from "../../../../models/Alert.ts";
+import {AlertAction, Action as VoidAction} from "../../../../frameworks/utilities/Actions.ts";
 
 type Props = {
   currentRoom: Room|null,
   focusedUser: User|null,
 
   onOwnRoom: AlertAction,
-  onClose: () => void,
+  onClose: VoidAction,
 };
 
 type Action = {
   label: string,
-  onClick: () => void,
+  onClick: VoidAction,
   disabled?: boolean,
 }
 

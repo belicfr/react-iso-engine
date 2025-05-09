@@ -1,11 +1,12 @@
 import {CSSProperties, FC, ReactNode} from "react";
 import "./Button.css";
+import {Action} from "../../../frameworks/utilities/Actions.ts";
 
 export type ButtonProps = {
   className?: string,
   style?: CSSProperties,
   children: ReactNode,
-  onClick?: () => void,
+  onClick?: Action,
 
   color?: string,
 
