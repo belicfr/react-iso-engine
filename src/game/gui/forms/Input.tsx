@@ -1,4 +1,4 @@
-import {forwardRef} from "react";
+import {ChangeEvent, forwardRef} from "react";
 import "./Control.css";
 import {ControlProps} from "./ControlProps.ts";
 
@@ -9,6 +9,8 @@ type Props = ControlProps & {
   max?: number,
   minLength?: number,
   maxLength?: number,
+
+  onInput?: (content: string) => void,
 };
 
 export const Input = forwardRef<HTMLInputElement, Props>(
@@ -18,10 +20,20 @@ export const Input = forwardRef<HTMLInputElement, Props>(
       min, max, minLength,
       maxLength, value,
 
-      onChange, onBlur,
+      onChange, onBlur, onInput,
     },
     ref
   ) => {
+    function inputEvent(e: ChangeEvent<HTMLInputElement>) {
+      if (onInput) {
+        onInput(e.target.value);
+      }
+
+      if (onChange) {
+        onChange(e);
+      }
+    }
+
     return (
       <>
         <label>
@@ -40,7 +52,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(
             maxLength={maxLength}
             value={value}
 
-            onChange={onChange}
+            onChange={inputEvent}
             onBlur={onBlur}
           />
         </label>
