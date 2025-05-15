@@ -4,11 +4,12 @@ import User from "../../../../../../models/User.ts";
 import {UserRow} from "../components/UserRow.tsx";
 import {TabColumn} from "../components/TabColumn.tsx";
 import {Button} from "../../../../buttons/Button.tsx";
+import {Action} from "../../../../../../frameworks/utilities/Actions.ts";
 
 type Props = {
   room: Room,
 
-  onWordsFilterToggle: () => void,
+  onWordsFilterToggle: Action,
 };
 
 export const ModSettingsTab: FC<Props> = ({room, onWordsFilterToggle}) => {

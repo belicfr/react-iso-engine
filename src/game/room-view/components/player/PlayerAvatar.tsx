@@ -2,14 +2,16 @@ import {FC, useEffect, useMemo, useRef, useState} from "react";
 import {Assets, Rectangle, Sprite, Texture} from 'pixi.js';
 import {Size2D} from "../../engine/precepts/Size2D.ts";
 import {Coord2D} from "../../engine/precepts/Coord2D.ts";
-import User from "../../../../models/User.ts";
+import User, {UserAction} from "../../../../models/User.ts";
 
 type Props = Coord2D & {
   z: number,
   user: User,
+
+  onFocus: UserAction,
 };
 
-export const PlayerAvatar: FC<Props> = ({x, y, z, user}) => {
+export const PlayerAvatar: FC<Props> = ({x, y, z, user, onFocus}) => {
   const ANCHORS: Coord2D = {x: 0, y: 1};
 
   const SIZE: Size2D = useMemo<Size2D>(() => {
@@ -25,6 +27,8 @@ export const PlayerAvatar: FC<Props> = ({x, y, z, user}) => {
       y: 10,
     };
   }, []);
+
+  console.log(user);
 
   const [ avatarTexture, setAvatarTexture ] = useState(Texture.EMPTY);
   const [ effectTexture, setEffectTexture ] = useState(Texture.EMPTY);
@@ -50,6 +54,7 @@ export const PlayerAvatar: FC<Props> = ({x, y, z, user}) => {
   }, [avatarTexture]);
 
   useEffect(() => {
+    console.log("check effect texture", effectTexture);
     if (effectTexture === Texture.EMPTY) {
       Assets
         .load(user.avatarEffect.source)
@@ -62,18 +67,25 @@ export const PlayerAvatar: FC<Props> = ({x, y, z, user}) => {
     }
   }, [effectTexture, user]);
 
+  function onPlayerClick() {
+    console.log("Check Player Click");
+    onFocus(user);
+  }
+
   return (
     <pixiContainer
       x={x}
       y={y + SIZE.height / 4 - TEXTURE_MARGINS.y / 2}
       zIndex={z}
       sortableChildren={true}
+      interactive={true}
+
+      onClick={onPlayerClick}
     >
 
       <pixiSprite
         ref={effect}
         texture={effectTexture}
-        interactive={false}
         zIndex={1}
         anchor={ANCHORS}
         x={-12}
@@ -89,13 +101,10 @@ export const PlayerAvatar: FC<Props> = ({x, y, z, user}) => {
           SIZE.width - TEXTURE_MARGINS.x,
           SIZE.height)}
         eventMode={"static"}
-        interactive={true}
         zIndex={0}
         anchor={ANCHORS}
         x={0}
         y={0}
-
-        onClick={e => console.log("check avatar click")}
       />
     </pixiContainer>
   );

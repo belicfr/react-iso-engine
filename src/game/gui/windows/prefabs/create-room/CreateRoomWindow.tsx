@@ -4,12 +4,13 @@ import "./CreateRoomWindow.css";
 import {RoomInformationStep} from "./steps/RoomInformationStep.tsx";
 import {RoomModelSelectionStep} from "./steps/RoomModelSelectionStep.tsx";
 import RoomTemplate from "../../../../../models/RoomTemplate.ts";
-import Room, {RoomRepository} from "../../../../../models/Room.ts";
+import Room, {RoomAccessMode, RoomRepository} from "../../../../../models/Room.ts";
 import {SessionRepository} from "../../../../../models/User.ts";
+import {Action} from "../../../../../frameworks/utilities/Actions.ts";
 
 type Props = {
   onRoomCreate: (room: Room) => void,
-  onClose: () => void,
+  onClose: Action,
 };
 
 export const CreateRoomWindow: FC<Props> = ({onRoomCreate, onClose}) => {
@@ -31,7 +32,9 @@ export const CreateRoomWindow: FC<Props> = ({onRoomCreate, onClose}) => {
       SessionRepository.i().user,
       [firstTag, secondTag],
       10,
+      RoomAccessMode.OPEN,
       0,
+      [],
       model!);
 
     rooms.push(createdRoom);

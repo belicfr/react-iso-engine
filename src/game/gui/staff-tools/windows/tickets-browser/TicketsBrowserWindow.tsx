@@ -1,10 +1,11 @@
 import {FC, useState} from "react";
-import {Window} from "../../windows/Window.tsx";
-import {TabsNavigation} from "../../tabs-nav/TabsNavigation.tsx";
-import Tab from "../../tabs-nav/Tab.ts";
+import {Window} from "../../../windows/Window.tsx";
+import {TabsNavigation} from "../../../tabs-nav/TabsNavigation.tsx";
+import Tab from "../../../tabs-nav/Tab.ts";
+import {Action} from "../../../../../frameworks/utilities/Actions.ts";
 
 type Props = {
-  onClose: () => void,
+  onClose: Action,
 };
 
 export const TicketsBrowserWindow: FC<Props> = props => {

@@ -7,6 +7,7 @@ export const SmallButton: FC<ButtonProps> = props => {
     <>
       <button className={`small-button button-${props.color ?? "primary"} ${props.className}`}
               style={props.style}
+              disabled={props.disabled}
               onClick={props.onClick}>
 
         {props.children}

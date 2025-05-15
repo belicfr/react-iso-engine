@@ -2,11 +2,12 @@ import {FC} from "react";
 import Room from "../../../../../models/Room.ts";
 import {Window} from "../../Window.tsx";
 import "./RoomInfoWindow.css";
+import {Action} from "../../../../../frameworks/utilities/Actions.ts";
 
 type Props = {
   room: Room,
 
-  onClose: () => void,
+  onClose: Action,
 };
 
 export const RoomInfoWindow: FC<Props> = ({room, onClose}) => {

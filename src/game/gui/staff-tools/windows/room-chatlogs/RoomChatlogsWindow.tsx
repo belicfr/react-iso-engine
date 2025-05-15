@@ -1,11 +1,12 @@
 import {FC} from "react";
-import {Window} from "../../windows/Window.tsx";
-import Room from "../../../../models/Room.ts";
+import {Window} from "../../../windows/Window.tsx";
+import Room from "../../../../../models/Room.ts";
+import {Action} from "../../../../../frameworks/utilities/Actions.ts";
 
 type Props = {
   room: Room,
 
-  onClose: () => void,
+  onClose: Action,
 };
 
 export const RoomChatlogsWindow: FC<Props> = props => {

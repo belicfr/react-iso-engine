@@ -1,10 +1,11 @@
 import {FC, ReactNode} from "react";
 import "./TabColumnRow.css";
+import {Action} from "../../../../../../frameworks/utilities/Actions.ts";
 
 type Props = {
   children: ReactNode,
 
-  onClick?: () => void,
+  onClick?: Action,
 };
 
 export const TabColumnRow: FC<Props> = ({children, onClick}) => {

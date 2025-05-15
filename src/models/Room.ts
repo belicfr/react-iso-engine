@@ -1,5 +1,6 @@
-import User from "./User.ts";
-import RoomTemplate from "./RoomTemplate.ts";
+import User, {UserRepository} from "./User.ts";
+import RoomTemplate, {RoomTemplateRepository} from "./RoomTemplate.ts";
+import Group, {GroupRepository} from "./Group.ts";
 
 export class RoomRepository {
   static instance: RoomRepository;
@@ -7,7 +8,20 @@ export class RoomRepository {
   rooms: Room[];
 
   constructor() {
-    this.rooms = [];
+    this.rooms = [
+      new Room(
+        1,
+        "Test",
+        "",
+        UserRepository.i().findById(1)!,
+        [],
+        10,
+        RoomAccessMode.OPEN,
+        0,
+        [],
+        RoomTemplateRepository.i().findById(1)!,
+        GroupRepository.i().findById(1)!)
+    ];
   }
 
   findById(id: number): Room|null {
@@ -26,14 +40,17 @@ export class RoomRepository {
 }
 
 export default class Room {
+
   id: number;
   name: string;
   description: string;
   owner: User;
   tags: RoomTags;
   playersLimit: number;
+  accessMode: RoomAccessMode;
 
-  playersCount: number;
+  playersInRoomCount: number;
+  playersInRoom: User[];
 
   template: RoomTemplate;
 
@@ -42,6 +59,8 @@ export default class Room {
 
   bannedWords: string[];
 
+  group: Group|null;
+
   constructor(
     id: number,
     name: string,
@@ -49,8 +68,11 @@ export default class Room {
     owner: User,
     tags: RoomTags,
     playersLimit: number,
-    playersCount: number = 0,
-    template: RoomTemplate) {
+    accessMode: RoomAccessMode = RoomAccessMode.OPEN,
+    playersInRoomCount: number = 0,
+    playersInRoom: User[] = [],
+    template: RoomTemplate,
+    group: Group|null = null) {
 
     this.id = id;
     this.name = name;
@@ -60,7 +82,10 @@ export default class Room {
     this.tags = tags;
     this.playersLimit = playersLimit;
 
-    this.playersCount = playersCount;
+    this.accessMode = accessMode;
+
+    this.playersInRoomCount = playersInRoomCount;
+    this.playersInRoom = playersInRoom;
 
     this.template = template;
 
@@ -68,6 +93,8 @@ export default class Room {
     this.havingRightsUsers = [];
 
     this.bannedWords = [];
+
+    this.group = group;
   }
 
   getPopulationLevel(): RoomPopulation {
@@ -75,20 +102,36 @@ export default class Room {
     const lowLimit: number = max / 3;
     const mediumLimit: number = lowLimit * 2;
 
-    if (this.playersCount > 0
-               && this.playersCount <= lowLimit) {
+    const playersCount: number = this.playersInRoomCount;
+
+    if (playersCount > 0
+               && playersCount <= lowLimit) {
 
       return RoomPopulation.LOW;
-    } else if (this.playersCount > lowLimit
-               && this.playersCount <= mediumLimit) {
+    } else if (playersCount > lowLimit
+               && playersCount <= mediumLimit) {
 
       return RoomPopulation.MEDIUM;
-    } else if (this.playersCount > mediumLimit) {
+    } else if (playersCount > mediumLimit) {
       return RoomPopulation.HIGH;
     }
 
     return RoomPopulation.NONE;
   }
+
+  enter(user: User): void {
+    if (!this.playersInRoom.includes(user)) {
+      this.playersInRoom.push(user);
+      this.playersInRoomCount = this.playersInRoom.length;
+    }
+  };
+
+  leave(user: User): void {
+    if (this.playersInRoom.includes(user)) {
+      this.playersInRoom = this.playersInRoom.filter(u => u.id !== user.id);
+      this.playersInRoomCount = this.playersInRoom.length;
+    }
+  };
 };
 
 type RoomTags = [string?, string?];
@@ -98,6 +141,14 @@ export enum RoomPopulation {
   LOW = "low",
   MEDIUM = "medium",
   HIGH = "high",
+}
+
+export enum RoomAccessMode {
+  OPEN,
+  ON_REQUEST,
+  PASSWORD,
+  WITH_RIGHTS,
+  CLOSED_BY_STAFF,
 }
 
 export type GridSize = {

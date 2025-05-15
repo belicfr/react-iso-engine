@@ -1,4 +1,4 @@
-import {FC} from "react";
+import {ChangeEvent, FC} from "react";
 import "./Control.css";
 import {ControlProps} from "./ControlProps.ts";
 
@@ -13,6 +13,8 @@ type Props = ControlProps & {
   cols?: number,
 
   resize?: CSSResize,
+
+  onInput?: (content: string) => void,
 };
 
 type CSSResize =
@@ -31,9 +33,19 @@ export const TextArea: FC<Props> = (
     value, resize,
     rows, cols,
 
-    onChange, onBlur,
+    onChange, onBlur, onInput,
   }
 ) => {
+  function inputEvent(e: ChangeEvent<HTMLTextAreaElement>) {
+    if (onInput) {
+      onInput(e.target.value);
+    }
+
+    if (onChange) {
+      onChange(e);
+    }
+  }
+  
   return (
     <>
       <label>
@@ -53,7 +65,7 @@ export const TextArea: FC<Props> = (
           cols={cols}
           value={value}
 
-          onChange={onChange}
+          onChange={inputEvent}
           onBlur={onBlur}
         />
       </label>

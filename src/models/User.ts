@@ -1,15 +1,23 @@
 import Room from "./Room.ts";
 import {Coord2D} from "../game/room-view/engine/precepts/Coord2D.ts";
 import AvatarEffect, {EAvatarEffect} from "../game/room-view/entities/AvatarEffect.ts";
+import Alert from "./Alert.ts";
 
 export class SessionRepository {
   static instance: SessionRepository;
 
   user: User;
+  alerts: Alert[];
 
   constructor(user: User) {
     this.user = user;
+    this.alerts = [];
   }
+
+  closeAlert(id: number) {
+    this.alerts = this.alerts.filter(alert => alert.id !== id);
+  };
+
 
   static i(): SessionRepository {
     if (!SessionRepository.instance) {
@@ -73,6 +81,7 @@ export default class User {
   friends: User[];
   currentPosition: Coord2D;
   currentRoom: Room|null;
+  roomsHistory: Room[];
   avatarEffect: AvatarEffect;
 
   // Permissions (refactor w/ backend impl)
@@ -87,16 +96,21 @@ export default class User {
     this.friends = [];
     this.currentPosition = {x: 0, y: 0};
     this.currentRoom = null;
+    this.roomsHistory = [];
     this.avatarEffect = AvatarEffect.findByCode(EAvatarEffect.NONE);
 
     this.permissions = permissions;
 
     this.invisible = false;
-  }
+  };
 
   isInvisible(): boolean {
     return this.permissions.canBeInvisible
       && this.invisible;
+  };
+
+  isUsingStaffEffect(): boolean {
+    return this.avatarEffect.code === EAvatarEffect.STAFF;
   }
 };
 

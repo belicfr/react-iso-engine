@@ -6,11 +6,12 @@ import {ModalWindow} from "../windows/ModalWindow.tsx";
 import {Button} from "../buttons/Button.tsx";
 import {NotificationsCenter} from "../notifications-center/NotificationsCenter.tsx";
 import Notification from "../../../models/Notification.ts";
+import {Action} from "../../../frameworks/utilities/Actions.ts";
 
 type Props = {
   canAccessRoomPreferences: boolean,
 
-  onRoomPreferencesClick: () => void,
+  onRoomPreferencesClick: Action,
 };
 
 export const TopOptions: FC<Props> = (

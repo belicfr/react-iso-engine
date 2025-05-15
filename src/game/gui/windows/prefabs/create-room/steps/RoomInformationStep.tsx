@@ -4,6 +4,7 @@ import {TextArea} from "../../../../forms/TextArea.tsx";
 import {Button} from "../../../../buttons/Button.tsx";
 import "./RoomInformationStep.css";
 import RoomTemplate from "../../../../../../models/RoomTemplate.ts";
+import {Action} from "../../../../../../frameworks/utilities/Actions.ts";
 
 type Props = {
   model: RoomTemplate,
@@ -19,8 +20,8 @@ type Props = {
 
   canShowSecondTagInput: boolean,
 
-  onChangeModelClick: () => void,
-  onCreate: () => void,
+  onChangeModelClick: Action,
+  onCreate: Action,
 };
 
 export const RoomInformationStep: FC<Props> = (
@@ -56,20 +57,13 @@ export const RoomInformationStep: FC<Props> = (
         </h5>
 
         <form className="form__container">
-          {/*
-            TODO:
-              - name
-              - description
-              - 0..2 tags
-            */}
           <Input
             label="Name:"
             placeholder="Pretty Place!"
 
             value={name}
 
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setName(e.target.value)}
+            onInput={setName}
           />
 
           <TextArea
@@ -79,8 +73,7 @@ export const RoomInformationStep: FC<Props> = (
 
             value={description}
 
-            onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-              setDescription(e.target.value)}
+            onInput={setDescription}
           />
 
           <div className="form__tags-inputs">
@@ -94,8 +87,7 @@ export const RoomInformationStep: FC<Props> = (
 
                 value={firstTag}
 
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setFirstTag(e.target.value)}
+                onInput={setFirstTag}
               />
 
               {canShowSecondTagInput &&
@@ -104,8 +96,7 @@ export const RoomInformationStep: FC<Props> = (
 
                     value={secondTag}
 
-                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                      setSecondTag(e.target.value)}
+                    onInput={setSecondTag}
                   />}
             </div>
           </div>

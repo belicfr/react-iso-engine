@@ -5,11 +5,12 @@ import {TabColumn} from "../room-preferences/components/TabColumn.tsx";
 import "./RoomWordsFilterWindow.css";
 import {TabColumnRow} from "../room-preferences/components/TabColumnRow.tsx";
 import {Input} from "../../../forms/Input.tsx";
+import {Action} from "../../../../../frameworks/utilities/Actions.ts";
 
 type Props = {
   room: Room,
 
-  onClose: () => void,
+  onClose: Action,
 }
 
 export const RoomWordsFilterWindow: FC<Props> = ({room, onClose}) => {
