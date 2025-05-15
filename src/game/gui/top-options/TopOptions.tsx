@@ -6,9 +6,13 @@ import {ModalWindow} from "../windows/ModalWindow.tsx";
 import {Button} from "../buttons/Button.tsx";
 import {NotificationsCenter} from "../notifications-center/NotificationsCenter.tsx";
 import Notification from "../../../models/Notification.ts";
-import {Action} from "../../../frameworks/utilities/Actions.ts";
+import {Action} from "../../../frameworks/types/Actions.ts";
+import {useUser} from "../../../io/users/UserContext.tsx";
+import {PublicRoomDto} from "../../../models/dto/public/PublicRoomDto.ts";
 
 type Props = {
+  room: PublicRoomDto|null,
+
   canAccessRoomPreferences: boolean,
 
   onRoomPreferencesClick: Action,
@@ -16,11 +20,15 @@ type Props = {
 
 export const TopOptions: FC<Props> = (
   {
+    room,
+
     canAccessRoomPreferences,
 
     onRoomPreferencesClick
   }
 ) => {
+  const user = useUser();
+
   const [isHelpWindowOpened, setIsHelpWindowOpened] = useState(false);
 
   const [ notifications, setNotifications ] = useState<Notification[]>([]);
@@ -40,7 +48,7 @@ export const TopOptions: FC<Props> = (
           <div className="top-options__currencies">
             <div className="top-options__credits">
               <CrownsIcon size="20px"/>
-              100
+              {user.crowns}
             </div>
           </div>
 
@@ -58,11 +66,22 @@ export const TopOptions: FC<Props> = (
         </div>
 
         <div className="room-widgets">
+          {room && room.group &&
+            <div className="group-card">
+                <div className="group-card__icon" style={{background: "red"}}></div>
+
+                <div className="group-card__intro">
+                    <h6 className="group-card__group-name">
+                      {room.group.name}
+                    </h6>
+                </div>
+            </div>}
+
           {canAccessRoomPreferences &&
               <Button
-                color="secondary"
+                  color="secondary"
 
-                onClick={onRoomPreferencesClick}
+                  onClick={onRoomPreferencesClick}
               >
 
                   Room Preferences
@@ -70,7 +89,7 @@ export const TopOptions: FC<Props> = (
         </div>
 
         <div className="notifications-center">
-          <NotificationsCenter
+        <NotificationsCenter
             notifications={notifications}
             removeNotification={removeNotification}
           />
