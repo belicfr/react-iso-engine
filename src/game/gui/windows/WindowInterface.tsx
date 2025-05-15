@@ -1,7 +1,7 @@
 import {FC, ReactNode} from "react";
 import {CloseButton} from "./components/CloseButton.tsx";
 import "./Window.css";
-import {Action} from "../../../frameworks/utilities/Actions.ts";
+import {Action} from "../../../frameworks/types/Actions.ts";
 
 export type WindowBaseProps = {
   children: ReactNode,
