@@ -1,10 +1,10 @@
-import {ChangeEvent, FC} from "react";
+import {FC} from "react";
 import {Input} from "../../../../forms/Input.tsx";
 import {TextArea} from "../../../../forms/TextArea.tsx";
 import {Button} from "../../../../buttons/Button.tsx";
 import "./RoomInformationStep.css";
 import RoomTemplate from "../../../../../../models/RoomTemplate.ts";
-import {Action} from "../../../../../../frameworks/utilities/Actions.ts";
+import {Action} from "../../../../../../frameworks/types/Actions.ts";
 
 type Props = {
   model: RoomTemplate,

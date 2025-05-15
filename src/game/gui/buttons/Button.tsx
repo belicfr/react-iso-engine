@@ -1,14 +1,14 @@
 import {CSSProperties, FC, ReactNode} from "react";
 import "./Button.css";
-import {Action} from "../../../frameworks/utilities/Actions.ts";
+import {ThemeColor} from "../../../frameworks/types/Themes.ts";
 
 export type ButtonProps = {
   className?: string,
   style?: CSSProperties,
   children: ReactNode,
-  onClick?: Action,
+  onClick?: (e) => void,
 
-  color?: string,
+  color?: ThemeColor,
 
   disabled?: boolean,
 };

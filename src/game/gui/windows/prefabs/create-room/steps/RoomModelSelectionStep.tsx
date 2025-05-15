@@ -2,7 +2,7 @@ import {FC} from "react";
 import "./RoomModelSelectionStep.css";
 import RoomTemplate, {RoomTemplateRepository} from "../../../../../../models/RoomTemplate.ts";
 import {Button} from "../../../../buttons/Button.tsx";
-import {Action} from "../../../../../../frameworks/utilities/Actions.ts";
+import {Action} from "../../../../../../frameworks/types/Actions.ts";
 
 type Props = {
   // models: RoomTemplate[],

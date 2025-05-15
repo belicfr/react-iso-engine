@@ -1,6 +1,6 @@
 import {FC} from "react";
 import "./NavigationBar.css";
-import {Action} from "../../../frameworks/utilities/Actions.ts";
+import {Action} from "../../../frameworks/types/Actions.ts";
 
 type Props = {
   isInHotelView: boolean,

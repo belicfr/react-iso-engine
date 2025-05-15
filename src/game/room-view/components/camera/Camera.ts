@@ -2,7 +2,7 @@ import {FC, useEffect, useRef} from "react";
 import {useApplication} from "@pixi/react";
 import {Coord2D} from "../../engine/precepts/Coord2D.ts";
 import {FederatedPointerEvent} from "pixi.js";
-import {Action} from "../../../../frameworks/utilities/Actions.ts";
+import {Action} from "../../../../frameworks/types/Actions.ts";
 
 type Props = {
   onCameraStartMove: Action,
