@@ -1,0 +1,10 @@
+.room-alert__container {
+  padding: 10px;
+}
+.room-alert__container > form > .action-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+/*# sourceMappingURL=RoomAlertWindow.css.map */
