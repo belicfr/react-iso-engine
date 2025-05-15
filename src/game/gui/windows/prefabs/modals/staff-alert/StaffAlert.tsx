@@ -1,13 +1,15 @@
 import {FC} from "react";
 import {SessionRepository} from "../../../../../../models/User.ts";
 import {ModalWindow} from "../../../ModalWindow.tsx";
-import Alert, {AlertAction} from "../../../../../../models/Alert.ts";
+import Alert from "../../../../../../models/Alert.ts";
 import "./StaffAlert.css";
 import Markdown from "react-markdown";
 import {Button} from "../../../../buttons/Button.tsx";
+import {AlertAction} from "../../../../../../frameworks/types/Actions.ts";
+import {PublicAlertDto} from "../../../../../../models/dto/public/PublicAlertDto.ts";
 
 type Props = {
-  alert: Alert,
+  alert: PublicAlertDto,
 
   onClose: AlertAction,
 };
@@ -22,7 +24,7 @@ export const StaffAlert: FC<Props> = ({alert, onClose}) => {
     <ModalWindow
       title={alert.title}
       width="450px"
-      height="250px"
+      height="auto"
       onClose={close}
     >
 
