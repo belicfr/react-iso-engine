@@ -72,4 +72,5 @@ export enum GroupMode {
   OPEN,
   ON_REQUEST,
   CLOSED,
+  CLOSED_BY_STAFF,
 }
