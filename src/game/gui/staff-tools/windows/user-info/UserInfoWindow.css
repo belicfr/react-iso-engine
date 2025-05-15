@@ -1,0 +1,30 @@
+.ellipsis, .user-info__container .tab-column .data-list > p {
+  width: 100%;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-info__container {
+  padding: 10px;
+}
+.user-info__container .tab-column {
+  height: 100%;
+}
+.user-info__container .tab-column .data-list {
+  padding: 5px 10px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 2px;
+}
+.user-info__container .tab-column .data-list > p {
+  font-size: 0.8rem;
+}
+.user-info__container .user-info__actions {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+}
+
+/*# sourceMappingURL=UserInfoWindow.css.map */

@@ -1,0 +1,24 @@
+@import "../../../../../frameworks/styles/Typography"
+
+.user-info__container
+  padding: 10px
+
+  .tab-column
+    height: 100%
+
+    .data-list
+      padding: 5px 10px
+
+      display: flex
+      flex-direction: column
+      row-gap: 2px
+
+      > p
+        @extend .ellipsis
+
+        font-size: .8rem
+
+  .user-info__actions
+    display: flex
+    flex-direction: column
+    row-gap: 5px
