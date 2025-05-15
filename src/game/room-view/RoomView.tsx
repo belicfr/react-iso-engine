@@ -4,9 +4,10 @@ import {Application as GameEnvironment, extend} from "@pixi/react";
 import {Container, Graphics, Sprite} from 'pixi.js';
 import {RoomFloor} from "./components/room/RoomFloor.tsx";
 import {Camera} from "./components/camera/Camera.ts";
-import Room from "../../models/Room.ts";
 import User from "../../models/User.ts";
-import {UserAction} from "../../frameworks/utilities/Actions.ts";
+import {UserAction} from "../../frameworks/types/Actions.ts";
+import RoomTemplate from "../../models/RoomTemplate.ts";
+import {PublicRoomDto} from "../../models/dto/public/PublicRoomDto.ts";
 
 extend({
   Container,
@@ -15,7 +16,7 @@ extend({
 });
 
 type Props = {
-  room: Room,
+  room: PublicRoomDto,
   players: User[],
 
   onPlayerFocus: UserAction,
@@ -33,7 +34,7 @@ export const RoomView: FC<Props> = ({room, players, onPlayerFocus}) => {
 
       <RoomFloor
         players={players}
-        tilesPositions={room.template.generate()}
+        tilesPositions={RoomTemplate.generate(room.template)}
         isCameraMoving={isCameraMoving}
 
         onPlayerFocus={onPlayerFocus}

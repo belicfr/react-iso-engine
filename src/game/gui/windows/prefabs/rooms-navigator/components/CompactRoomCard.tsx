@@ -1,18 +1,15 @@
-import {FC, useState} from "react";
+import {FC} from "react";
 import "./RoomCard.css";
 import {RoomCardProps} from "./RoomsList.tsx";
-import {RoomInfoWindow} from "../../room-info/RoomInfoWindow.tsx";
+import Room from "../../../../../../models/Room.ts";
 
-export const CompactRoomCard: FC<RoomCardProps> = ({room, onClick}) => {
-  const [isRoomInfoWindowOpened, setIsRoomInfoWindowOpened] = useState<boolean>(false);
-
+export const CompactRoomCard: FC<RoomCardProps> = ({room, onInfoClick, onClick}) => {
   function onRoomCardClick() {
     onClick(room);
-    setIsRoomInfoWindowOpened(false);
   }
 
   function onRoomInfoButtonClick() {
-    setIsRoomInfoWindowOpened(!isRoomInfoWindowOpened);
+    onInfoClick(room);
   }
 
   return (
@@ -25,7 +22,7 @@ export const CompactRoomCard: FC<RoomCardProps> = ({room, onClick}) => {
 
           <div className={
             "players-in-room"
-            + ` players-${room.getPopulationLevel()}`
+            + ` players-${Room.getPopulationLevel(room.playersInRoomCount, room.playersLimit)}`
           }>
 
             <div className="players-icon"></div>
@@ -46,13 +43,6 @@ export const CompactRoomCard: FC<RoomCardProps> = ({room, onClick}) => {
           <div className="room-info__icon"></div>
         </div>
       </div>
-
-      {isRoomInfoWindowOpened &&
-          <RoomInfoWindow
-            room={room}
-
-            onClose={() => setIsRoomInfoWindowOpened(false)}
-          />}
     </>
   );
 };

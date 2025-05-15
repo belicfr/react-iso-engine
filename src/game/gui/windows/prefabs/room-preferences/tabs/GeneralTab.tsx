@@ -1,49 +1,83 @@
-import {FC, useState} from "react";
-import Room, {RoomRepository} from "../../../../../../models/Room.ts";
+import {FC, useEffect, useState} from "react";
 import {Input} from "../../../../forms/Input.tsx";
 import {TextArea} from "../../../../forms/TextArea.tsx";
+import {PublicRoomDto} from "../../../../../../models/dto/public/PublicRoomDto.ts";
+import {useConnection} from "../../../../../../io/ConnectionContext.tsx";
+import {RoomAction} from "../../../../../../frameworks/types/Actions.ts";
+import {Handler, HandlerResponseCode} from "../../../../../../io/HandlerResponse.ts";
+import {useAlerts} from "../../../AlertsContext.tsx";
 
 type Props = {
-  room: Room,
+  room: PublicRoomDto,
+
+  onRoomUpdate: RoomAction,
 };
 
-export const GeneralTab: FC<Props> = ({room}) => {
+export const GeneralTab: FC<Props> = ({room, onRoomUpdate}) => {
   const [ name, setName ] = useState<string>(room.name);
   const [ description, setDescription ] = useState<string>(room.description);
-  const [ firstTag, setFirstTag ] = useState<string>(room.tags[0] ?? "");
-  const [ secondTag, setSecondTag ] = useState<string>(room.tags[1] ?? "");
+  const [ firstTag, setFirstTag ] = useState<string>(room.tagOne ?? "");
+  const [ secondTag, setSecondTag ] = useState<string>(room.tagTwo ?? "");
+
+  const connection = useConnection();
 
   const tagInputProps = {
     minLength: 3,
     maxLength: 10,
   };
 
-  const getRoomIndex = (room: Room): number =>
-    RoomRepository.i().rooms.findIndex(r => r === room);
-
   const saveName = (name: string) => {
-    const roomIndex: number = getRoomIndex(room);
+    connection.invoke("SendNewRoomName", room.id, name);
 
-    RoomRepository.i().rooms[roomIndex].name = name;
+    room.name = name;
+    onRoomUpdate(room);
   };
 
   const saveDescription = (description: string) => {
-    const roomIndex: number = getRoomIndex(room);
+    connection.invoke("SendNewRoomDescription", room.id, description);
 
-    RoomRepository.i().rooms[roomIndex].description = description;
+    room.description = description;
+    onRoomUpdate(room);
   };
 
   const saveFirstTag = (tag: string) => {
-    const roomIndex: number = getRoomIndex(room);
+    connection.invoke("SendNewRoomTag", room.id, 0, tag);
 
-    RoomRepository.i().rooms[roomIndex].tags[0] = tag;
+    room.tagOne = tag;
+    onRoomUpdate(room);
   };
 
   const saveSecondTag = (tag: string) => {
-    const roomIndex: number = getRoomIndex(room);
+    connection.invoke("SendNewRoomTag", room.id, 1, tag);
 
-    RoomRepository.i().rooms[roomIndex].tags[1] = tag;
+    room.tagTwo = tag;
+    onRoomUpdate(room);
   };
+
+  const {addAlert} = useAlerts();
+
+  useEffect(() => {
+    const handlerOnRoomInfoUpdate: Handler = response => {
+      console.log(response);
+      if (response.code === HandlerResponseCode.FAIL) {
+        addAlert({
+          id: Math.random(),
+          title: "Error",
+          content: response.message,
+        });
+      }
+    };
+
+    connection.on("ReceiveNewRoomName", handlerOnRoomInfoUpdate);
+    connection.on("ReceiveNewRoomDescription", handlerOnRoomInfoUpdate);
+    connection.on("ReceiveNewRoomTag", handlerOnRoomInfoUpdate);
+
+    return () => {
+      connection.off("ReceiveNewRoomName", handlerOnRoomInfoUpdate);
+      connection.off("ReceiveNewRoomDescription", handlerOnRoomInfoUpdate);
+      connection.off("ReceiveNewRoomTag", handlerOnRoomInfoUpdate);
+    };
+  }, []);
 
   return (
     <>

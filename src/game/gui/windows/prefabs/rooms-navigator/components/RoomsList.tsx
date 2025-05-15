@@ -1,8 +1,9 @@
 import {FC} from "react";
-import Room from "../../../../../../models/Room.ts";
 import {CompactRoomCard} from "./CompactRoomCard.tsx";
 import {RoomCard} from "./RoomCard.tsx";
 import "./RoomsList.css";
+import {RoomAction} from "../../../../../../frameworks/types/Actions.ts";
+import {PublicRoomDto} from "../../../../../../models/dto/public/PublicRoomDto.ts";
 
 export enum RoomsListVisibility {
   COMPACT_LIST,
@@ -10,14 +11,15 @@ export enum RoomsListVisibility {
 }
 
 type Props = {
-  rooms: Room[],
+  rooms: PublicRoomDto[],
   visibility: RoomsListVisibility,
 
-  onRoomClick: (room: Room) => void,
+  onRoomInfoClick: RoomAction,
+  onRoomClick: RoomAction,
 };
 
-export const RoomsList: FC<Props> = ({rooms, visibility, onRoomClick}) => {
-  const renderRoomCard = (room: Room, index: number) => {
+export const RoomsList: FC<Props> = ({rooms, visibility, onRoomInfoClick, onRoomClick}) => {
+  const renderRoomCard = (room: PublicRoomDto, index: number) => {
     switch (visibility) {
       case RoomsListVisibility.COMPACT_LIST:
         return (
@@ -25,6 +27,7 @@ export const RoomsList: FC<Props> = ({rooms, visibility, onRoomClick}) => {
             key={index}
             room={room}
 
+            onInfoClick={onRoomInfoClick}
             onClick={onRoomClick}
           />
         );
@@ -35,6 +38,7 @@ export const RoomsList: FC<Props> = ({rooms, visibility, onRoomClick}) => {
             key={index}
             room={room}
 
+            onInfoClick={onRoomInfoClick}
             onClick={onRoomClick}
           />
         );
@@ -55,7 +59,8 @@ export const RoomsList: FC<Props> = ({rooms, visibility, onRoomClick}) => {
 };
 
 export type RoomCardProps = {
-  room: Room,
+  room: PublicRoomDto,
 
-  onClick: (room: Room) => void,
+  onInfoClick: RoomAction,
+  onClick: RoomAction,
 };

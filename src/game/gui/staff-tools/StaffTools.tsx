@@ -3,16 +3,17 @@ import {SmallButton} from "../buttons/SmallButton.tsx";
 import "./StaffTools.css";
 import {ModToolsWindow} from "./windows/ModToolsWindow.tsx";
 import Room from "../../../models/Room.ts";
-import User from "../../../models/User.ts";
-import {Action, AlertAction} from "../../../frameworks/utilities/Actions.ts";
+import {Action, AlertAction} from "../../../frameworks/types/Actions.ts";
+import {PublicRoomDto} from "../../../models/dto/public/PublicRoomDto.ts";
+import {PublicUserDto} from "../../../models/dto/public/PublicUserDto.ts";
 
 type Props = {
   canOpenModTools: boolean,
   canBeInvisible: boolean,
   canUseEffect: boolean,
 
-  room: Room|null,
-  user: User|null,
+  room: PublicRoomDto|null,
+  user: PublicUserDto|null,
 
   isInvisible: boolean,
   isUsingStaffEffect: boolean,
@@ -20,6 +21,7 @@ type Props = {
   onInvisibleToggle: Action,
   onEffectToggle: Action,
 
+  onRoomAlert: (room: Room, message: string) => void,
   onOwnRoom: AlertAction,
 };
 
@@ -66,6 +68,7 @@ export const StaffTools: FC<Props> = props => {
             currentRoom={props.room}
             focusedUser={props.user}
 
+            onRoomAlert={props.onRoomAlert}
             onOwnRoom={props.onOwnRoom}
             onClose={toggleModTools}
           />}

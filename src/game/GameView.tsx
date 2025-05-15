@@ -5,13 +5,18 @@ import {TopOptions} from "./gui/top-options/TopOptions.tsx";
 import {ModalWindow} from "./gui/windows/ModalWindow.tsx";
 import {RoomsNavigatorWindow} from "./gui/windows/prefabs/rooms-navigator/RoomsNavigatorWindow.tsx";
 import {StaffTools} from "./gui/staff-tools/StaffTools.tsx";
-import GameSocket from "./room-view/engine/socket/GameSocket.ts";
 import Room, {RoomRepository} from "../models/Room.ts";
 import {RoomViewContainer} from "./room-view/components/room/RoomViewContainer.tsx";
-import User, {SessionRepository, UserRepository} from "../models/User.ts";
+import User, {UserRepository} from "../models/User.ts";
 import AvatarEffect, {EAvatarEffect} from "./room-view/entities/AvatarEffect.ts";
 import Alert from "../models/Alert.ts";
 import {StaffAlert} from "./gui/windows/prefabs/modals/staff-alert/StaffAlert.tsx";
+import {useUser} from "../io/users/UserContext.tsx";
+import {PublicRoomDto} from "../models/dto/public/PublicRoomDto.ts";
+import {useConnection} from "../io/ConnectionContext.tsx";
+import {Handler, HandlerResponseCode} from "../io/HandlerResponse.ts";
+import {RestrictedUserDto} from "../models/dto/restricted/RestrictedUserDto.ts";
+import {useAlerts} from "./gui/windows/AlertsContext.tsx";
 
 export const GameView: FC = () => {
   const [ isHotelViewOpened, setIsHotelViewOpened ] = useState(true);
@@ -22,8 +27,8 @@ export const GameView: FC = () => {
   const [ isRoomPreferencesWindowOpened, setIsRoomPreferencesWindowOpened ] = useState<boolean>(false);
 
   const onHomeClick = () => {
-    if (user.home) {
-      onRoomClick(user.home);
+    if (user && user.homeRoomId) {
+      onRoomClick(user.homeRoomId);
     }
   };
   const onHotelViewClick = () => {
@@ -31,8 +36,10 @@ export const GameView: FC = () => {
     setPlayersInCurrentRoom([]);
     setIsHotelViewOpened(true);
 
-    user.currentPosition = {x: 0, y: 0};
-    user.currentRoom = null;
+    // user.currentPosition = {x: 0, y: 0};
+    // user.currentRoom = null;
+
+    connection.invoke("SendGoToHotelView");
   };
   const onRoomsNavigatorClick = () =>
     setIsRoomsNavigatorWindowOpened(!isRoomsNavigatorWindowOpened);
@@ -42,60 +49,82 @@ export const GameView: FC = () => {
   const isClientPrepared = useRef<boolean>(false);
 
   const rooms: Room[] = RoomRepository.i().rooms;
-  const [currentRoom, setCurrentRoom] = useState<Room|null>(null);
+  const [currentRoom, setCurrentRoom] = useState<PublicRoomDto|null>(null);
   const [playersInCurrentRoom, setPlayersInCurrentRoom] = useState<User[]>([]);
 
   const [focusedPlayer, setFocusedPlayer] = useState<User|null>(null);
 
-  const user: User = SessionRepository.i().user;
+  const user: RestrictedUserDto = useUser();
   const [ alerts, setAlerts ] = useState<Alert[]>([]);
 
-  const [ isPlayerInvisible, setIsPlayerInvisible ] = useState<boolean>(user.invisible);
-  const [ isUsingStaffEffect, setIsUsingStaffEffect ]
-    = useState<boolean>(user.avatarEffect.code === EAvatarEffect.STAFF);
+  // const [ isPlayerInvisible, setIsPlayerInvisible ] = useState<boolean>(user.invisible);
+  // const [ isUsingStaffEffect, setIsUsingStaffEffect ]
+  //   = useState<boolean>(user.avatarEffect.code === EAvatarEffect.STAFF);
+
+  const connection = useConnection();
+  const {addAlert} = useAlerts();
 
   useEffect(() => {
-    function prepareClient() {
-      const socket: GameSocket = GameSocket.get();
-
-      console.log("Connected to Socket", socket);
-    }
-
     if (!isClientPrepared.current) {
-      prepareClient();
-
-      const demoRoom = RoomRepository.i().findById(1)!;
-      demoRoom.bannedUsers.push(UserRepository.i().findById(2)!);
-      demoRoom.havingRightsUsers.push(UserRepository.i().findById(2)!);
-
-      user.friends.push(UserRepository.i().findById(1)!);
-      user.home = demoRoom;
+      console.log("USER DTO", user);
 
       isClientPrepared.current = true;
     }
+
+    const handlerRoomEnterAttempt: Handler = response => {
+      if (response.code === HandlerResponseCode.SUCCESS) {
+        setIsHotelViewOpened(false);
+        reloadCanvas();
+        setCurrentRoom(response.props[0]);
+      } else {
+        addAlert({
+          id: Math.random(),
+          title: "Message",
+          content: response.message,
+        });
+      }
+    };
+
+    const handlerRoomUpdate = (response: PublicRoomDto) => {
+      setCurrentRoom(response);
+    };
+
+    const handlerGoToHotelView: Handler = response => {
+      if (response.code === HandlerResponseCode.SUCCESS) {
+        console.log("** GONE TO HOTEL VIEW **");
+      } else {
+        addAlert({
+          id: Math.random(),
+          title: "Error",
+          content: response.message,
+        });
+      }
+    };
+
+    connection.on("ReceiveRoomEnterAttempt", handlerRoomEnterAttempt);
+    connection.on("ReceiveRoomUpdate", handlerRoomUpdate);
+    connection.on("ReceiveGoToHotelView", handlerGoToHotelView);
+
+    return () => {
+      connection.off("ReceiveRoomEnterAttempt", handlerRoomEnterAttempt);
+      connection.off("ReceiveRoomUpdate", handlerRoomUpdate);
+      connection.off("ReceiveGoToHotelView", handlerGoToHotelView);
+    };
   }, []);
 
-  function onRoomClick(room: Room) {
-    setCurrentRoom(room);
-    setIsHotelViewOpened(false);
+  function onRoomClick(roomId: string) {
     setIsRoomsNavigatorWindowOpened(false);
 
-    reloadCanvas();
+    // user.roomsHistory.push(room);
 
-    user.roomsHistory.push(room);
+    console.log("check room", roomId);
 
-    console.log("check room", room);
+    // if (!user.invisible) {
+      connection.invoke("SendRoomEnterAttempt", roomId);
+      // user.currentRoom = room;
+    // }
 
-    if (!user.invisible) {
-      if (user.currentRoom) {
-        user.currentRoom.leave(user);
-      }
-
-      room.enter(user);
-      user.currentRoom = room;
-    }
-
-    setPlayersInCurrentRoom(room.playersInRoom);
+    // setPlayersInCurrentRoom(room.playersInRoom);
   }
 
   function reloadCanvas() {
@@ -176,16 +205,30 @@ export const GameView: FC = () => {
     ]);
   }
 
+  function roomAlert(room: Room, message: string) {
+    alert(new Alert(
+      Math.random(),
+      "Room Alert",
+      message,
+    ));
+  }
+
+  function canManageRoom(): boolean {
+    return !!currentRoom /*&& (currentRoom.owner.id === user.id || user.permissions.isStaff)*/;
+  }
+
   return (
     <>
       <TopOptions
-        canAccessRoomPreferences={!!currentRoom}
+        room={currentRoom}
+
+        canAccessRoomPreferences={canManageRoom()}
 
         onRoomPreferencesClick={() =>
           setIsRoomPreferencesWindowOpened(!isRoomPreferencesWindowOpened)}
       />
 
-      {user.permissions.isStaff &&
+      {false && user.permissions.isStaff &&
           <StaffTools
               canOpenModTools={user.permissions.canUseModTools}
               canBeInvisible={user.permissions.canBeInvisible}
@@ -200,6 +243,7 @@ export const GameView: FC = () => {
               onInvisibleToggle={onInvisibleToggle}
               onEffectToggle={onStaffEffectToggle}
 
+              onRoomAlert={roomAlert}
               onOwnRoom={alert}
           />}
 
@@ -211,10 +255,13 @@ export const GameView: FC = () => {
             room={currentRoom}
             players={playersInCurrentRoom}
 
+            canManageRoom={canManageRoom()}
+
             isRoomPreferencesWindowOpened={isRoomPreferencesWindowOpened}
 
             onRoomPreferencesClose={() => setIsRoomPreferencesWindowOpened(false)}
             onPlayerFocus={user => setFocusedPlayer(user)}
+            onRoomUpdate={room => setCurrentRoom(room)}
           />}
 
       {isWelcomeWindowOpened &&
@@ -241,9 +288,7 @@ export const GameView: FC = () => {
 
       {isRoomsNavigatorWindowOpened &&
         <RoomsNavigatorWindow
-          rooms={rooms}
-
-          onRoomClick={(room: Room) => onRoomClick(room)}
+          onRoomClick={(room: PublicRoomDto) => onRoomClick(room.id)}
           onClose={closeRoomsNavigator}
         />}
 

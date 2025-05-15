@@ -1,14 +1,43 @@
-import {FC, useEffect, useRef} from "react";
+import {FC, useEffect, useRef, useState} from "react";
 import Room from "../../../models/Room.ts";
 import "./RoomInfo.css";
 import gsap from "gsap";
+import {PublicRoomDto} from "../../../models/dto/public/PublicRoomDto.ts";
+import {PublicUserDto} from "../../../models/dto/public/PublicUserDto.ts";
+import {getPlayerById} from "../../../io/rooms/RoomsIO.ts";
 
 type Props = {
-  room: Room,
+  room: PublicRoomDto,
 };
 
 export const RoomInfo: FC<Props> = ({room}) => {
   const roomInfo = useRef<HTMLDivElement>(null);
+  const [ owner, setOwner ] = useState<PublicUserDto|null>(null);
+
+  const isOwnerLoaded = useRef<boolean>(false);
+
+  useEffect(() => {
+    if (!isOwnerLoaded.current) {
+      getPlayerById(room.ownerId)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Room owner retrieving failed");
+          }
+
+          return response.json();
+        })
+        .then(owner => {
+          setOwner({
+            id: owner.id,
+            userName: owner.userName,
+            normalizedUserName: owner.normalizedUserName,
+          });
+
+          isOwnerLoaded.current = true;
+        })
+        .catch(err => console.error(err));
+    }
+  }, [room]);
 
   useEffect(() => {
     if (!roomInfo.current) return;
@@ -43,7 +72,7 @@ export const RoomInfo: FC<Props> = ({room}) => {
     return () => {
       tl.kill();
     };
-  }, [room]);
+  }, [room, isOwnerLoaded]);
 
   return (
     <>
@@ -56,9 +85,12 @@ export const RoomInfo: FC<Props> = ({room}) => {
           {room.name}
         </h4>
 
-        <p className="room-info__owner-name">
-          {room.owner.name}
-        </p>
+        {owner &&
+            <p className="room-info__owner-name">
+              {room.isPublic
+                ? Room.PUBLIC_ROOM
+                : owner.userName}
+            </p>}
       </div>
     </>
   );

@@ -40,6 +40,7 @@ export class RoomRepository {
 }
 
 export default class Room {
+  static PUBLIC_ROOM: string = "Public Room";
 
   id: number;
   name: string;
@@ -61,6 +62,8 @@ export default class Room {
 
   group: Group|null;
 
+  isPublicRoom: boolean;
+
   constructor(
     id: number,
     name: string,
@@ -72,7 +75,8 @@ export default class Room {
     playersInRoomCount: number = 0,
     playersInRoom: User[] = [],
     template: RoomTemplate,
-    group: Group|null = null) {
+    group: Group|null = null,
+    isPublicRoom: boolean = false) {
 
     this.id = id;
     this.name = name;
@@ -95,14 +99,15 @@ export default class Room {
     this.bannedWords = [];
 
     this.group = group;
+
+    this.isPublicRoom = isPublicRoom;
   }
 
-  getPopulationLevel(): RoomPopulation {
-    const max: number = this.playersLimit;
+  static getPopulationLevel(inRoom: number, max: number): RoomPopulation {
     const lowLimit: number = max / 3;
     const mediumLimit: number = lowLimit * 2;
 
-    const playersCount: number = this.playersInRoomCount;
+    const playersCount: number = inRoom;
 
     if (playersCount > 0
                && playersCount <= lowLimit) {

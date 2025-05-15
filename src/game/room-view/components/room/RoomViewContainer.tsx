@@ -1,19 +1,22 @@
 import {FC} from "react";
-import Room from "../../../../models/Room.ts";
 import {RoomView} from "../../RoomView.tsx";
 import {RoomInfo} from "../../../gui/rooms/RoomInfo.tsx";
 import {RoomPreferencesWindow} from "../../../gui/windows/prefabs/room-preferences/RoomPreferencesWindow.tsx";
 import User from "../../../../models/User.ts";
-import {Action, UserAction} from "../../../../frameworks/utilities/Actions.ts";
+import {Action, RoomAction, UserAction} from "../../../../frameworks/types/Actions.ts";
+import {PublicRoomDto} from "../../../../models/dto/public/PublicRoomDto.ts";
 
 type Props = {
-  room: Room,
+  room: PublicRoomDto,
   players: User[],
+
+  canManageRoom: boolean,
 
   isRoomPreferencesWindowOpened: boolean,
 
   onRoomPreferencesClose: Action,
   onPlayerFocus: UserAction,
+  onRoomUpdate: RoomAction,
 };
 
 export const RoomViewContainer: FC<Props> = (
@@ -21,10 +24,13 @@ export const RoomViewContainer: FC<Props> = (
     room,
     players,
 
+    canManageRoom,
+
     isRoomPreferencesWindowOpened,
 
     onRoomPreferencesClose,
     onPlayerFocus,
+    onRoomUpdate,
   }
 ) => {
   return (
@@ -40,10 +46,11 @@ export const RoomViewContainer: FC<Props> = (
         room={room}
       />
 
-      {isRoomPreferencesWindowOpened &&
+      {canManageRoom && isRoomPreferencesWindowOpened &&
           <RoomPreferencesWindow
               room={room}
 
+              onRoomUpdate={onRoomUpdate}
               onClose={onRoomPreferencesClose}
           />}
     </>

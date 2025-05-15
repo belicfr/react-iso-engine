@@ -1,7 +1,7 @@
 import {FC} from "react";
 import {Window} from "../../../windows/Window.tsx";
 import Room from "../../../../../models/Room.ts";
-import {Action} from "../../../../../frameworks/utilities/Actions.ts";
+import {Action} from "../../../../../frameworks/types/Actions.ts";
 
 type Props = {
   room: Room,

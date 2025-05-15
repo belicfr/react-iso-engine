@@ -129,9 +129,8 @@ export default class RoomTemplate {
     this.tilesCount();
   }
 
-  generate(): TileSituation[] {
-    const rows: string[] = this
-      .template
+  static generate(template: string): TileSituation[] {
+    const rows: string[] = template
       .split('\n')
       .map(row => row.trim());
 

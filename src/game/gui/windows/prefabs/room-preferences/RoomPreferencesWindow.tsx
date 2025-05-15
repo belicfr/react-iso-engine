@@ -8,15 +8,17 @@ import "./RoomPreferencesWindow.css";
 import {RightsTab} from "./tabs/RightsTab.tsx";
 import {ModSettingsTab} from "./tabs/ModSettingsTab.tsx";
 import {RoomWordsFilterWindow} from "../room-words-filter/RoomWordsFilterWindow.tsx";
-import {Action} from "../../../../../frameworks/utilities/Actions.ts";
+import {Action, RoomAction} from "../../../../../frameworks/types/Actions.ts";
+import {PublicRoomDto} from "../../../../../models/dto/public/PublicRoomDto.ts";
 
 type Props = {
-  room: Room,
+  room: PublicRoomDto,
 
+  onRoomUpdate: RoomAction,
   onClose: Action,
 };
 
-export const RoomPreferencesWindow: FC<Props> = ({room, onClose}) => {
+export const RoomPreferencesWindow: FC<Props> = ({room, onRoomUpdate, onClose}) => {
   const TABS: Tab[] = useMemo(() => [
     new Tab("General"),
     new Tab("Rights"),
@@ -49,6 +51,8 @@ export const RoomPreferencesWindow: FC<Props> = ({room, onClose}) => {
             {currentTabIndex === Tabs.GENERAL &&
                 <GeneralTab
                   room={room}
+
+                  onRoomUpdate={onRoomUpdate}
                 />}
 
             {currentTabIndex === Tabs.RIGHTS &&

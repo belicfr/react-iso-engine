@@ -1,33 +1,43 @@
-import {FC, useState} from "react";
+import {FC, useEffect, useState} from "react";
 import {Window} from "../../Window.tsx";
 import "./RoomsNavigatorWindow.css";
 import {TabsNavigation} from "../../../tabs-nav/TabsNavigation.tsx";
 import Tab from "../../../tabs-nav/Tab.ts";
-import Room from "../../../../../models/Room.ts";
 import {RoomsList, RoomsListVisibility} from "./components/RoomsList.tsx";
 import {Button} from "../../../buttons/Button.tsx";
 import {CreateRoomWindow} from "../create-room/CreateRoomWindow.tsx";
-import {Action} from "../../../../../frameworks/utilities/Actions.ts";
+import {Action, RoomAction} from "../../../../../frameworks/types/Actions.ts";
+import {RoomInfoWindow} from "../room-info/RoomInfoWindow.tsx";
+import {useConnection} from "../../../../../io/ConnectionContext.tsx";
+import {useRooms} from "../../../../../io/rooms/RoomsContext.tsx";
+import {PublicRoomDto} from "../../../../../models/dto/public/PublicRoomDto.ts";
 
 type Props = {
-  rooms: Room[],
-
-  onRoomClick: (room: Room) => void,
+  onRoomClick: RoomAction,
   onClose: Action,
 };
 
-export const RoomsNavigatorWindow: FC<Props> = ({rooms, onRoomClick, onClose}) => {
+export const RoomsNavigatorWindow: FC<Props> = ({onRoomClick, onClose}) => {
   const tabs: Tab[] = [
-    new Tab("Public"),
-    new Tab("All Rooms"),
-    new Tab("My World"),
+    new Tab("Public", "SendPublicRooms"),
+    new Tab("All Rooms", "SendAllRooms"),
+    new Tab("My World", "SendPlayerRooms"),
   ];
 
   const [ isCreateRoomWindowOpened, setIsCreateRoomWindowOpened ] = useState<boolean>(false);
+  const [ roomInfo, setRoomInfo ] = useState<PublicRoomDto|null>(null);
 
   const [ currentTabIndex, setCurrentTabIndex ] = useState(0);
 
   const onTabChange = (index: number) => setCurrentTabIndex(index);
+
+  const rooms = useRooms();
+
+  const connection = useConnection();
+
+  useEffect(() => {
+    connection.invoke(tabs[currentTabIndex].sender);
+  }, [connection, currentTabIndex]);
 
   return (
     <>
@@ -37,6 +47,8 @@ export const RoomsNavigatorWindow: FC<Props> = ({rooms, onRoomClick, onClose}) =
         title="Rooms Navigator"
         width="500px"
         height="600px"
+
+
         onClose={onClose}
       >
 
@@ -52,6 +64,7 @@ export const RoomsNavigatorWindow: FC<Props> = ({rooms, onRoomClick, onClose}) =
                   rooms={rooms}
                   visibility={RoomsListVisibility.LIST}
 
+                  onRoomInfoClick={setRoomInfo}
                   onRoomClick={onRoomClick}
                 />}
 
@@ -60,11 +73,18 @@ export const RoomsNavigatorWindow: FC<Props> = ({rooms, onRoomClick, onClose}) =
                   rooms={rooms}
                   visibility={RoomsListVisibility.COMPACT_LIST}
 
+                  onRoomInfoClick={setRoomInfo}
                   onRoomClick={onRoomClick}
                 />}
 
             {currentTabIndex === 2 &&
-                <p>my rooms;stub</p>}
+                <RoomsList
+                    rooms={rooms}
+                    visibility={RoomsListVisibility.COMPACT_LIST}
+
+                    onRoomInfoClick={setRoomInfo}
+                    onRoomClick={onRoomClick}
+                />}
           </TabsNavigation>
 
           <div className="rooms-navigator__bottom">
@@ -84,6 +104,13 @@ export const RoomsNavigatorWindow: FC<Props> = ({rooms, onRoomClick, onClose}) =
           <CreateRoomWindow
             onRoomCreate={room => onRoomClick(room)}
             onClose={() => setIsCreateRoomWindowOpened(false)}
+          />}
+
+      {roomInfo &&
+          <RoomInfoWindow
+              room={roomInfo}
+
+              onClose={() => setRoomInfo(null)}
           />}
     </>
   );

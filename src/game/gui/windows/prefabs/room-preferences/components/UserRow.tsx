@@ -1,11 +1,12 @@
-import User from "../../../../../../models/User.ts";
 import {FC} from "react";
 import "./UserRow.css";
+import {PublicUserDto} from "../../../../../../models/dto/public/PublicUserDto.ts";
+import {UserAction} from "../../../../../../frameworks/types/Actions.ts";
 
 type Props = {
-  user: User,
+  user: PublicUserDto,
 
-  onClick: (user: User) => void,
+  onClick: UserAction,
 };
 
 export const UserRow: FC<Props> = ({user, onClick}) => {
@@ -18,7 +19,7 @@ export const UserRow: FC<Props> = ({user, onClick}) => {
       >
 
         <div className="user-icon"></div>
-        {user.name}
+        {user.userName}
       </div>
     </>
   );
