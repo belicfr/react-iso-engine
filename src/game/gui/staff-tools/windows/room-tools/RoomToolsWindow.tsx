@@ -1,4 +1,4 @@
-import {FC} from "react";
+import {FC, useState} from "react";
 import {Window} from "../../../windows/Window.tsx";
 import Room from "../../../../../models/Room.ts";
 import {TabColumn} from "../../../windows/prefabs/room-preferences/components/TabColumn.tsx";
@@ -6,17 +6,19 @@ import "./RoomToolsWindow.css";
 import {SmallButton} from "../../../buttons/SmallButton.tsx";
 import {SessionRepository} from "../../../../../models/User.ts";
 import Alert from "../../../../../models/Alert.ts";
-import {Action, AlertAction} from "../../../../../frameworks/utilities/Actions.ts";
+import {Action, AlertAction} from "../../../../../frameworks/types/Actions.ts";
+import {RoomAlertWindow} from "../room-alert/RoomAlertWindow.tsx";
 
 type Props = {
   room: Room,
 
+  onRoomAlert: (room: Room, message: string) => void,
   onOwnRoom: AlertAction,
   onClose: Action,
 };
 
-export const RoomToolsWindow: FC<Props> = ({room, onOwnRoom, onClose}) => {
-
+export const RoomToolsWindow: FC<Props> = ({room, onRoomAlert, onOwnRoom, onClose}) => {
+  const [isRoomAlertWindowOpened, setIsRoomAlertWindowOpened] = useState<boolean>(false);
 
   function ownRoom() {
     room.owner = SessionRepository.i().user;
@@ -29,6 +31,10 @@ export const RoomToolsWindow: FC<Props> = ({room, onOwnRoom, onClose}) => {
 
     SessionRepository.i().alerts.push(alert);
     onOwnRoom(alert);
+  }
+
+  function setAsPublic() {
+    room.isPublicRoom = true;
   }
 
   function prepareInformation(): RoomInfo[] {
@@ -86,7 +92,12 @@ export const RoomToolsWindow: FC<Props> = ({room, onOwnRoom, onClose}) => {
               Close Room
             </SmallButton>
 
-            <SmallButton color="light">
+            <SmallButton
+              color="light"
+
+              onClick={() => setIsRoomAlertWindowOpened(true)}
+            >
+
               Room Alert
             </SmallButton>
 
@@ -114,11 +125,24 @@ export const RoomToolsWindow: FC<Props> = ({room, onOwnRoom, onClose}) => {
             <SmallButton color="light">
               Pick Furnis
             </SmallButton>
+
+            <SmallButton
+              color="light"
+
+              onClick={setAsPublic}
+            >
+
+              Set as Public
+            </SmallButton>
           </div>
         </div>
       </Window>
 
-
+      {isRoomAlertWindowOpened &&
+        <RoomAlertWindow
+            onSend={(message: string) => onRoomAlert(room, message)}
+            onClose={() => setIsRoomAlertWindowOpened(false)}
+        />}
     </>
   );
 };

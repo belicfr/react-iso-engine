@@ -8,12 +8,13 @@ import {UserInfoWindow} from "./user-info/UserInfoWindow.tsx";
 import {TicketsBrowserWindow} from "./tickets-browser/TicketsBrowserWindow.tsx";
 import User from "../../../../models/User.ts";
 import Room from "../../../../models/Room.ts";
-import {AlertAction, Action as VoidAction} from "../../../../frameworks/utilities/Actions.ts";
+import {AlertAction, Action as VoidAction} from "../../../../frameworks/types/Actions.ts";
 
 type Props = {
   currentRoom: Room|null,
   focusedUser: User|null,
 
+  onRoomAlert: (room: Room, message: string) => void,
   onOwnRoom: AlertAction,
   onClose: VoidAction,
 };
@@ -75,6 +76,7 @@ export const ModToolsWindow: FC<Props> = props => {
           <RoomToolsWindow
             room={props.currentRoom}
 
+            onRoomAlert={props.onRoomAlert}
             onOwnRoom={props.onOwnRoom}
             onClose={toggleRoomTools}
           />}
