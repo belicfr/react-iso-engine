@@ -2,6 +2,7 @@ import Room from "./Room.ts";
 import {Coord2D} from "../game/room-view/engine/precepts/Coord2D.ts";
 import AvatarEffect, {EAvatarEffect} from "../game/room-view/entities/AvatarEffect.ts";
 import Alert from "./Alert.ts";
+import Rank, {RankRepository} from "./Rank.ts";
 
 export class SessionRepository {
   static instance: SessionRepository;
@@ -42,20 +43,20 @@ export class UserRepository {
         isStaff: true,
         canBeInvisible:true,
         canUseModTools: true,
-        canUseStaffEffect: true
-      }),
+        canUseStaffEffect: true,
+      }, RankRepository.i().findById(2)!),
       new User(2, "Player", {
         isStaff: false,
         canBeInvisible:false,
         canUseModTools: false,
-        canUseStaffEffect: false
-      }),
+        canUseStaffEffect: false,
+      }, RankRepository.i().findById(1)!),
       new User(3, "jonax", {
         isStaff: true,
         canBeInvisible:true,
         canUseModTools: true,
-        canUseStaffEffect: true
-      }),
+        canUseStaffEffect: true,
+      }, RankRepository.i().findById(2)!),
     ];
   }
 
@@ -89,7 +90,16 @@ export default class User {
 
   invisible: boolean;
 
-  constructor(id: number, name: string, permissions: UserPermissions) {
+  ip?: string;
+
+  rank: Rank;
+
+  constructor(
+    id: number,
+    name: string,
+    permissions: UserPermissions,
+    rank: Rank) {
+
     this.id = id;
     this.name = name;
     this.home = null;
@@ -102,6 +112,10 @@ export default class User {
     this.permissions = permissions;
 
     this.invisible = false;
+
+    this.ip = "127.0.0.1"; // STUB
+
+    this.rank = rank;
   };
 
   isInvisible(): boolean {
