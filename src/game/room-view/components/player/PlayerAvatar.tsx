@@ -2,11 +2,12 @@ import {FC, useEffect, useMemo, useRef, useState} from "react";
 import {Assets, Rectangle, Sprite, Texture} from 'pixi.js';
 import {Size2D} from "../../engine/precepts/Size2D.ts";
 import {Coord2D} from "../../engine/precepts/Coord2D.ts";
-import User, {UserAction} from "../../../../models/User.ts";
+import {PublicUserDto} from "../../../../models/dto/public/PublicUserDto.ts";
+import {UserAction} from "../../../../frameworks/types/Actions.ts";
 
 type Props = Coord2D & {
   z: number,
-  user: User,
+  user: PublicUserDto,
 
   onFocus: UserAction,
 };
@@ -56,11 +57,11 @@ export const PlayerAvatar: FC<Props> = ({x, y, z, user, onFocus}) => {
   useEffect(() => {
     console.log("check effect texture", effectTexture);
     if (effectTexture === Texture.EMPTY) {
-      Assets
-        .load(user.avatarEffect.source)
-        .then(result => {
-          setEffectTexture(result);
-        });
+      // Assets
+        // .load(user.avatarEffect.source)
+        // .then(result => {
+        //   setEffectTexture(result);
+        // });
     } else if (!isEffectScaleModeDefined.current && effectTexture) {
       effectTexture.source.scaleMode = "nearest";
       isEffectScaleModeDefined.current = true;
@@ -69,7 +70,7 @@ export const PlayerAvatar: FC<Props> = ({x, y, z, user, onFocus}) => {
 
   function onPlayerClick() {
     console.log("Check Player Click");
-    onFocus(user);
+    // onFocus(user);
   }
 
   return (
