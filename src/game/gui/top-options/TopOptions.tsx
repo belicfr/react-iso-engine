@@ -47,8 +47,10 @@ export const TopOptions: FC<Props> = (
         <div className="top-options__container">
           <div className="top-options__currencies">
             <div className="top-options__credits">
-              <CrownsIcon size="20px"/>
-              {user.crowns}
+              <CrownsIcon size="20px" />
+              <p className="currency-amount">
+                {user.crowns}
+              </p>
             </div>
           </div>
 
