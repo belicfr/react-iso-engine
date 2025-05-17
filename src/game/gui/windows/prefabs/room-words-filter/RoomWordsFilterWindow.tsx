@@ -1,20 +1,23 @@
-import {FC, useRef, useState} from "react";
-import Room from "../../../../../models/Room.ts";
+import {FC, useEffect, useRef, useState} from "react";
 import {Window} from "../../Window.tsx";
 import {TabColumn} from "../room-preferences/components/TabColumn.tsx";
 import "./RoomWordsFilterWindow.css";
 import {TabColumnRow} from "../room-preferences/components/TabColumnRow.tsx";
 import {Input} from "../../../forms/Input.tsx";
 import {Action} from "../../../../../frameworks/types/Actions.ts";
+import {RestrictedRoomDto} from "../../../../../models/dto/restricted/RestrictedRoomDto.ts";
+import {useAlerts} from "../../AlertsContext.tsx";
+import {useConnection} from "../../../../../io/ConnectionContext.tsx";
+import {Handler, HandlerResponseCode} from "../../../../../io/HandlerResponse.ts";
 
 type Props = {
-  room: Room,
+  room: RestrictedRoomDto,
 
   onClose: Action,
 }
 
 export const RoomWordsFilterWindow: FC<Props> = ({room, onClose}) => {
-  const [ bannedWords, setBannedWords ] = useState<string[]>(room.bannedWords.slice());
+  const [ bannedWords, setBannedWords ] = useState<string[]>([]);
 
   const banWordInput = useRef<HTMLInputElement>(null);
 
@@ -29,20 +32,72 @@ export const RoomWordsFilterWindow: FC<Props> = ({room, onClose}) => {
 
     if (!word.length) return;
 
-    room.bannedWords.push(word);
-    setBannedWords(prevState => [...prevState, word]);
-
-    banWordInput.current.value = "";
+    connection.invoke("SendAddBannedWord", room.id, word);
   };
 
   const unbanWord = (word: string) => {
-    const wordIndex: number = room.bannedWords.findIndex(w => w === word);
+    if (!bannedWords.includes(word)) return;
 
-    if (!bannedWords.includes(word) || wordIndex === -1) return;
-
-    room.bannedWords.splice(wordIndex, 1);
-    setBannedWords(prevState => prevState.filter(w => w !== word));
+    connection.invoke("SendRemoveBannedWord", room.id, word);
   };
+
+  const connection = useConnection();
+  const { addAlert } = useAlerts();
+
+  useEffect(() => {
+    connection.invoke("SendRoom", room.id);
+
+    const handlerRoom = (response: RestrictedRoomDto) => {
+      if (response) {
+        setBannedWords(response.bannedWords);
+      } else {
+        addAlert({
+          id: Math.random(),
+          title: "Error",
+          content: "Room cannot be loaded. (Server Error)",
+        });
+      }
+    };
+
+    const handlerAddBannedRoom: Handler = response => {
+      if (response.code === HandlerResponseCode.SUCCESS) {
+        setBannedWords(prevState => [...prevState, response.props[0]]);
+
+        if (banWordInput.current) {
+          banWordInput.current.value = "";
+        }
+      } else {
+        addAlert({
+          id: Math.random(),
+          title: "Error",
+          content: response.message,
+        });
+      }
+    };
+
+    const handlerRemoveBannedRoom: Handler = response => {
+      if (response.code === HandlerResponseCode.SUCCESS) {
+        setBannedWords(prevState => prevState.filter(
+          w => w !== response.props[0]));
+      } else {
+        addAlert({
+          id: Math.random(),
+          title: "Error",
+          content: response.message,
+        });
+      }
+    };
+
+    connection.on("ReceiveRoom", handlerRoom);
+    connection.on("ReceiveAddBannedWord", handlerAddBannedRoom);
+    connection.on("ReceiveRemoveBannedWord", handlerRemoveBannedRoom);
+
+    return () => {
+      connection.off("ReceiveRoom", handlerRoom);
+      connection.off("ReceiveAddBannedWord", handlerAddBannedRoom);
+      connection.off("ReceiveRemoveBannedWord", handlerRemoveBannedRoom);
+    };
+  }, []);
 
   return (
     <>

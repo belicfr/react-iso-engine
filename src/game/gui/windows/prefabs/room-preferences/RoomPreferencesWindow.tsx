@@ -1,4 +1,4 @@
-import {FC, useMemo, useState} from "react";
+import {FC, useEffect, useMemo, useState} from "react";
 import Room from "../../../../../models/Room.ts";
 import {Window} from "../../Window.tsx";
 import {TabsNavigation} from "../../../tabs-nav/TabsNavigation.tsx";
@@ -10,6 +10,8 @@ import {ModSettingsTab} from "./tabs/ModSettingsTab.tsx";
 import {RoomWordsFilterWindow} from "../room-words-filter/RoomWordsFilterWindow.tsx";
 import {Action, RoomAction} from "../../../../../frameworks/types/Actions.ts";
 import {PublicRoomDto} from "../../../../../models/dto/public/PublicRoomDto.ts";
+import {useAlerts} from "../../AlertsContext.tsx";
+import {useUser} from "../../../../../io/users/UserContext.tsx";
 
 type Props = {
   room: PublicRoomDto,
