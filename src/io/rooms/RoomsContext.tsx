@@ -73,6 +73,14 @@ export const RoomsProvider: FC<Props> = ({children}) => {
       console.log("RECEIVED UPDATED ROOM", response);
     });
 
+    connection.on("ReceiveAddBannedWord", response => {
+      console.log("BANNED WORD", response);
+    });
+
+    connection.on("ReceiveRemoveBannedWord", response => {
+      console.log("UNBANNED WORD", response);
+    });
+
     return () => {
       connection.off("ReceivePublicRooms");
       connection.off("ReceiveAllRooms");
@@ -94,6 +102,9 @@ export const RoomsProvider: FC<Props> = ({children}) => {
       connection.off("ReceiveUnbanAllFromRoom");
 
       connection.off("ReceiveRoomUpdate");
+
+      connection.off("ReceiveAddBannedWord");
+      connection.off("ReceiveRemoveBannedWord");
     };
   }, []);
 
