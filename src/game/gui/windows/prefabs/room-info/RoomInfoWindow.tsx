@@ -32,8 +32,8 @@ export const RoomInfoWindow: FC<Props> = ({room, onClose}) => {
       .then(owner => {
         setOwner({
           id: owner.id,
-          name: owner.userName,
-          normalizedName: owner.normalizedUserName,
+          userName: owner.userName,
+          normalizedUserName: owner.normalizedUserName,
         });
 
         isOwnerLoaded.current = true;
@@ -66,16 +66,16 @@ export const RoomInfoWindow: FC<Props> = ({room, onClose}) => {
               <p className="room-info__owner-name">
                 {room.isPublic
                   ? Room.PUBLIC_ROOM
-                  : owner.name}
+                  : owner.userName}
               </p>
             </div>
           </div>
 
           <div className="room-info__tags">
-            {room.tagOne?.length &&
+            {!!room.tagOne?.length &&
               <span className="tag">{room.tagOne}</span>}
 
-            {room.tagTwo?.length &&
+            {!!room.tagTwo?.length &&
               <span className="tag">{room.tagTwo}</span>}
           </div>
 
