@@ -6,6 +6,7 @@
 }
 .rooms-navigator__content > .tabs-navigation {
   flex: 1;
+  overflow-y: auto;
 }
 .rooms-navigator__content > .rooms-navigator__bottom {
   flex: none;

@@ -3,7 +3,6 @@ import {Window} from "../../Window.tsx";
 import "./RoomsNavigatorWindow.css";
 import {TabsNavigation} from "../../../tabs-nav/TabsNavigation.tsx";
 import Tab from "../../../tabs-nav/Tab.ts";
-import {RoomsList, RoomsListVisibility} from "./components/RoomsList.tsx";
 import {Button} from "../../../buttons/Button.tsx";
 import {CreateRoomWindow} from "../create-room/CreateRoomWindow.tsx";
 import {Action, RoomAction} from "../../../../../frameworks/types/Actions.ts";
@@ -11,6 +10,8 @@ import {RoomInfoWindow} from "../room-info/RoomInfoWindow.tsx";
 import {useConnection} from "../../../../../io/ConnectionContext.tsx";
 import {useRooms} from "../../../../../io/rooms/RoomsContext.tsx";
 import {PublicRoomDto} from "../../../../../models/dto/public/PublicRoomDto.ts";
+import {Tab as NavigatorTab} from "./tabs/Tab.tsx";
+import {RoomsListVisibility} from "./components/RoomsList.tsx";
 
 type Props = {
   onRoomClick: RoomAction,
@@ -36,7 +37,7 @@ export const RoomsNavigatorWindow: FC<Props> = ({onRoomClick, onClose}) => {
   const connection = useConnection();
 
   useEffect(() => {
-    connection.invoke(tabs[currentTabIndex].sender);
+    connection.invoke(tabs[currentTabIndex].sender!);
   }, [connection, currentTabIndex]);
 
   return (
@@ -60,26 +61,49 @@ export const RoomsNavigatorWindow: FC<Props> = ({onRoomClick, onClose}) => {
           >
 
             {currentTabIndex === 0 &&
-                <RoomsList
-                  rooms={rooms}
-                  visibility={RoomsListVisibility.LIST}
+                <NavigatorTab
+                    categories={[
+                      {
+                        label: "",
+                        rooms: rooms,
+                      },
+                    ]}
+                    visibility={RoomsListVisibility.LIST}
 
-                  onRoomInfoClick={setRoomInfo}
-                  onRoomClick={onRoomClick}
+                    onRoomInfoClick={setRoomInfo}
+                    onRoomClick={onRoomClick}
                 />}
 
             {currentTabIndex === 1 &&
-                <RoomsList
-                  rooms={rooms}
-                  visibility={RoomsListVisibility.COMPACT_LIST}
+                <NavigatorTab
+                    categories={[
+                      {
+                        label: "",
+                        rooms: rooms,
+                      },
+                    ]}
+                    visibility={RoomsListVisibility.COMPACT_LIST}
 
-                  onRoomInfoClick={setRoomInfo}
-                  onRoomClick={onRoomClick}
+                    onRoomInfoClick={setRoomInfo}
+                    onRoomClick={onRoomClick}
                 />}
 
             {currentTabIndex === 2 &&
-                <RoomsList
-                    rooms={rooms}
+                <NavigatorTab
+                    categories={[
+                      {
+                        label: "My Rooms",
+                        rooms,
+                      },
+                      {
+                        label: "Rooms with rights",
+                        rooms,
+                      },
+                      {
+                        label: "Rooms with friends",
+                        rooms,
+                      },
+                    ]}
                     visibility={RoomsListVisibility.COMPACT_LIST}
 
                     onRoomInfoClick={setRoomInfo}
