@@ -12,7 +12,7 @@ export default async function login(email: string, password: string) {
   });
 
   if (!response.ok) {
-    throw new Error(`Login échoué (${response.status})`);
+    throw new Error(`Cannot log in // (${response.status})`);
   }
 
   return;
