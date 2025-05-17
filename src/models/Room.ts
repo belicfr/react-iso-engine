@@ -1,43 +1,6 @@
-import User, {UserRepository} from "./User.ts";
-import RoomTemplate, {RoomTemplateRepository} from "./RoomTemplate.ts";
-import Group, {GroupRepository} from "./Group.ts";
-
-export class RoomRepository {
-  static instance: RoomRepository;
-
-  rooms: Room[];
-
-  constructor() {
-    this.rooms = [
-      new Room(
-        1,
-        "Test",
-        "",
-        UserRepository.i().findById(1)!,
-        [],
-        10,
-        RoomAccessMode.OPEN,
-        0,
-        [],
-        RoomTemplateRepository.i().findById(1)!,
-        GroupRepository.i().findById(1)!)
-    ];
-  }
-
-  findById(id: number): Room|null {
-    return this.rooms.find(room => room.id === id)
-      ?? null;
-  }
-
-
-  static i() {
-    if (!RoomRepository.instance) {
-      RoomRepository.instance = new RoomRepository();
-    }
-
-    return RoomRepository.instance;
-  };
-}
+import User from "./User.ts";
+import RoomTemplate from "./RoomTemplate.ts";
+import Group from "./Group.ts";
 
 export default class Room {
   static PUBLIC_ROOM: string = "Public Room";
