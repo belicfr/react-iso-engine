@@ -1,12 +1,16 @@
-import {FC, useState} from "react";
+import {FC, useEffect, useState} from "react";
 import {Window} from "../../Window.tsx";
 import "./CreateRoomWindow.css";
 import {RoomInformationStep} from "./steps/RoomInformationStep.tsx";
 import {RoomModelSelectionStep} from "./steps/RoomModelSelectionStep.tsx";
-import RoomTemplate from "../../../../../models/RoomTemplate.ts";
-import Room, {RoomAccessMode, RoomRepository} from "../../../../../models/Room.ts";
-import {SessionRepository} from "../../../../../models/User.ts";
 import {Action, RoomAction} from "../../../../../frameworks/types/Actions.ts";
+import {useConnection} from "../../../../../io/ConnectionContext.tsx";
+import {PublicRoomTemplateDto} from "../../../../../models/dto/public/PublicRoomTemplateDto.ts";
+import {RoomCreationModel} from "../../../../../io/rooms/RoomCreationModel.ts";
+import {Handler, HandlerResponseCode} from "../../../../../io/HandlerResponse.ts";
+import Room from "../../../../../models/Room.ts";
+import {PublicRoomDto} from "../../../../../models/dto/public/PublicRoomDto.ts";
+import {useAlerts} from "../../AlertsContext.tsx";
 
 type Props = {
   onRoomCreate: RoomAction,
@@ -14,7 +18,7 @@ type Props = {
 };
 
 export const CreateRoomWindow: FC<Props> = ({onRoomCreate, onClose}) => {
-  const [model, setModel] = useState<RoomTemplate|null>(null);
+  const [model, setModel] = useState<PublicRoomTemplateDto|null>(null);
 
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -23,25 +27,46 @@ export const CreateRoomWindow: FC<Props> = ({onRoomCreate, onClose}) => {
 
   const [currentStep, setCurrentStep] = useState<Step>(Step.ROOM_MODEL_SELECTION);
 
+  const connection = useConnection();
+
+  const { addAlert } = useAlerts();
+
   function createRoom() {
-    const rooms = RoomRepository.i().rooms;
-    const createdRoom: Room = new Room(
-      Math.abs(Math.random() * 100),
+    if (!model) return;
+
+    const creationModel: RoomCreationModel = {
       name,
       description,
-      SessionRepository.i().user,
-      [firstTag, secondTag],
-      10,
-      RoomAccessMode.OPEN,
-      0,
-      [],
-      model!);
+      tagOne: firstTag,
+      tagTwo: secondTag,
+      templateId: model.id,
+    };
 
-    rooms.push(createdRoom);
-
-    onRoomCreate(createdRoom);
-    onClose();
+    connection.invoke("SendCreateRoom", creationModel);
   }
+
+  useEffect(() => {
+    const handlerCreateRoom: Handler = response => {
+      if (response.code === HandlerResponseCode.SUCCESS) {
+        const room: PublicRoomDto = response.props[0];
+
+        onRoomCreate(room);
+        onClose();
+      } else {
+        addAlert({
+          id: Math.random(),
+          title: "Error",
+          content: response.message,
+        });
+      }
+    };
+
+    connection.on("ReceiveCreateRoom", handlerCreateRoom);
+
+    return () => {
+      connection.off("ReceiveCreateRoom", handlerCreateRoom);
+    };
+  }, []);
 
   return (
     <>

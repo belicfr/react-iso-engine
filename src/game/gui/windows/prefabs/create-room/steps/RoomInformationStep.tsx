@@ -5,9 +5,10 @@ import {Button} from "../../../../buttons/Button.tsx";
 import "./RoomInformationStep.css";
 import RoomTemplate from "../../../../../../models/RoomTemplate.ts";
 import {Action} from "../../../../../../frameworks/types/Actions.ts";
+import {PublicRoomTemplateDto} from "../../../../../../models/dto/public/PublicRoomTemplateDto.ts";
 
 type Props = {
-  model: RoomTemplate,
+  model: PublicRoomTemplateDto,
   name: string,
   description: string,
   firstTag: string,
@@ -108,8 +109,8 @@ export const RoomInformationStep: FC<Props> = (
           <div className="room-model__picture"></div>
 
           <p className="room-model__tiles">
-            {model.tilesCount()}
-            &nbsp;tile{model.tilesCount() > 1 ? 's' : ""}
+            {model.tilesCount}
+            &nbsp;tile{model.tilesCount > 1 ? 's' : ""}
           </p>
         </div>
 

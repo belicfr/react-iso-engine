@@ -1,14 +1,15 @@
-import {FC} from "react";
+import {FC, useEffect, useState} from "react";
 import "./RoomModelSelectionStep.css";
-import RoomTemplate, {RoomTemplateRepository} from "../../../../../../models/RoomTemplate.ts";
 import {Button} from "../../../../buttons/Button.tsx";
-import {Action} from "../../../../../../frameworks/types/Actions.ts";
+import {Action, RoomTemplateAction} from "../../../../../../frameworks/types/Actions.ts";
+import {PublicRoomTemplateDto} from "../../../../../../models/dto/public/PublicRoomTemplateDto.ts";
+import {useConnection} from "../../../../../../io/ConnectionContext.tsx";
+import {useRoomTemplates} from "../../../../../../io/rooms/RoomTemplatesContext.tsx";
 
 type Props = {
-  // models: RoomTemplate[],
-  selectedModel: RoomTemplate|null,
+  selectedModel: PublicRoomTemplateDto|null,
 
-  onModelSelection: (model: RoomTemplate) => void,
+  onModelSelection: RoomTemplateAction,
   onNextClick: Action,
 };
 
@@ -19,7 +20,12 @@ export const RoomModelSelectionStep: FC<Props> = (
   }
 ) => {
 
-  const models: RoomTemplate[] = RoomTemplateRepository.i().templates;
+  const connection = useConnection();
+  const templates = useRoomTemplates();
+
+  useEffect(() => {
+    connection.invoke("SendRoomTemplates");
+  }, []);
 
   return (
     <>
@@ -29,8 +35,9 @@ export const RoomModelSelectionStep: FC<Props> = (
         </h5>
 
         <div className="models__grid">
-          {models.map((model: RoomTemplate) =>
+          {templates.map((model: PublicRoomTemplateDto, i: number) =>
             <div
+              key={i}
               className={
                 "model__card"
                 + (selectedModel === model ? " model-active" : "")
@@ -47,8 +54,8 @@ export const RoomModelSelectionStep: FC<Props> = (
                 </p>
 
                 <p className="model__tiles-count">
-                  {model.tilesCount()}
-                  &nbsp;tile{model.tilesCount() > 1 ? 's' : ""}
+                  {model.tilesCount}
+                  &nbsp;tile{model.tilesCount > 1 ? 's' : ""}
                 </p>
               </div>
             </div>)}
