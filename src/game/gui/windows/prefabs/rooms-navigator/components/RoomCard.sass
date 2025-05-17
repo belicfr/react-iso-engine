@@ -1,6 +1,4 @@
 .room-card, .compact-room-card
-  padding: 7px 20px
-
   display: flex
   justify-content: space-between
   align-items: center
@@ -11,9 +9,6 @@
     background-color: #f6f6f6
 
     cursor: pointer
-
-  &:not(:first-child)
-    border-top: solid 1px #dddddd
 
   > .room-intro
     display: flex
@@ -26,54 +21,8 @@
 
     overflow: hidden
 
-    > .players-in-room
-      width: 45px
-      height: 20px
 
-      font-size: .8rem
-      font-weight: 700
-
-      border: none
-      border-radius: 5px
-
-      display: flex
-      align-items: center
-      column-gap: 1px
-
-      padding: 0 2px
-
-      &.players-none
-        background-color: #818181
-
-        color: white
-
-      &.players-low
-        background-color: var(--success)
-
-        color: white
-
-      &.players-medium
-        background-color: var(--warning)
-
-        color: white
-
-      &.players-high
-        background-color: var(--danger)
-
-        color: white
-
-      > .players-icon
-        background-image: url("/src/assets/gamelib/albumhud/gui_player.png")
-        background-size: contain
-        background-repeat: no-repeat
-
-        width: 15px
-        height: 15px
-
-        flex: none
-
-
-  > .room-info__button
+  .room-info__button
     background-color: var(--primary)
 
     border-radius: 5px
@@ -97,3 +46,84 @@
       $size: 90%
       width: $size
       height: $size
+
+  .players-in-room
+    width: 45px
+    height: 20px
+
+    font-size: .8rem
+    font-weight: 700
+
+    border: none
+    border-radius: 5px
+
+    display: flex
+    align-items: center
+    column-gap: 1px
+
+    padding: 0 2px
+
+    &.players-none
+      background-color: #818181
+
+      color: white
+
+    &.players-low
+      background-color: var(--success)
+
+      color: white
+
+    &.players-medium
+      background-color: var(--warning)
+
+      color: white
+
+    &.players-high
+      background-color: var(--danger)
+
+      color: white
+
+    > .players-icon
+      background-image: url("/src/assets/gamelib/albumhud/gui_player.png")
+      background-size: contain
+      background-repeat: no-repeat
+
+      width: 15px
+      height: 15px
+
+      flex: none
+
+
+.room-card
+  border: solid 1px #ccc
+  border-radius: 5px
+
+  padding: 7px
+
+  flex-direction: column
+
+  > .room-thumbnail
+    width: 100%
+    aspect-ratio: 1
+
+    border: solid 2px black
+
+    margin-bottom: 10px
+
+    position: relative
+
+    > .players-in-room
+      position: absolute
+      bottom: 5px
+      left: 5px
+
+    .room-info__button
+      position: absolute
+      bottom: 5px
+      right: 5px
+
+.compact-room-card
+  padding: 7px 20px
+
+  &:not(:first-child)
+    border-top: solid 1px #dddddd

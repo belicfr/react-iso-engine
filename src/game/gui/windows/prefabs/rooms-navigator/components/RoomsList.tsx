@@ -50,7 +50,11 @@ export const RoomsList: FC<Props> = ({rooms, visibility, onRoomInfoClick, onRoom
 
   return (
     <>
-      <div className="rooms-list">
+      <div className={`rooms-list ${
+        visibility === RoomsListVisibility.COMPACT_LIST 
+          ? "compact-list" 
+          : "grid-list"}`}>
+
         {rooms.map((room, index) =>
           renderRoomCard(room, index))}
       </div>

@@ -1,7 +1,15 @@
 .rooms-list {
   padding: 20px 0;
+}
+.rooms-list.compact-list {
   display: flex;
   flex-direction: column;
+}
+.rooms-list.grid-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5px;
+  padding: 30px 10px;
 }
 
 /*# sourceMappingURL=RoomsList.css.map */

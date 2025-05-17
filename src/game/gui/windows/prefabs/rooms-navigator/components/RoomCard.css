@@ -1,5 +1,4 @@
 .room-card, .compact-room-card {
-  padding: 7px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -9,9 +8,6 @@
   background-color: #f6f6f6;
   cursor: pointer;
 }
-.room-card:not(:first-child), .compact-room-card:not(:first-child) {
-  border-top: solid 1px #dddddd;
-}
 .room-card > .room-intro, .compact-room-card > .room-intro {
   display: flex;
   column-gap: 10px;
@@ -20,7 +16,25 @@
   flex: 1;
   overflow: hidden;
 }
-.room-card > .room-intro > .players-in-room, .compact-room-card > .room-intro > .players-in-room {
+.room-card .room-info__button, .compact-room-card .room-info__button {
+  background-color: var(--primary);
+  border-radius: 5px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: none;
+}
+.room-card .room-info__button > .room-info__icon, .compact-room-card .room-info__button > .room-info__icon {
+  background-image: url("/src/assets/gamelib/albumhud/gui_info.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  width: 90%;
+  height: 90%;
+}
+.room-card .players-in-room, .compact-room-card .players-in-room {
   width: 45px;
   height: 20px;
   font-size: 0.8rem;
@@ -32,23 +46,23 @@
   column-gap: 1px;
   padding: 0 2px;
 }
-.room-card > .room-intro > .players-in-room.players-none, .compact-room-card > .room-intro > .players-in-room.players-none {
+.room-card .players-in-room.players-none, .compact-room-card .players-in-room.players-none {
   background-color: #818181;
   color: white;
 }
-.room-card > .room-intro > .players-in-room.players-low, .compact-room-card > .room-intro > .players-in-room.players-low {
+.room-card .players-in-room.players-low, .compact-room-card .players-in-room.players-low {
   background-color: var(--success);
   color: white;
 }
-.room-card > .room-intro > .players-in-room.players-medium, .compact-room-card > .room-intro > .players-in-room.players-medium {
+.room-card .players-in-room.players-medium, .compact-room-card .players-in-room.players-medium {
   background-color: var(--warning);
   color: white;
 }
-.room-card > .room-intro > .players-in-room.players-high, .compact-room-card > .room-intro > .players-in-room.players-high {
+.room-card .players-in-room.players-high, .compact-room-card .players-in-room.players-high {
   background-color: var(--danger);
   color: white;
 }
-.room-card > .room-intro > .players-in-room > .players-icon, .compact-room-card > .room-intro > .players-in-room > .players-icon {
+.room-card .players-in-room > .players-icon, .compact-room-card .players-in-room > .players-icon {
   background-image: url("/src/assets/gamelib/albumhud/gui_player.png");
   background-size: contain;
   background-repeat: no-repeat;
@@ -56,23 +70,36 @@
   height: 15px;
   flex: none;
 }
-.room-card > .room-info__button, .compact-room-card > .room-info__button {
-  background-color: var(--primary);
+
+.room-card {
+  border: solid 1px #ccc;
   border-radius: 5px;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex: none;
+  padding: 7px;
+  flex-direction: column;
 }
-.room-card > .room-info__button > .room-info__icon, .compact-room-card > .room-info__button > .room-info__icon {
-  background-image: url("/src/assets/gamelib/albumhud/gui_info.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  image-rendering: pixelated;
-  width: 90%;
-  height: 90%;
+.room-card > .room-thumbnail {
+  width: 100%;
+  aspect-ratio: 1;
+  border: solid 2px black;
+  margin-bottom: 10px;
+  position: relative;
+}
+.room-card > .room-thumbnail > .players-in-room {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+}
+.room-card > .room-thumbnail .room-info__button {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
+
+.compact-room-card {
+  padding: 7px 20px;
+}
+.compact-room-card:not(:first-child) {
+  border-top: solid 1px #dddddd;
 }
 
 /*# sourceMappingURL=RoomCard.css.map */
