@@ -5,9 +5,9 @@ import {TopOptions} from "./gui/top-options/TopOptions.tsx";
 import {ModalWindow} from "./gui/windows/ModalWindow.tsx";
 import {RoomsNavigatorWindow} from "./gui/windows/prefabs/rooms-navigator/RoomsNavigatorWindow.tsx";
 import {StaffTools} from "./gui/staff-tools/StaffTools.tsx";
-import Room, {RoomRepository} from "../models/Room.ts";
+import Room from "../models/Room.ts";
 import {RoomViewContainer} from "./room-view/components/room/RoomViewContainer.tsx";
-import User, {UserRepository} from "../models/User.ts";
+import User from "../models/User.ts";
 import AvatarEffect, {EAvatarEffect} from "./room-view/entities/AvatarEffect.ts";
 import Alert from "../models/Alert.ts";
 import {StaffAlert} from "./gui/windows/prefabs/modals/staff-alert/StaffAlert.tsx";
@@ -48,7 +48,7 @@ export const GameView: FC = () => {
 
   const isClientPrepared = useRef<boolean>(false);
 
-  const rooms: Room[] = RoomRepository.i().rooms;
+  // const rooms: Room[] = RoomRepository.i().rooms;
   const [currentRoom, setCurrentRoom] = useState<PublicRoomDto|null>(null);
   const [playersInCurrentRoom, setPlayersInCurrentRoom] = useState<User[]>([]);
 
@@ -214,7 +214,7 @@ export const GameView: FC = () => {
   }
 
   function canManageRoom(): boolean {
-    return !!currentRoom /*&& (currentRoom.owner.id === user.id || user.permissions.isStaff)*/;
+    return !!currentRoom && (currentRoom.ownerId === user.id /*|| user.permissions.isStaff*/);
   }
 
   return (
