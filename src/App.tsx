@@ -4,6 +4,7 @@ import {UserProvider} from "./io/users/UserContext.tsx";
 import {RoomsProvider} from "./io/rooms/RoomsContext.tsx";
 import {AlertsProvider, useAlerts} from "./game/gui/windows/AlertsContext.tsx";
 import {StaffAlert} from "./game/gui/windows/prefabs/modals/staff-alert/StaffAlert.tsx";
+import {RoomTemplatesProvider} from "./io/rooms/RoomTemplatesContext.tsx";
 
 const Alerts = () => {
   const {alerts, removeAlert} = useAlerts();
@@ -25,16 +26,18 @@ export default function App() {
     <>
       <UserProvider>
         <RoomsProvider>
-          <AlertsProvider>
+          <RoomTemplatesProvider>
+            <AlertsProvider>
 
-            <Alerts />
+              <Alerts />
 
-            <GameView />
-
-
+              <GameView />
 
 
-          </AlertsProvider>
+
+
+            </AlertsProvider>
+          </RoomTemplatesProvider>
         </RoomsProvider>
       </UserProvider>
     </>
