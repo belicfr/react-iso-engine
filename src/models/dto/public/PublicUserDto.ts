@@ -1,5 +1,5 @@
 export type PublicUserDto = {
-  id: number,
+  id: string,
   userName: string,
   normalizedUserName: string,
   crowns?: number,
