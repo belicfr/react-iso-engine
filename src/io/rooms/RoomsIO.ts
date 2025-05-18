@@ -1,9 +1,9 @@
 export function getPlayerById(id: string) {
   return fetch(`http://localhost:5226/api/Account/GetPlayerById?id=${id}`, {
     method: "GET",
-    credentials: "include",            // ← pour accepter le Set-Cookie
+    credentials: "include",
     headers: {
-      "Content-Type": "application/json"     // ou "application/json" si tu attends du JSON
+      "Content-Type": "application/json"
     },
   });
 }
