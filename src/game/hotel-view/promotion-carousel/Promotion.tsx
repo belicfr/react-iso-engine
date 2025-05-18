@@ -1,22 +1,31 @@
 import {FC} from "react";
 import "./Promotion.css";
-import PromotionArticle from "../../../models/PromotionArticle.ts";
+import {PublicPromotionDto} from "../../../models/dto/public/PublicPromotionDto.ts";
+import {PromotionAction} from "../../../frameworks/types/Actions.ts";
 
-interface Props {
-  promotion: PromotionArticle;
+type Props = {
+  promotion: PublicPromotionDto,
+
+  onClick: PromotionAction,
 }
 
-export const Promotion: FC<Props> = props => {
+export const Promotion: FC<Props> = ({promotion, onClick}) => {
   const cardStyles = {
-    backgroundImage: `url("/src/assets/gamelib/promotionshvd/${props.promotion.banner}")`,
+    backgroundImage: `url("/src/assets/gamelib/promotionshvd/${promotion.thumbnailPath}")`,
   };
 
   return (
     <>
-      <div className="promotion-card" style={cardStyles}>
+      <div
+        className="promotion-card"
+        style={cardStyles}
+
+        onClick={onClick}
+      >
+
         <div className="promotion-card__label">
           <h4 className="promotion-card__title">
-            {props.promotion.title}
+            {promotion.title}
           </h4>
         </div>
       </div>
