@@ -20,15 +20,17 @@ type Props = {
 
 export const RoomsNavigatorWindow: FC<Props> = ({onRoomClick, onClose}) => {
   const tabs: Tab[] = [
-    new Tab("Public", "SendPublicRooms"),
-    new Tab("All Rooms", "SendAllRooms"),
-    new Tab("My World", "SendPlayerRooms"),
+    new Tab("Public", "PublicRooms"),
+    new Tab("All Rooms", "AllRooms"),
+    new Tab("My World", "PlayerRooms"),
   ];
 
   const [ isCreateRoomWindowOpened, setIsCreateRoomWindowOpened ] = useState<boolean>(false);
   const [ roomInfo, setRoomInfo ] = useState<PublicRoomDto|null>(null);
 
   const [ currentTabIndex, setCurrentTabIndex ] = useState(0);
+
+  const [ isTabLoading, setIsTabLoading ] = useState<boolean>(false);
 
   const onTabChange = (index: number) => setCurrentTabIndex(index);
 
@@ -37,7 +39,20 @@ export const RoomsNavigatorWindow: FC<Props> = ({onRoomClick, onClose}) => {
   const connection = useConnection();
 
   useEffect(() => {
-    connection.invoke(tabs[currentTabIndex].sender!);
+    connection.invoke(`Send${tabs[currentTabIndex].channel!}`);
+    setIsTabLoading(true);
+
+    const handlerTabLoading = (response?: PublicRoomDto[]) => {
+      if (response && response.length) {
+        setIsTabLoading(false);
+      }
+    };
+
+    connection.on(`Receive${tabs[currentTabIndex].channel!}`, handlerTabLoading);
+
+    return () => {
+      connection.off(`Receive${tabs[currentTabIndex].channel!}`, handlerTabLoading);
+    };
   }, [connection, currentTabIndex]);
 
   return (
@@ -53,10 +68,16 @@ export const RoomsNavigatorWindow: FC<Props> = ({onRoomClick, onClose}) => {
         onClose={onClose}
       >
 
-        <div className="rooms-navigator__content">
+        <div
+          className="rooms-navigator__content"
+          style={isTabLoading ? {opacity: .6} : {}}
+        >
+
           <TabsNavigation
             currentTabIndex={currentTabIndex}
             tabs={tabs}
+            isLoading={isTabLoading}
+
             onTabChange={onTabChange}
           >
 
