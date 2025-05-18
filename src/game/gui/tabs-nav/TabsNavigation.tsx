@@ -1,10 +1,12 @@
 import {FC, ReactNode} from "react";
 import Tab from "./Tab.ts";
 import "./TabsNavigation.css";
+import {TimerLoader} from "../../../frameworks/components/loaders/TimerLoader.tsx";
 
 type Props = {
   currentTabIndex: number,
   tabs: Tab[],
+  isLoading: boolean,
 
   children: ReactNode,
 
@@ -34,7 +36,11 @@ export const TabsNavigation: FC<Props> = props => {
         </div>
 
         <main className="tabs-navigation__body">
-          {props.children}
+
+          {!props.isLoading && props.children ||
+              <div className="loader-container">
+                <TimerLoader />
+              </div>}
         </main>
       </div>
     </>
