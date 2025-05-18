@@ -2,9 +2,7 @@ import {FC} from "react";
 import "./HotelView.css";
 import {PromotionCarousel} from "./promotion-carousel/PromotionCarousel.tsx";
 
-type Props = object;
-
-export const HotelView: FC<Props> = props => {
+export const HotelView: FC = () => {
   return (
     <>
       <div className="hotel-view__container">
