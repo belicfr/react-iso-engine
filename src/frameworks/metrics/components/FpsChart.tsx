@@ -10,7 +10,6 @@ type Props = {
 
 export const FpsChart: FC<Props> = ({currentFps, history}) => {
   const [ animate, setAnimate ] = useState<boolean>(true);
-  const [ showFpsChart, setShowFpsChart ] = useState<boolean>(true);
 
   if (!history.length) {
     return <p>No data available.</p>;
@@ -29,42 +28,35 @@ export const FpsChart: FC<Props> = ({currentFps, history}) => {
           &nbsp;Animate
         </label>
 
-        <label style={{display: "inline"}}>
-          <input type="checkbox" onChange={e => setShowFpsChart(e.target.checked)} checked={showFpsChart}/>
-          &nbsp;Show FPS Chart
-        </label>
+        <ResponsiveContainer
+          width="100%"
+          height="100%"
+        >
 
-          <ResponsiveContainer
-            width="100%"
-            height="100%"
+          <LineChart data={history}>
+            <Line
+              type="monotone"
+              dataKey="fps"
+              stroke="#FF0000"
+              dot={false}
+              isAnimationActive={animate}
+            />
 
-            style={!showFpsChart ? {display: "none"} : {}}
-          >
+            <XAxis
+              dataKey="time"
+            />
 
-            <LineChart data={history}>
-              <Line
-                type="monotone"
-                dataKey="fps"
-                stroke="#FF0000"
-                dot={false}
-                isAnimationActive={animate}
-              />
+            <YAxis
+              // domain={[0, 120]}
+            />
 
-              <XAxis
-                dataKey="time"
-              />
-
-              <YAxis
-                // domain={[0, 120]}
-              />
-
-              <Tooltip
-                labelFormatter={() => ""}
-                formatter={(v: number) =>
-                  [`${Math.round(v)} FPS`, ""]}
-              />
-            </LineChart>
-          </ResponsiveContainer>
+            <Tooltip
+              labelFormatter={() => ""}
+              formatter={(v: number) =>
+                [`${Math.round(v)} FPS`, ""]}
+            />
+          </LineChart>
+        </ResponsiveContainer>
       </section>
     </>
   );
