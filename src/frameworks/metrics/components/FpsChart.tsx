@@ -10,6 +10,7 @@ type Props = {
 
 export const FpsChart: FC<Props> = ({currentFps, history}) => {
   const [ animate, setAnimate ] = useState<boolean>(true);
+  const [ showFpsChart, setShowFpsChart ] = useState<boolean>(true);
 
   if (!history.length) {
     return <p>No data available.</p>;
@@ -24,39 +25,46 @@ export const FpsChart: FC<Props> = ({currentFps, history}) => {
         </p>
 
         <label style={{display: "inline"}}>
-          <input type="checkbox" onChange={e => setAnimate(e.target.checked)} checked={animate} />
+          <input type="checkbox" onChange={e => setAnimate(e.target.checked)} checked={animate}/>
           &nbsp;Animate
         </label>
 
-        <ResponsiveContainer
-          width="100%"
-          height="100%"
-        >
+        <label style={{display: "inline"}}>
+          <input type="checkbox" onChange={e => setShowFpsChart(e.target.checked)} checked={showFpsChart}/>
+          &nbsp;Show FPS Chart
+        </label>
 
-          <LineChart data={history}>
-            <Line
-              type="monotone"
-              dataKey="fps"
-              stroke="#FF0000"
-              dot={false}
-              isAnimationActive={animate}
-            />
+          <ResponsiveContainer
+            width="100%"
+            height="100%"
 
-            <XAxis
-              dataKey="time"
-            />
+            style={!showFpsChart ? {display: "none"} : {}}
+          >
 
-            <YAxis
-              // domain={[0, 120]}
-            />
+            <LineChart data={history}>
+              <Line
+                type="monotone"
+                dataKey="fps"
+                stroke="#FF0000"
+                dot={false}
+                isAnimationActive={animate}
+              />
 
-            <Tooltip
-              labelFormatter={() => ""}
-              formatter={(v: number) =>
-                [`${Math.round(v)} FPS`, ""]}
-            />
-          </LineChart>
-        </ResponsiveContainer>
+              <XAxis
+                dataKey="time"
+              />
+
+              <YAxis
+                // domain={[0, 120]}
+              />
+
+              <Tooltip
+                labelFormatter={() => ""}
+                formatter={(v: number) =>
+                  [`${Math.round(v)} FPS`, ""]}
+              />
+            </LineChart>
+          </ResponsiveContainer>
       </section>
     </>
   );
