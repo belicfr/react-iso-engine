@@ -17,8 +17,10 @@
     "pixi.js": "^8.9.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-fps-stats": "^0.3.1",
     "react-markdown": "^10.1.0",
     "react-rnd": "^10.5.2",
+    "recharts": "^2.15.3",
     "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
