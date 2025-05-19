@@ -4,12 +4,17 @@ import App from './App.tsx'
 import {ZIndexProvider} from "./game/gui/windows/WindowContext.tsx";
 import login from "./io/auth.ts";
 import {ConnectionProvider} from "./io/ConnectionContext.tsx";
+import {Metrics} from "./frameworks/metrics/Metrics.tsx";
+
+await login("staff@pixel.net", "Jonax123@");    // TODO: move to cms
 
 createRoot(document.getElementById('root')!).render(
   <> {/*StrictMode disabled to prevent call function twice*/}
     <ZIndexProvider>
       <ConnectionProvider>
         <App />
+
+        <Metrics />
       </ConnectionProvider>
     </ZIndexProvider>
   </>,
