@@ -1,5 +1,4 @@
 import Group from "../../models/Group.ts";
-import PromotionArticle from "../../models/PromotionArticle.ts";
 import Notification from "../../models/Notification.ts";
 import {PublicRoomDto} from "../../models/dto/public/PublicRoomDto.ts";
 import {PublicUserDto} from "../../models/dto/public/PublicUserDto.ts";
