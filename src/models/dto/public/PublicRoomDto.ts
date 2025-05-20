@@ -13,4 +13,5 @@ export type PublicRoomDto = {
   tagOne?: string,
   tagTwo?: string,
   isPublic: boolean,
+  thumbnail: string,
 };
