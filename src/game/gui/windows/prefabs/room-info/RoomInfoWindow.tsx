@@ -56,7 +56,10 @@ export const RoomInfoWindow: FC<Props> = ({room, onClose}) => {
 
         <div className="room-info__container">
           <div className="room-info__intro">
-            <div className="room-info__picture"></div>
+            <div
+              className="room-info__picture"
+              style={{backgroundImage: `url("${room.thumbnail}")`}}
+            ></div>
 
             <div className="room-info__information">
               <h6 className="room-info__name">

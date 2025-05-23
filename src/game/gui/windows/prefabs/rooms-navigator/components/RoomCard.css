@@ -76,6 +76,7 @@
   border-radius: 5px;
   padding: 7px;
   flex-direction: column;
+  box-shadow: -1px 1px 0 #CCC;
 }
 .room-card > .room-thumbnail {
   width: 100%;
@@ -83,6 +84,8 @@
   border: solid 2px black;
   margin-bottom: 10px;
   position: relative;
+  background-size: cover;
+  background-position: center;
 }
 .room-card > .room-thumbnail > .players-in-room {
   position: absolute;

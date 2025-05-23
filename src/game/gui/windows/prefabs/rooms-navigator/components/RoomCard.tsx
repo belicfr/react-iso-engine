@@ -1,4 +1,4 @@
-import {FC} from "react";
+import {FC, MouseEventHandler} from "react";
 import "./RoomCard.css";
 import {RoomCardProps} from "./RoomsList.tsx";
 import Room from "../../../../../../models/Room.ts";
@@ -22,7 +22,11 @@ export const RoomCard: FC<RoomCardProps> = ({room, onInfoClick, onClick}) => {
         onClick={onRoomCardClick}
       >
 
-        <div className="room-thumbnail">
+        <div
+          className="room-thumbnail"
+          style={{backgroundImage: `url("${room.thumbnail}")`}}
+        >
+
           <div
             className="room-info__button"
 

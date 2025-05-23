@@ -10,9 +10,10 @@
 }
 .room-info__container > .room-info__intro > .room-info__picture {
   flex: none;
-  width: 80px;
+  width: 100px;
   aspect-ratio: 1;
-  background: #CCCCCC;
+  background-size: cover;
+  background-position: center;
   border: 2px solid black;
 }
 .room-info__container > .room-info__intro > .room-info__information {
