@@ -7,8 +7,9 @@ import {Container, Graphics, Sprite} from "pixi.js";
 import {RoomHoverTile} from "./RoomHoverTile.tsx";
 import {PlayerAvatar} from "../player/PlayerAvatar.tsx";
 import {TileSituation} from "../../../../models/RoomTemplate.ts";
-import User, {SessionRepository} from "../../../../models/User.ts";
 import {UserAction} from "../../../../frameworks/types/Actions.ts";
+import {PublicUserDto} from "../../../../models/dto/public/PublicUserDto.ts";
+import {useUser} from "../../../../io/users/UserContext.tsx";
 
 extend({
   Container,
@@ -17,7 +18,7 @@ extend({
 });
 
 type Props = {
-  players: User[],
+  players: PublicUserDto[],
   tilesPositions: TileSituation[],
   isCameraMoving: boolean,
 
@@ -28,12 +29,12 @@ export const RoomFloor: FC<Props> = ({players, tilesPositions, isCameraMoving, o
   const a = useApplication();
   const {app} = a;
 
-  const user = SessionRepository.i().user;
-  
   const TILE_SIZE = useMemo<Size2D>(() => ({
     width: 72,
     height: 36,
   }), []);
+
+  const user = useUser();
 
   const scaleFactor = useRef<number>(1);
   const oldScaleFactor = useRef<number>(1);
@@ -41,14 +42,15 @@ export const RoomFloor: FC<Props> = ({players, tilesPositions, isCameraMoving, o
   const isEnvZoomEventDefined = useRef<boolean>(false);
   const isEntranceInitialized = useRef<boolean>(false);
 
-  const [livePlayersList, setLivePlayersList] = useState<User[]>([]);
+  const [livePlayersList, setLivePlayersList] = useState<PublicUserDto[]>([]);
 
   const [ hoverTilePosition, setHoverTilePosition ] = useState<Coord2D>({x: 0, y: 0});
 
   const setPlayerPosition = (pos: Coord2D) => {
-    if (user.invisible) return;
+    // if (user.invisible) return;
 
-    user.currentPosition = pos;
+    user.position = pos;
+
     setLivePlayersList(prevState => [
       ...prevState.filter(u => u.id !== user.id),
       user,
@@ -87,8 +89,8 @@ export const RoomFloor: FC<Props> = ({players, tilesPositions, isCameraMoving, o
     livePlayersList.map(player =>
       <PlayerAvatar
         key={Math.random().toPrecision(1)}
-        x={player.currentPosition.x}
-        y={player.currentPosition.y}
+        x={player.position.x}
+        y={player.position.y}
         z={2}
         user={player}
 

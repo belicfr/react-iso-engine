@@ -4,10 +4,10 @@ import {Application as GameEnvironment, extend} from "@pixi/react";
 import {Container, Graphics, Sprite} from 'pixi.js';
 import {RoomFloor} from "./components/room/RoomFloor.tsx";
 import {Camera} from "./components/camera/Camera.ts";
-import User from "../../models/User.ts";
 import {UserAction} from "../../frameworks/types/Actions.ts";
 import RoomTemplate from "../../models/RoomTemplate.ts";
 import {PublicRoomDto} from "../../models/dto/public/PublicRoomDto.ts";
+import {PublicUserDto} from "../../models/dto/public/PublicUserDto.ts";
 
 extend({
   Container,
@@ -17,7 +17,7 @@ extend({
 
 type Props = {
   room: PublicRoomDto,
-  players: User[],
+  players: PublicUserDto[],
 
   onPlayerFocus: UserAction,
 };

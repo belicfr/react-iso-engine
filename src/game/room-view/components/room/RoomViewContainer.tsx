@@ -2,13 +2,13 @@ import {FC} from "react";
 import {RoomView} from "../../RoomView.tsx";
 import {RoomInfo} from "../../../gui/rooms/RoomInfo.tsx";
 import {RoomPreferencesWindow} from "../../../gui/windows/prefabs/room-preferences/RoomPreferencesWindow.tsx";
-import User from "../../../../models/User.ts";
 import {Action, RoomAction, UserAction} from "../../../../frameworks/types/Actions.ts";
 import {PublicRoomDto} from "../../../../models/dto/public/PublicRoomDto.ts";
+import {PublicUserDto} from "../../../../models/dto/public/PublicUserDto.ts";
 
 type Props = {
   room: PublicRoomDto,
-  players: User[],
+  players: PublicUserDto[],
 
   canManageRoom: boolean,
 

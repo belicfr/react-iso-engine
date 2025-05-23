@@ -5,18 +5,16 @@ import {TopOptions} from "./gui/top-options/TopOptions.tsx";
 import {ModalWindow} from "./gui/windows/ModalWindow.tsx";
 import {RoomsNavigatorWindow} from "./gui/windows/prefabs/rooms-navigator/RoomsNavigatorWindow.tsx";
 import {StaffTools} from "./gui/staff-tools/StaffTools.tsx";
-import Room from "../models/Room.ts";
 import {RoomViewContainer} from "./room-view/components/room/RoomViewContainer.tsx";
 import User from "../models/User.ts";
 import AvatarEffect, {EAvatarEffect} from "./room-view/entities/AvatarEffect.ts";
-import Alert from "../models/Alert.ts";
-import {StaffAlert} from "./gui/windows/prefabs/modals/staff-alert/StaffAlert.tsx";
 import {useUser} from "../io/users/UserContext.tsx";
 import {PublicRoomDto} from "../models/dto/public/PublicRoomDto.ts";
 import {useConnection} from "../io/ConnectionContext.tsx";
 import {Handler, HandlerResponseCode} from "../io/HandlerResponse.ts";
 import {RestrictedUserDto} from "../models/dto/restricted/RestrictedUserDto.ts";
 import {useAlerts} from "./gui/windows/AlertsContext.tsx";
+import {PublicUserDto} from "../models/dto/public/PublicUserDto.ts";
 
 export const GameView: FC = () => {
   const [ isHotelViewOpened, setIsHotelViewOpened ] = useState(true);
@@ -50,12 +48,11 @@ export const GameView: FC = () => {
 
   // const rooms: Room[] = RoomRepository.i().rooms;
   const [currentRoom, setCurrentRoom] = useState<PublicRoomDto|null>(null);
-  const [playersInCurrentRoom, setPlayersInCurrentRoom] = useState<User[]>([]);
+  const [playersInCurrentRoom, setPlayersInCurrentRoom] = useState<PublicUserDto[]>([]);
 
-  const [focusedPlayer, setFocusedPlayer] = useState<User|null>(null);
+  const [focusedPlayer, setFocusedPlayer] = useState<PublicUserDto|null>(null);
 
   const user: RestrictedUserDto = useUser();
-  const [ alerts, setAlerts ] = useState<Alert[]>([]);
 
   // const [ isPlayerInvisible, setIsPlayerInvisible ] = useState<boolean>(user.invisible);
   // const [ isUsingStaffEffect, setIsUsingStaffEffect ]
@@ -192,25 +189,12 @@ export const GameView: FC = () => {
     });
   }
 
-  function alert(alert: Alert) {
-    setAlerts(prevState => [
-      ...prevState,
-      alert,
-    ]);
-  }
-
-  function closeAlert(alert: Alert) {
-    setAlerts(prevState => [
-      ...prevState.filter(a => a.id !== alert.id),
-    ]);
-  }
-
-  function roomAlert(room: Room, message: string) {
-    alert(new Alert(
-      Math.random(),
-      "Room Alert",
-      message,
-    ));
+  function roomAlert(message: string) {
+    addAlert({
+      id: Math.random(),
+      title: "Room Alert",
+      content: message,
+    });
   }
 
   function canManageRoom(): boolean {
@@ -228,24 +212,24 @@ export const GameView: FC = () => {
           setIsRoomPreferencesWindowOpened(!isRoomPreferencesWindowOpened)}
       />
 
-      {false && user.permissions.isStaff &&
-          <StaffTools
-              canOpenModTools={user.permissions.canUseModTools}
-              canBeInvisible={user.permissions.canBeInvisible}
-              canUseEffect={user.permissions.canUseStaffEffect}
+      {/*{user.permissions.isStaff &&*/}
+      {/*    <StaffTools*/}
+      {/*        canOpenModTools={user.permissions.canUseModTools}*/}
+      {/*        canBeInvisible={user.permissions.canBeInvisible}*/}
+      {/*        canUseEffect={user.permissions.canUseStaffEffect}*/}
 
-              room={currentRoom}
-              user={focusedPlayer}
+      {/*        room={currentRoom}*/}
+      {/*        user={focusedPlayer}*/}
 
-              isInvisible={isPlayerInvisible}
-              isUsingStaffEffect={isUsingStaffEffect}
+      {/*        isInvisible={isPlayerInvisible}*/}
+      {/*        isUsingStaffEffect={isUsingStaffEffect}*/}
 
-              onInvisibleToggle={onInvisibleToggle}
-              onEffectToggle={onStaffEffectToggle}
+      {/*        onInvisibleToggle={onInvisibleToggle}*/}
+      {/*        onEffectToggle={onStaffEffectToggle}*/}
 
-              onRoomAlert={roomAlert}
-              onOwnRoom={alert}
-          />}
+      {/*        onRoomAlert={roomAlert}*/}
+      {/*        onOwnRoom={alert}*/}
+      {/*    />}*/}
 
       {isHotelViewOpened &&
           <HotelView />}
@@ -278,13 +262,6 @@ export const GameView: FC = () => {
                   This engine is under development.
               </p>
           </ModalWindow>}
-
-      {alerts.map(alert =>
-        <StaffAlert
-          alert={alert}
-
-          onClose={closeAlert}
-        />)}
 
       {isRoomsNavigatorWindowOpened &&
         <RoomsNavigatorWindow
