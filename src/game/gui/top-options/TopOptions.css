@@ -45,10 +45,12 @@
 }
 .top-container .top-options__container > .top-options__currencies > div {
   display: flex;
+  align-items: center;
   column-gap: 5px;
 }
 .top-container .top-options__container > .top-options__currencies > div > p {
   width: 75px;
+  font-size: 0.85rem;
 }
 .top-container .top-options__container > .top-options__separator {
   width: 2px;
