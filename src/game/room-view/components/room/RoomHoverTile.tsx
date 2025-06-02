@@ -8,11 +8,12 @@ type Props = {
   position: Coord2D,
   tileSize: Size2D,
   z: number,
+  visible: boolean,
 
   onClick: (pos: Coord2D) => void,
 };
 
-export const RoomHoverTile: FC<Props> = ({position, tileSize, z, onClick}) => {
+export const RoomHoverTile: FC<Props> = ({position, tileSize, z, visible, onClick}) => {
   const [texture, setTexture] = useState(Texture.EMPTY);
 
   const isTileScaleModeDefined = useRef<boolean>(false);
@@ -40,12 +41,12 @@ export const RoomHoverTile: FC<Props> = ({position, tileSize, z, onClick}) => {
         tileSize.width / 2, tileSize.height
       ])}
       anchor={0}
-      eventMode={'static'}
+      eventMode={'none'}
       x={position.x}
       y={position.y}
       zIndex={z}
       alpha={1}
-      interactive={true}
+      visible={visible}
 
       onClick={e => onClick({x: e.target.x, y: e.target.y})}
     />

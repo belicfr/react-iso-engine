@@ -1,15 +1,15 @@
-import {FC, JSX, useEffect, useMemo, useRef, useState} from "react";
-import {Size2D} from "../../engine/precepts/Size2D.ts";
+import {FC, useEffect, useMemo, useRef, useState} from "react";
 import {extend, useApplication} from "@pixi/react";
 import {Coord2D} from "../../engine/precepts/Coord2D.ts";
-import {RoomTile} from "./RoomTile.tsx";
-import {Container, Graphics, Sprite} from "pixi.js";
+import {Container, Graphics, Sprite, Texture} from "pixi.js";
 import {RoomHoverTile} from "./RoomHoverTile.tsx";
 import {PlayerAvatar} from "../player/PlayerAvatar.tsx";
 import {TileSituation} from "../../../../models/RoomTemplate.ts";
 import {UserAction} from "../../../../frameworks/types/Actions.ts";
 import {PublicUserDto} from "../../../../models/dto/public/PublicUserDto.ts";
 import {useUser} from "../../../../io/users/UserContext.tsx";
+import {buildRoomScene, SpriteRegistry} from "../../../../../../iso-engine/src/scene/buildRoomScene.ts";
+import {TILE_SIZE} from "../../../../../../iso-engine/src/utils/Iso.ts";
 
 extend({
   Container,
@@ -29,10 +29,7 @@ export const RoomFloor: FC<Props> = ({players, tilesPositions, isCameraMoving, o
   const a = useApplication();
   const {app} = a;
 
-  const TILE_SIZE = useMemo<Size2D>(() => ({
-    width: 72,
-    height: 36,
-  }), []);
+  const gameContainer = useRef<Container>(new Container());
 
   const user = useUser();
 
@@ -42,9 +39,14 @@ export const RoomFloor: FC<Props> = ({players, tilesPositions, isCameraMoving, o
   const isEnvZoomEventDefined = useRef<boolean>(false);
   const isEntranceInitialized = useRef<boolean>(false);
 
+  const [ registry, setRegistry ] = useState<SpriteRegistry|null>(null);
+
   const [livePlayersList, setLivePlayersList] = useState<PublicUserDto[]>([]);
 
   const [ hoverTilePosition, setHoverTilePosition ] = useState<Coord2D>({x: 0, y: 0});
+  const [ isHoverTileVisible, setIsHoverTileVisible ] = useState<boolean>(false);
+
+  const isHoverHandlersInitialized = useRef<boolean>(false);
 
   const setPlayerPosition = (pos: Coord2D) => {
     // if (user.invisible) return;
@@ -56,34 +58,6 @@ export const RoomFloor: FC<Props> = ({players, tilesPositions, isCameraMoving, o
       user,
     ]);
   };
-
-  const tiles = useMemo(() => {
-    const tiles: JSX.Element[] = [];
-
-    tilesPositions.forEach(tilePos => {
-      const isoX = (tilePos.x - tilePos.y) * (TILE_SIZE.width / 2);
-      const isoY = (tilePos.x + tilePos.y) * (TILE_SIZE.height / 2);
-
-      if (!isEntranceInitialized.current && tilePos.isEntrance) {
-        setPlayerPosition({x: isoX, y: isoY});
-        isEntranceInitialized.current = true;
-      }
-
-      tiles.push((
-        <RoomTile
-          key={`${tilePos.x},${tilePos.y}`}
-          position={{x: isoX, y: isoY}}
-          tileSize={TILE_SIZE}
-
-          onHoverTile={(pos: Coord2D) => {
-            setHoverTilePosition(pos);
-          }}
-        />
-      ));
-    });
-
-    return tiles;
-  }, [tilesPositions, TILE_SIZE]);
 
   const playersContainer = useMemo(() =>
     livePlayersList.map(player =>
@@ -144,8 +118,48 @@ export const RoomFloor: FC<Props> = ({players, tilesPositions, isCameraMoving, o
     };
   }, [a, app]);
 
+  useEffect(() => {
+    const init = async () => {
+      setRegistry(await buildRoomScene(
+        gameContainer.current,
+        {
+          tilesPositions,
+        },
+        {
+          assetsUrl: "/src/assets",
+        }));
+
+      isHoverHandlersInitialized.current = false;
+    };
+
+    init();
+  }, [tilesPositions]);
+
+  useEffect(() => {
+    if (!registry || isHoverHandlersInitialized.current) return;
+
+    Object.values(registry.tiles).forEach(tile => {
+      tile.eventMode = "static";
+
+      tile.on("pointerover", () => {
+        setIsHoverTileVisible(true);
+        setHoverTilePosition({
+          x: tile.x,
+          y: tile.y,
+        });
+      });
+
+      tile.on("pointerout", () => {
+        setIsHoverTileVisible(false);
+      });
+    });
+
+    isHoverHandlersInitialized.current = true;
+  }, [registry]);
+
   return (
     <pixiContainer
+      ref={gameContainer}
       anchor={0}
       eventMode={'static'}
       x={window.innerWidth / 2}
@@ -153,12 +167,11 @@ export const RoomFloor: FC<Props> = ({players, tilesPositions, isCameraMoving, o
       sortableChildren={true}
     >
 
-      {tiles}
-
       <RoomHoverTile
         position={hoverTilePosition}
-        tileSize={{width: 72, height: 36}}
-        z={1}
+        tileSize={TILE_SIZE}
+        z={2}
+        visible={isHoverTileVisible}
 
         onClick={pos => {
           if (!isCameraMoving) {
