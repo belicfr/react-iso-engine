@@ -30,6 +30,7 @@ export const RoomView: FC<Props> = ({room, players, onPlayerFocus}) => {
       resizeTo={window}
       antialias={true}
       resolution={1}
+      autoDensity={true}
     >
 
       <RoomFloor
