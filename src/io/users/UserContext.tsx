@@ -43,6 +43,7 @@ export const UserProvider: FC<Props> = ({children}) => {
       homeRoomId: user.homeRoomId,
       crowns,
       friends: user.friends,
+      position: user.position,
     }}>
 
       {children}
