@@ -29,8 +29,6 @@ export const PlayerAvatar: FC<Props> = ({x, y, z, user, onFocus}) => {
     };
   }, []);
 
-  console.log(user);
-
   const [ avatarTexture, setAvatarTexture ] = useState(Texture.EMPTY);
   const [ effectTexture, setEffectTexture ] = useState(Texture.EMPTY);
 
