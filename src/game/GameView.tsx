@@ -15,6 +15,7 @@ import {Handler, HandlerResponseCode} from "../io/HandlerResponse.ts";
 import {RestrictedUserDto} from "../models/dto/restricted/RestrictedUserDto.ts";
 import {useAlerts} from "./gui/windows/AlertsContext.tsx";
 import {PublicUserDto} from "../models/dto/public/PublicUserDto.ts";
+import {PublicRenderRoomDto} from "../models/dto/public/PublicRenderRoomDto.ts";
 
 export const GameView: FC = () => {
   const [ isHotelViewOpened, setIsHotelViewOpened ] = useState(true);
@@ -47,7 +48,7 @@ export const GameView: FC = () => {
   const isClientPrepared = useRef<boolean>(false);
 
   // const rooms: Room[] = RoomRepository.i().rooms;
-  const [currentRoom, setCurrentRoom] = useState<PublicRoomDto|null>(null);
+  const [currentRoom, setCurrentRoom] = useState<PublicRenderRoomDto|null>(null);
   const [playersInCurrentRoom, setPlayersInCurrentRoom] = useState<PublicUserDto[]>([]);
 
   const [focusedPlayer, setFocusedPlayer] = useState<PublicUserDto|null>(null);
@@ -72,6 +73,7 @@ export const GameView: FC = () => {
       if (response.code === HandlerResponseCode.SUCCESS) {
         setIsHotelViewOpened(false);
         reloadCanvas();
+        setPlayersInCurrentRoom((response.props[0] as PublicRenderRoomDto).playersInRoom);
         setCurrentRoom(response.props[0]);
       } else {
         addAlert({
