@@ -6,4 +6,5 @@ export type PublicUserDto = {
   normalizedUserName: string,
   crowns?: number,
   position: Coord2D,
+  tileCoord: Coord2D,
 };
