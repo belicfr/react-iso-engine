@@ -5,11 +5,12 @@ import {FederatedPointerEvent} from "pixi.js";
 import {Action} from "../../../../frameworks/types/Actions.ts";
 
 type Props = {
+  onCameraPointerDown: Action,
   onCameraStartMove: Action,
   onCameraStopMove: Action,
 };
 
-export const Camera: FC<Props> = ({onCameraStartMove, onCameraStopMove}) => {
+export const Camera: FC<Props> = ({onCameraPointerDown, onCameraStartMove, onCameraStopMove}) => {
   const {app} = useApplication();
 
   const isDragging = useRef<boolean>(false);
@@ -26,6 +27,8 @@ export const Camera: FC<Props> = ({onCameraStartMove, onCameraStopMove}) => {
       isDragging.current = true;
       dragStart.current = {x: e.globalX, y: e.globalY};
       stageStart.current = {x: stage.x, y: stage.y};
+
+      onCameraPointerDown();
     };
 
     const onPointerMove = (e: FederatedPointerEvent) => {
