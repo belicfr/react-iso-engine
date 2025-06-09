@@ -41,9 +41,10 @@ export const UserProvider: FC<Props> = ({children}) => {
       userName: user.userName,
       normalizedUserName: user.normalizedUserName,
       homeRoomId: user.homeRoomId,
-      crowns,
       friends: user.friends,
-      position: user.position,
+      position: {x: 0, y: 0},
+      tileCoord: user.tileCoord,
+      crowns,
     }}>
 
       {children}
