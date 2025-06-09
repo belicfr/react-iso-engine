@@ -1,4 +1,4 @@
-import {Coord2D} from "../game/room-view/engine/precepts/Coord2D.ts";
+import {TileSituation} from "../../../iso-engine/src/scene/buildRoomScene.ts";
 
 export default class RoomTemplate {
   static generate(template: string): TileSituation[] {
@@ -23,6 +23,7 @@ export default class RoomTemplate {
           tilesPositions.push({
             x: rowIndex,
             y: tileDigitIndex,
+            value: tileDigit,
             isEntrance: tileDigit === TileDigit.ENTRANCE,
           });
         }
@@ -31,10 +32,6 @@ export default class RoomTemplate {
 
     return tilesPositions;
   };
-};
-
-export type TileSituation = Coord2D & {
-  isEntrance: boolean,
 };
 
 enum TileDigit {
